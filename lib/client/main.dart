@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:virtualhole_flutter/common/common.dart';
-import 'views/views.dart';
+import 'widgets/widgets.dart';
 import 'viewmodels/viewmodels.dart';
 import 'controllers/controllers.dart';
 
@@ -17,12 +17,12 @@ class MyApp extends StatelessWidget {
     CounterController counterController = CounterController();
 
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'holohole',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.blue[900],
       ),
       home: HomePage(
-        title: 'Flutter Demo Home Page',
+        title: 'holohole',
       ),
     );
   }
