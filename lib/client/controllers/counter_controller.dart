@@ -5,8 +5,8 @@ class CounterController {
   CounterController({CounterViewModel counterViewModel})
       : counterViewModel = counterViewModel ??
             ViewModelContainer.instance.get<CounterViewModel>() {
-    counterViewModel.onIncrement.add(onIncrement);
-    counterViewModel.onDecrement.add(onDecrement);
+    this.counterViewModel.onIncrement.add(onIncrement);
+    this.counterViewModel.onDecrement.add(onDecrement);
   }
 
   final CounterViewModel counterViewModel;
