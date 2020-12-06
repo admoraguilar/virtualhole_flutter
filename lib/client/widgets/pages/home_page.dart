@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:virtualhole_flutter/client/widgets/pages/support_page.dart';
 import 'package:virtualhole_flutter/common/common.dart';
 import 'package:virtualhole_flutter/client/widgets/widgets.dart';
 import 'package:virtualhole_flutter/client/viewmodels/viewmodels.dart';
@@ -16,39 +17,40 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ContentCard(
-              url: 'https://i.ytimg.com/vi/wtEqQ2HS08U/hq720.jpg',
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            Text(
-              'You have pushed the button this many times:',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            ViewModelAdapter(
-              observables: (context, container) {
-                return [counterViewModel.counter];
-              },
-              builder: (context, container) {
-                return Text(
-                  '${counterViewModel.counter.value}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40,
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+      // body: Center(
+      //   child: Column(
+      //     mainAxisAlignment: MainAxisAlignment.center,
+      //     children: <Widget>[
+      //       ContentCard(
+      //         url: 'https://i.ytimg.com/vi/wtEqQ2HS08U/hq720.jpg',
+      //       ),
+      //       SizedBox(
+      //         height: 8.0,
+      //       ),
+      //       Text(
+      //         'You have pushed the button this many times:',
+      //         style: TextStyle(
+      //           color: Colors.white,
+      //         ),
+      //       ),
+      //       ViewModelAdapter(
+      //         observables: (context, container) {
+      //           return [counterViewModel.counter];
+      //         },
+      //         builder: (context, container) {
+      //           return Text(
+      //             '${counterViewModel.counter.value}',
+      //             style: TextStyle(
+      //               color: Colors.white,
+      //               fontSize: 40,
+      //             ),
+      //           );
+      //         },
+      //       ),
+      //     ],
+      //   ),
+      // ),
+      body: SupportPage(),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
@@ -72,7 +74,7 @@ class HomePage extends StatelessWidget {
             label: 'Support',
           ),
         ],
-        currentIndex: 0,
+        currentIndex: 3,
         backgroundColor: Colors.black,
         unselectedItemColor: Colors.grey,
         type: BottomNavigationBarType.fixed,

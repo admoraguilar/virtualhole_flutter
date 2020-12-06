@@ -2,15 +2,16 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:virtualhole_flutter/api/storage/virtualhole_storage_client.dart';
+import 'package:virtualhole_flutter/client/viewmodels/support_list_viewmodel.dart';
 import 'package:virtualhole_flutter/common/common.dart';
 import 'package:virtualhole_flutter/api/virtualhole_api.dart';
-import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'widgets/widgets.dart';
 import 'viewmodels/viewmodels.dart';
 import 'controllers/controllers.dart';
 
 Future<void> main() async {
-  print('Starting app...');
+  // print('Starting app...');
 
   // http.Response res = await http.post(
   //   'https://virtualhole.app/api/Creators/ListCreatorsStrict',
@@ -27,17 +28,22 @@ Future<void> main() async {
   //   print(e);
   // });
 
-  String data = '{ "firstName": "Bob", "lastName": "McCollins" }';
-  dynamic jObj = json.decode(data);
-  print(jObj['firstName']);
+  // String data = '{ "firstName": "Bob", "lastName": "McCollins" }';
+  // dynamic jObj = json.decode(data);
+  // print(jObj['firstName']);
 
-  // runApp(MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ViewModelContainer.instance.add(CounterViewModel());
+    ViewModelContainer.instance.add(SupportListViewModel(
+      storageClient: VirtualHoleStorageClient(
+        domain: 'https://virtualhole.b-cdn.net/',
+      ),
+    ));
 
     // ignore: unused_local_variable
     CounterController counterController = CounterController();
