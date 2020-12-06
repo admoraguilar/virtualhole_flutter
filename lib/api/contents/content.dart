@@ -38,16 +38,16 @@ class Content implements Equatable {
   factory Content.fromJson(Map<String, dynamic> json) {
     return Content(
       title: json['title'],
-      platform: json['platform'],
+      platform: Platform.values[json['platform']],
       id: json['id'],
       url: json['url'],
       creator: json['creator'],
       creatorId: json['creatorId'],
       creatorUniversal: json['creatorUniversal'],
       creatorIdUniversal: json['creatorIdUniversal'],
-      creationDate: json['creationDate'],
+      creationDate: DateTime.parse(json['creationDate']),
       creationDateDisplay: json['creationDateDisplay'],
-      tags: json['tags'],
+      tags: List<String>.from(json['tags']),
     );
   }
 

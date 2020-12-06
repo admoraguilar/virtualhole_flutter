@@ -2,6 +2,9 @@ import 'package:virtualhole_flutter/api/contents/creator/requests/list_creators_
 
 class ListCreatorsRegexRequest extends ListCreatorsRequest {
   const ListCreatorsRegexRequest({
+    int batchSize,
+    int resultsLimit,
+    int skip,
     bool isHidden,
     bool isCheckForAffiliations,
     List<String> affiliations,
@@ -14,6 +17,9 @@ class ListCreatorsRegexRequest extends ListCreatorsRequest {
     this.isCheckSocialName,
     this.isCheckCustomKeywords,
   }) : super(
+          batchSize: batchSize,
+          resultsLimit: resultsLimit,
+          skip: skip,
           isHidden: isHidden,
           isCheckForAffiliations: isCheckForAffiliations,
           affiliations: affiliations,
@@ -28,6 +34,7 @@ class ListCreatorsRegexRequest extends ListCreatorsRequest {
   final bool isCheckSocialName;
   final bool isCheckCustomKeywords;
 
+  @override
   Map<String, dynamic> toJson() {
     Map<String, dynamic> superMap = super.toJson();
     superMap.addAll({

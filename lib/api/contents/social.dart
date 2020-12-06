@@ -27,13 +27,12 @@ class Social implements Equatable {
 
   factory Social.fromJson(Map<String, dynamic> json) {
     return Social(
-      name: json['name'],
-      platform: json['platform'],
-      id: json['id'],
-      url: json['url'],
-      avatarUrl: json['avatarUrl'],
-      customKeywords: json['customKeywords'],
-    );
+        name: json['name'],
+        platform: Platform.values[json['platform']],
+        id: json['id'],
+        url: json['url'],
+        avatarUrl: json['avatarUrl'],
+        customKeywords: List<String>.from(json['customKeywords']));
   }
 
   @override

@@ -72,7 +72,7 @@ class Broadcast extends Video {
       viewCount: video.viewCount,
       isLive: json['isLive'],
       viewerCount: json['viewerCount'],
-      scheduleDate: json['scheduleDate'],
+      scheduleDate: DateTime.parse(json['scheduleDate']),
       scheduleDateDisplay: json['scheduleDateDisplay'],
     );
   }

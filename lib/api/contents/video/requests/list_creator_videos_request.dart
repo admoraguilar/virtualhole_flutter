@@ -3,13 +3,19 @@ import 'package:virtualhole_flutter/api/contents/video/requests/list_videos_requ
 import 'package:virtualhole_flutter/api/contents/video/requests/sort_mode.dart';
 
 class ListCreatorVideosRequest extends ListVideosRequest {
-  const ListCreatorVideosRequest(
-      {SortMode sortMode,
-      bool isSortAscending,
-      this.isBroadcast,
-      this.isLive,
-      this.creators})
-      : super(
+  const ListCreatorVideosRequest({
+    int batchSize,
+    int resultsLimit,
+    int skip,
+    SortMode sortMode,
+    bool isSortAscending,
+    this.isBroadcast,
+    this.isLive,
+    this.creators,
+  }) : super(
+          batchSize: batchSize,
+          resultsLimit: resultsLimit,
+          skip: skip,
           sortMode: sortMode,
           isSortAscending: isSortAscending,
         );

@@ -2,13 +2,20 @@ import 'package:virtualhole_flutter/api/common/paged_request.dart';
 
 class ListCreatorsRequest extends PagedRequest {
   const ListCreatorsRequest({
+    int batchSize,
+    int resultsLimit,
+    int skip,
     this.isHidden,
     this.isCheckForAffiliations,
     this.affiliations,
     this.isGroup,
     this.isCheckForDepth,
     this.depth,
-  });
+  }) : super(
+          batchSize: batchSize,
+          resultsLimit: resultsLimit,
+          skip: skip,
+        );
 
   final bool isHidden;
   final bool isCheckForAffiliations;
@@ -17,12 +24,17 @@ class ListCreatorsRequest extends PagedRequest {
   final bool isCheckForDepth;
   final int depth;
 
-  Map<String, dynamic> toJson() => {
-        'isHidden': isHidden,
-        'isCheckForAffiliations': isCheckForAffiliations,
-        'affiliations': affiliations,
-        'isGroup': isGroup,
-        'isCheckForDepth': isCheckForDepth,
-        'depth': depth,
-      };
+  @override
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> superMap = super.toJson();
+    superMap.addAll({
+      'isHidden': isHidden,
+      'isCheckForAffiliations': isCheckForAffiliations,
+      'affiliations': affiliations,
+      'isGroup': isGroup,
+      'isCheckForDepth': isCheckForDepth,
+      'depth': depth,
+    });
+    return superMap;
+  }
 }

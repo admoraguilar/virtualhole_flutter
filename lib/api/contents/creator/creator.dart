@@ -40,11 +40,11 @@ class Creator implements Equatable {
       wikiUrl: json['wikiUrl'],
       avatarUrl: json['avatarUrl'],
       isHidden: json['isHidden'],
-      affiliations: json['affiliations'],
+      affiliations: List<String>.from(json['affiliations']),
       isGroup: json['isGroup'],
       depth: json['depth'],
       socials: Social.fromJsonDecode(json['socials']),
-      customKeywords: json['customKeywords'],
+      customKeywords: List<String>.from(json['customKeywords']),
     );
   }
 

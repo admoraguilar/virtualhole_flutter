@@ -40,6 +40,7 @@ Future<void> main() async {
   List<Creator> creators = await vHoleApi.content.creators
       .listCreatorsAsync(ListCreatorsStrictRequest(
     isAll: true,
+    skip: 20,
   ));
 
   print(creators.length);

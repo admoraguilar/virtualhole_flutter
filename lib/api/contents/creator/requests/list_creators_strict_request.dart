@@ -2,6 +2,9 @@ import 'package:virtualhole_flutter/api/contents/creator/requests/list_creators_
 
 class ListCreatorsStrictRequest extends ListCreatorsRequest {
   const ListCreatorsStrictRequest({
+    int batchSize,
+    int resultsLimit,
+    int skip,
     bool isHidden,
     bool isCheckForAffiliations,
     List<String> affiliations,
@@ -12,6 +15,9 @@ class ListCreatorsStrictRequest extends ListCreatorsRequest {
     this.universalName,
     this.universalId,
   }) : super(
+          batchSize: batchSize,
+          resultsLimit: resultsLimit,
+          skip: skip,
           isHidden: isHidden,
           isCheckForAffiliations: isCheckForAffiliations,
           affiliations: affiliations,
@@ -24,6 +30,7 @@ class ListCreatorsStrictRequest extends ListCreatorsRequest {
   final String universalName;
   final String universalId;
 
+  @override
   Map<String, dynamic> toJson() {
     Map<String, dynamic> superMap = super.toJson();
     superMap.addAll({

@@ -1,5 +1,6 @@
 import 'package:virtualhole_flutter/api/contents/content.dart';
 import 'package:virtualhole_flutter/api/contents/platform.dart';
+import 'package:virtualhole_flutter/common/duration_extensions.dart';
 
 class Video extends Content {
   static List<Video> fromJsonDecode(dynamic jsonDecode) {
@@ -46,6 +47,7 @@ class Video extends Content {
 
   factory Video.fromJson(Map<String, dynamic> json) {
     Content content = Content.fromJson(json);
+
     return Video(
       title: content.title,
       platform: content.platform,
@@ -60,7 +62,7 @@ class Video extends Content {
       tags: content.tags,
       thumbnailUrl: json['thumbnailUrl'],
       description: json['description'],
-      duration: json['duration'],
+      duration: DurationExtensions.parse(json['duration']),
       viewCount: json['viewCount'],
     );
   }
