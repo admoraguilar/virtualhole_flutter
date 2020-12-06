@@ -14,6 +14,16 @@ class ListCreatorsRequest extends PagedRequest {
   final bool isCheckForAffiliations;
   final List<String> affiliations;
   final bool isGroup;
-  final isCheckForDepth;
+  final bool isCheckForDepth;
   final int depth;
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'isHidden': isHidden,
+        'isCheckForAffiliations': isCheckForAffiliations,
+        'affiliations': affiliations,
+        'isGroup': isGroup,
+        'isCheckForDepth': isCheckForDepth,
+        'depth': depth,
+      };
 }

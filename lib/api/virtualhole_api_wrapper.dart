@@ -1,20 +1,21 @@
 import 'package:flutter/cupertino.dart';
-import 'storage/virtualhole_storage_client.dart';
+import 'package:virtualhole_flutter/api/contents/content_client.dart';
+import 'storage/storage_client.dart';
 
-export 'storage/virtualhole_storage_client.dart';
+export 'storage/storage_client.dart';
 
 class VirtualHoleApiWrapperClient {
   VirtualHoleApiWrapperClient({
-    @required this.contentsDomain,
-    @required this.storageDomain,
-    VirtualHoleStorageClient storage,
-  })  : assert(contentsDomain.isNotEmpty),
-        assert(storageDomain.isNotEmpty),
-        this.storage =
-            storage ?? VirtualHoleStorageClient(domain: storageDomain);
+    @required this.content,
+    @required this.storage,
+  });
 
-  final String contentsDomain;
-  final String storageDomain;
+  VirtualHoleApiWrapperClient.managed({
+    @required String contentDomain,
+    @required String storageDomain,
+  })  : content = ContentClient(domain: contentDomain),
+        storage = StorageClient(domain: storageDomain);
 
-  final VirtualHoleStorageClient storage;
+  final ContentClient content;
+  final StorageClient storage;
 }

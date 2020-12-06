@@ -5,8 +5,8 @@ import 'dynamic/dynamic_client.dart';
 export 'static/static_client.dart';
 export 'dynamic/dynamic_client.dart';
 
-class VirtualHoleStorageClient {
-  VirtualHoleStorageClient({
+class StorageClient {
+  StorageClient({
     @required String domain,
     DynamicClient dynamicClient,
     StaticClient staticClient,
