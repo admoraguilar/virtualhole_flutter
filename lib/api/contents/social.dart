@@ -3,6 +3,9 @@ import 'platform.dart';
 
 class Social implements Equatable {
   static List<Social> fromJsonDecode(dynamic jsonDecode) {
+    if (jsonDecode == null) {
+      return [];
+    }
     return (jsonDecode as List).map((e) => Social.fromJson(e)).toList();
   }
 

@@ -17,7 +17,6 @@ class ListCreatorsRequest extends PagedRequest {
   final bool isCheckForDepth;
   final int depth;
 
-  @override
   Map<String, dynamic> toJson() => {
         'isHidden': isHidden,
         'isCheckForAffiliations': isCheckForAffiliations,

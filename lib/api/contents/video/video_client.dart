@@ -1,4 +1,5 @@
 import 'package:virtualhole_flutter/api/common/api_client.dart';
+import 'dart:convert';
 import 'video.dart';
 import 'broadcast.dart';
 import 'requests/list_videos_request.dart';
@@ -45,10 +46,10 @@ class VideoClient extends APIClient {
 
     if (TVideo is Broadcast) {
       Broadcast.fromJsonDecode(
-          await postAsync(createUri(slug), request.toJsonEncode()));
+          await postAsync(createUri(slug), json.encode(request)));
     } else {
       Video.fromJsonDecode(
-          await postAsync(createUri(slug), request.toJsonEncode()));
+          await postAsync(createUri(slug), json.encode(request)));
     }
   }
 }

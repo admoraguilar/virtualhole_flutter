@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:virtualhole_flutter/api/common/api_client.dart';
 import 'creator.dart';
 import 'requests/list_creators_request.dart';
@@ -32,6 +33,6 @@ class CreatorClient extends APIClient {
     }
 
     return Creator.fromJsonDecode(
-        await postAsync(createUri(slug), request.toJsonEncode()));
+        await postAsync(createUri(slug), json.encode(request)));
   }
 }

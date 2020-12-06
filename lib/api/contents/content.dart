@@ -3,6 +3,9 @@ import 'platform.dart';
 
 class Content implements Equatable {
   static List<Content> fromJsonDecode(dynamic jsonDecode) {
+    if (jsonDecode == null) {
+      return [];
+    }
     return (jsonDecode as List).map((e) => Content.fromJson(e)).toList();
   }
 

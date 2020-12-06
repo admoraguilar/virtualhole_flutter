@@ -2,6 +2,9 @@ import 'package:equatable/equatable.dart';
 
 class SupportInfo implements Equatable {
   static List<SupportInfo> fromJsonDecode(dynamic jsonDecode) {
+    if (jsonDecode == null) {
+      return [];
+    }
     return (jsonDecode as List).map((e) => SupportInfo.fromJson(e)).toList();
   }
 

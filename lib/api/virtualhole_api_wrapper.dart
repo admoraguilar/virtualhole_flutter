@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:virtualhole_flutter/api/contents/content_client.dart';
+import 'contents/content_client.dart';
 import 'storage/storage_client.dart';
 
+export 'contents/content_client.dart';
 export 'storage/storage_client.dart';
 
 class VirtualHoleApiWrapperClient {

@@ -3,6 +3,9 @@ import 'package:virtualhole_flutter/api/contents/platform.dart';
 
 class Video extends Content {
   static List<Video> fromJsonDecode(dynamic jsonDecode) {
+    if (jsonDecode == null) {
+      return [];
+    }
     return (jsonDecode as List).map((e) => Video.fromJson(e)).toList();
   }
 

@@ -28,7 +28,6 @@ class ListCreatorsRegexRequest extends ListCreatorsRequest {
   final bool isCheckSocialName;
   final bool isCheckCustomKeywords;
 
-  @override
   Map<String, dynamic> toJson() {
     Map<String, dynamic> superMap = super.toJson();
     superMap.addAll({

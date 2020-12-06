@@ -24,7 +24,6 @@ class ListCreatorsStrictRequest extends ListCreatorsRequest {
   final String universalName;
   final String universalId;
 
-  @override
   Map<String, dynamic> toJson() {
     Map<String, dynamic> superMap = super.toJson();
     superMap.addAll({

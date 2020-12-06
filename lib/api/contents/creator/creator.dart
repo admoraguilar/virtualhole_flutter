@@ -3,6 +3,9 @@ import 'package:virtualhole_flutter/api/contents/social.dart';
 
 class Creator implements Equatable {
   static List<Creator> fromJsonDecode(dynamic jsonDecode) {
+    if (jsonDecode == null) {
+      return [];
+    }
     return (jsonDecode as List).map((e) => Creator.fromJson(e)).toList();
   }
 
