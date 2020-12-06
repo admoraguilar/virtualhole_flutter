@@ -1,12 +1,18 @@
 import 'package:flutter/foundation.dart';
-import 'package:virtualhole_flutter/api/storage/static/static_client.dart';
-import 'package:virtualhole_flutter/api/virtualhole_api.dart';
+import 'static/static_client.dart';
+import 'dynamic/dynamic_client.dart';
+
+export 'static/static_client.dart';
+export 'dynamic/dynamic_client.dart';
 
 class VirtualHoleStorageClient {
   VirtualHoleStorageClient({
     @required String domain,
-  })  : dynamic = DynamicClient(domain: domain),
-        static = StaticClient(domain: domain);
+    DynamicClient dynamicClient,
+    StaticClient staticClient,
+  })  : assert(domain.isNotEmpty),
+        dynamic = dynamicClient ?? DynamicClient(domain: domain),
+        static = staticClient ?? StaticClient(domain: domain);
 
   final DynamicClient dynamic;
   final StaticClient static;

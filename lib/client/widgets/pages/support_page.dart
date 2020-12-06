@@ -12,8 +12,8 @@ class SupportPage extends StatelessWidget {
         ViewModelContainer.instance.get<SupportListViewModel>();
 
     return FutureBuilder(
-        future:
-            supportListViewModel.storageClient.dynamic.listSupportInfoAsync(),
+        future: supportListViewModel.storageClient.dynamic
+            .getListSupportInfoAsync(),
         builder:
             (BuildContext context, AsyncSnapshot<List<SupportInfo>> snapshot) {
           if (snapshot.hasData) {

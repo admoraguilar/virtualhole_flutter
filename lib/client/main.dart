@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:virtualhole_flutter/api/storage/virtualhole_storage_client.dart';
 import 'package:virtualhole_flutter/client/viewmodels/support_list_viewmodel.dart';
 import 'package:virtualhole_flutter/common/common.dart';
-import 'package:virtualhole_flutter/api/virtualhole_api.dart';
+import 'package:virtualhole_flutter/api/virtualhole_api_wrapper.dart';
 import 'widgets/widgets.dart';
 import 'viewmodels/viewmodels.dart';
 import 'controllers/controllers.dart';

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:equatable/equatable.dart';
 
 class SupportInfo implements Equatable {
@@ -7,10 +6,10 @@ class SupportInfo implements Equatable {
   }
 
   const SupportInfo({
-    @required this.url,
-    @required this.imagePath,
-    @required this.header,
-    @required this.content,
+    this.url,
+    this.imagePath,
+    this.header,
+    this.content,
   });
 
   final String url;
@@ -20,10 +19,11 @@ class SupportInfo implements Equatable {
 
   factory SupportInfo.fromJson(Map<String, dynamic> json) {
     return SupportInfo(
-        url: json['url'],
-        imagePath: json['imagePath'],
-        header: json['header'],
-        content: json['content']);
+      url: json['url'],
+      imagePath: json['imagePath'],
+      header: json['header'],
+      content: json['content'],
+    );
   }
 
   @override

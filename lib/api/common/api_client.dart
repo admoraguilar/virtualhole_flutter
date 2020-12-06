@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 abstract class APIClient {
-  APIClient({this.domain});
+  APIClient({this.domain}) : assert(domain.isNotEmpty);
 
   final String domain;
 
