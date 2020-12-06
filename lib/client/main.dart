@@ -1,22 +1,37 @@
+import 'dart:convert';
+
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:virtualhole_flutter/common/common.dart';
+import 'package:virtualhole_flutter/api/virtualhole_api.dart';
+import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'widgets/widgets.dart';
 import 'viewmodels/viewmodels.dart';
 import 'controllers/controllers.dart';
-import 'package:http/http.dart' as http;
 
 Future<void> main() async {
-  // print('Starting app...');
+  print('Starting app...');
 
   // http.Response res = await http.post(
   //   'https://virtualhole.app/api/Creators/ListCreatorsStrict',
   //   headers: <String, String>{'Content-Type': 'application/json'},
   //   body: '{ "isAll": true }',
   // );
-
   // print(res.body);
 
-  runApp(MyApp());
+  // DynamicClient dynamicClient =
+  //     DynamicClient(domain: 'https://virtualhole.b-cdn.net');
+  // List<SupportInfo> supportInfo = await dynamicClient.listSupportInfoAsync();
+  // supportInfo.forEach((element) {
+  //   String e = element.toString();
+  //   print(e);
+  // });
+
+  String data = '{ "firstName": "Bob", "lastName": "McCollins" }';
+  dynamic jObj = json.decode(data);
+  print(jObj['firstName']);
+
+  // runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
