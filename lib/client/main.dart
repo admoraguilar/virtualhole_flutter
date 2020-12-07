@@ -32,21 +32,21 @@ Future<void> main() async {
   // dynamic jObj = json.decode(data);
   // print(jObj['firstName']);
 
-  VirtualHoleApiWrapperClient vHoleApi = VirtualHoleApiWrapperClient.managed(
-    contentDomain: 'https://virtualhole.app/',
-    storageDomain: 'https://virtualhole.b-cdn.net/',
-  );
+  // VirtualHoleApiWrapperClient vHoleApi = VirtualHoleApiWrapperClient.managed(
+  //   contentDomain: 'https://virtualhole.app/',
+  //   storageDomain: 'https://virtualhole.b-cdn.net/',
+  // );
 
-  List<Creator> creators = await vHoleApi.content.creators
-      .listCreatorsAsync(ListCreatorsStrictRequest(
-    isAll: true,
-    skip: 20,
-  ));
+  // List<Creator> creators = await vHoleApi.content.creators
+  //     .listCreatorsAsync(ListCreatorsStrictRequest(
+  //   isAll: true,
+  //   skip: 20,
+  // ));
 
-  print(creators.length);
-  print(creators);
+  // print(creators.length);
+  // print(creators);
 
-  // runApp(MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
