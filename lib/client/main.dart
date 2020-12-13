@@ -1,49 +1,24 @@
-import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:virtualhole_flutter/client/viewmodels/support_list_viewmodel.dart';
 import 'package:virtualhole_flutter/common/common.dart';
 import 'package:virtualhole_flutter/api/virtualhole_api_wrapper.dart';
-import 'widgets/widgets.dart';
 import 'viewmodels/viewmodels.dart';
 import 'controllers/controllers.dart';
+import 'widgets/widgets.dart';
 
 Future<void> main() async {
-  // print('Starting app...');
+  print('Starting app...');
 
-  // http.Response res = await http.post(
-  //   'https://virtualhole.app/api/Creators/ListCreatorsStrict',
-  //   headers: <String, String>{'Content-Type': 'application/json'},
-  //   body: '{ "isAll": true }',
-  // );
-  // print(res.body);
+  VirtualHoleApiWrapperClient vHoleApi = VirtualHoleApiWrapperClient.managed(
+    domain: 'https://virtualhole.app',
+  );
 
-  // DynamicClient dynamicClient =
-  //     DynamicClient(domain: 'https://virtualhole.b-cdn.net');
-  // List<SupportInfo> supportInfo = await dynamicClient.listSupportInfoAsync();
-  // supportInfo.forEach((element) {
-  //   String e = element.toString();
-  //   print(e);
-  // });
+  ViewModelContainer.instance.add(CounterViewModel());
+  ViewModelContainer.instance.add(SupportListViewModel(
+    resourcesClient: vHoleApi.resources,
+  ));
 
-  // String data = '{ "firstName": "Bob", "lastName": "McCollins" }';
-  // dynamic jObj = json.decode(data);
-  // print(jObj['firstName']);
-
-  // VirtualHoleApiWrapperClient vHoleApi = VirtualHoleApiWrapperClient.managed(
-  //   contentDomain: 'https://virtualhole.app/',
-  //   storageDomain: 'https://virtualhole.b-cdn.net/',
-  // );
-
-  // List<Creator> creators = await vHoleApi.content.creators
-  //     .listCreatorsAsync(ListCreatorsStrictRequest(
-  //   isAll: true,
-  //   skip: 20,
-  // ));
-
-  // print(creators.length);
-  // print(creators);
+  // ignore: unused_local_variable
+  CounterController counterController = CounterController();
 
   runApp(MyApp());
 }
@@ -51,18 +26,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    VirtualHoleApiWrapperClient vHoleApi = VirtualHoleApiWrapperClient.managed(
-      domain: 'https://virtualhole.app',
-    );
-
-    ViewModelContainer.instance.add(CounterViewModel());
-    ViewModelContainer.instance.add(SupportListViewModel(
-      resourcesClient: vHoleApi.resources,
-    ));
-
-    // ignore: unused_local_variable
-    CounterController counterController = CounterController();
-
     return MaterialApp(
       title: 'holohole',
       theme: ThemeData(
