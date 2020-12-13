@@ -1,22 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'contents/content_client.dart';
-import 'storage/storage_client.dart';
+import 'resources/resources_client.dart';
 
 export 'contents/content_client.dart';
-export 'storage/storage_client.dart';
+export 'resources/resources_client.dart';
 
 class VirtualHoleApiWrapperClient {
   VirtualHoleApiWrapperClient({
     @required this.content,
-    @required this.storage,
+    @required this.resources,
   });
 
-  VirtualHoleApiWrapperClient.managed({
-    @required String contentDomain,
-    @required String storageDomain,
-  })  : content = ContentClient(domain: contentDomain),
-        storage = StorageClient(domain: storageDomain);
+  VirtualHoleApiWrapperClient.managed({@required String domain})
+      : content = ContentClient(domain: domain),
+        resources = ResourcesClient(domain: domain);
 
   final ContentClient content;
-  final StorageClient storage;
+  final ResourcesClient resources;
 }

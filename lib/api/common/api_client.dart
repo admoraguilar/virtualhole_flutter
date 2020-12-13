@@ -1,6 +1,5 @@
 import 'dart:core';
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 abstract class APIClient {

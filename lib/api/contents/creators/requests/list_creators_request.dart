@@ -2,9 +2,9 @@ import 'package:virtualhole_flutter/api/common/paged_request.dart';
 
 class ListCreatorsRequest extends PagedRequest {
   const ListCreatorsRequest({
-    int batchSize,
-    int resultsLimit,
-    int skip,
+    int page,
+    int pageSize,
+    int maxPages,
     this.isHidden,
     this.isCheckForAffiliations,
     this.affiliations,
@@ -12,9 +12,9 @@ class ListCreatorsRequest extends PagedRequest {
     this.isCheckForDepth,
     this.depth,
   }) : super(
-          batchSize: batchSize,
-          resultsLimit: resultsLimit,
-          skip: skip,
+          page: page,
+          pageSize: pageSize,
+          maxPages: maxPages,
         );
 
   final bool isHidden;

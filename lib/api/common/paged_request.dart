@@ -1,17 +1,17 @@
 abstract class PagedRequest {
   const PagedRequest({
-    this.batchSize,
-    this.resultsLimit,
-    this.skip,
+    this.pageSize,
+    this.maxPages,
+    this.page,
   });
 
-  final int batchSize;
-  final int resultsLimit;
-  final int skip;
+  final int page;
+  final int pageSize;
+  final int maxPages;
 
   Map<String, dynamic> toJson() => {
-        'batchSize': batchSize,
-        'resultsLimit': resultsLimit,
-        'skip': skip,
+        'page': page,
+        'pageSize': pageSize,
+        'maxPages': maxPages,
       };
 }

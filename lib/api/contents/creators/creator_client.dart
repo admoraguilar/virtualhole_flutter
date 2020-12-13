@@ -10,8 +10,8 @@ export 'requests/list_creators_request.dart';
 export 'requests/list_creators_regex_request.dart';
 export 'requests/list_creators_strict_request.dart';
 
-class CreatorClient extends APIClient {
-  CreatorClient({String domain})
+class CreatorsClient extends APIClient {
+  CreatorsClient({String domain})
       : assert(domain.isNotEmpty),
         super(domain: domain);
 

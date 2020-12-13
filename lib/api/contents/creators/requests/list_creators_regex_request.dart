@@ -1,10 +1,10 @@
-import 'package:virtualhole_flutter/api/contents/creator/requests/list_creators_request.dart';
+import 'package:virtualhole_flutter/api/contents/creators/requests/list_creators_request.dart';
 
 class ListCreatorsRegexRequest extends ListCreatorsRequest {
   const ListCreatorsRegexRequest({
-    int batchSize,
-    int resultsLimit,
-    int skip,
+    int page,
+    int pageSize,
+    int maxPages,
     bool isHidden,
     bool isCheckForAffiliations,
     List<String> affiliations,
@@ -17,9 +17,9 @@ class ListCreatorsRegexRequest extends ListCreatorsRequest {
     this.isCheckSocialName,
     this.isCheckCustomKeywords,
   }) : super(
-          batchSize: batchSize,
-          resultsLimit: resultsLimit,
-          skip: skip,
+          page: page,
+          pageSize: pageSize,
+          maxPages: maxPages,
           isHidden: isHidden,
           isCheckForAffiliations: isCheckForAffiliations,
           affiliations: affiliations,

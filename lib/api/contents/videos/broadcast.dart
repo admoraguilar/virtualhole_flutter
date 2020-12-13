@@ -1,5 +1,5 @@
 import 'package:virtualhole_flutter/api/contents/platform.dart';
-import 'package:virtualhole_flutter/api/contents/video/video.dart';
+import 'package:virtualhole_flutter/api/contents/videos/video.dart';
 
 class Broadcast extends Video {
   static List<Broadcast> fromJsonDecode(dynamic jsonDecode) {

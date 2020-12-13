@@ -1,21 +1,21 @@
-import 'package:virtualhole_flutter/api/contents/creator/creator.dart';
-import 'package:virtualhole_flutter/api/contents/video/requests/list_videos_request.dart';
-import 'package:virtualhole_flutter/api/contents/video/requests/sort_mode.dart';
+import 'package:virtualhole_flutter/api/contents/creators/creator.dart';
+import 'package:virtualhole_flutter/api/contents/videos/requests/list_videos_request.dart';
+import 'package:virtualhole_flutter/api/contents/videos/requests/sort_mode.dart';
 
-class ListCreatorVideosRequest extends ListVideosRequest {
-  const ListCreatorVideosRequest({
-    int batchSize,
-    int resultsLimit,
-    int skip,
+class ListCreatorRelatedVideosRequest extends ListVideosRequest {
+  const ListCreatorRelatedVideosRequest({
+    int page,
+    int pageSize,
+    int maxPages,
     SortMode sortMode,
     bool isSortAscending,
     this.isBroadcast,
     this.isLive,
     this.creators,
   }) : super(
-          batchSize: batchSize,
-          resultsLimit: resultsLimit,
-          skip: skip,
+          page: page,
+          pageSize: pageSize,
+          maxPages: maxPages,
           sortMode: sortMode,
           isSortAscending: isSortAscending,
         );

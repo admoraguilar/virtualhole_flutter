@@ -1,17 +1,17 @@
 import 'package:virtualhole_flutter/api/common/paged_request.dart';
-import 'package:virtualhole_flutter/api/contents/video/requests/sort_mode.dart';
+import 'package:virtualhole_flutter/api/contents/videos/requests/sort_mode.dart';
 
 class ListVideosRequest extends PagedRequest {
   const ListVideosRequest({
-    int batchSize,
-    int resultsLimit,
-    int skip,
+    int page,
+    int pageSize,
+    int maxPages,
     this.sortMode,
     this.isSortAscending,
   }) : super(
-          batchSize: batchSize,
-          resultsLimit: resultsLimit,
-          skip: skip,
+          page: page,
+          pageSize: pageSize,
+          maxPages: maxPages,
         );
 
   final SortMode sortMode;
