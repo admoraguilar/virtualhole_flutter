@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:virtualhole_flutter/client/pages/discover/discover_page.dart';
 import 'package:virtualhole_flutter/common/common.dart';
 import 'package:virtualhole_flutter/client/pages/counter/counter_viewmodel.dart';
 import 'package:virtualhole_flutter/client/pages/support/support_page.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({Key key, this.title, CounterViewModel counterViewModel})
+class AppPage extends StatelessWidget {
+  AppPage({Key key, this.title, CounterViewModel counterViewModel})
       : counterViewModel = counterViewModel ??
             ViewModelContainer.instance.get<CounterViewModel>(),
         super(key: key);
@@ -49,7 +50,7 @@ class HomePage extends StatelessWidget {
       //     ],
       //   ),
       // ),
-      body: SupportPage(),
+      body: DiscoverPage(),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(

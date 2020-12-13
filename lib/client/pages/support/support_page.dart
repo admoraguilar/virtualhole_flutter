@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:virtualhole_flutter/api/virtualhole_api_wrapper.dart';
-import 'package:virtualhole_flutter/client/elements/info_card.dart';
+import 'package:virtualhole_flutter/client/ui/elements/info_card.dart';
 import 'package:virtualhole_flutter/common/common.dart';
 import 'package:virtualhole_flutter/client/pages/support/support_list_viewmodel.dart';
 

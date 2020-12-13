@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
         ),
       ),
-      home: HomePage(
+      home: AppPage(
         title: 'holohole',
       ),
     );
