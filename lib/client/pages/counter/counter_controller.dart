@@ -1,5 +1,5 @@
-import 'package:virtualhole_flutter/client/viewmodels/viewmodels.dart';
 import 'package:virtualhole_flutter/common/common.dart';
+import 'counter_viewmodel.dart';
 
 class CounterController {
   CounterController({CounterViewModel counterViewModel})

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:virtualhole_flutter/client/widgets/pages/support_page.dart';
 import 'package:virtualhole_flutter/common/common.dart';
-import 'package:virtualhole_flutter/client/widgets/widgets.dart';
-import 'package:virtualhole_flutter/client/viewmodels/viewmodels.dart';
+import 'package:virtualhole_flutter/client/pages/counter/counter_viewmodel.dart';
+import 'package:virtualhole_flutter/client/pages/support/support_page.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key key, this.title, CounterViewModel counterViewModel})

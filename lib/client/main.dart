@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:virtualhole_flutter/common/common.dart';
 import 'package:virtualhole_flutter/api/virtualhole_api_wrapper.dart';
-import 'viewmodels/viewmodels.dart';
-import 'controllers/controllers.dart';
-import 'widgets/widgets.dart';
+import 'pages/pages.dart';
 
 Future<void> main() async {
   print('Starting app...');
@@ -12,6 +10,7 @@ Future<void> main() async {
     domain: 'https://virtualhole.app',
   );
 
+  ViewModelContainer.instance.add(vHoleApi);
   ViewModelContainer.instance.add(CounterViewModel());
   ViewModelContainer.instance.add(SupportListViewModel(
     resourcesClient: vHoleApi.resources,

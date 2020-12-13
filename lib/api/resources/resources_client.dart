@@ -18,4 +18,9 @@ class ResourcesClient extends APIClient {
     String query = '?path=dynamic/support-list.json';
     return SupportInfo.fromJsonDecode(await getAsync(createUri(query)));
   }
+
+  String buildObjectUrl(String path) {
+    String query = '?path=$path';
+    return createUri(query);
+  }
 }

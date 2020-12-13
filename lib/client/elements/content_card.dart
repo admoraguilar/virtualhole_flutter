@@ -4,7 +4,9 @@ class ContentCard extends StatelessWidget {
   const ContentCard({
     Key key,
     @required this.url,
-  }) : super(key: key);
+  }) : super(
+          key: key,
+        );
 
   final String url;
 
