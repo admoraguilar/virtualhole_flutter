@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:virtualhole_flutter/client/pages/discover/discover_page.dart';
 import 'package:virtualhole_flutter/common/common.dart';
 import 'package:virtualhole_flutter/client/pages/counter/counter_viewmodel.dart';
-import 'package:virtualhole_flutter/client/pages/support/support_page.dart';
 
 class AppPage extends StatelessWidget {
   AppPage({Key key, this.title, CounterViewModel counterViewModel})
@@ -82,27 +81,23 @@ class AppPage extends StatelessWidget {
           print(i);
         },
       ),
-      floatingActionButton: ViewModelAdapter(
-        builder: (context, container) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              FloatingActionButton(
-                onPressed: counterViewModel.increment,
-                tooltip: 'Increment',
-                child: Icon(Icons.add),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              FloatingActionButton(
-                onPressed: counterViewModel.decrement,
-                tooltip: 'Decrement',
-                child: Icon(Icons.remove),
-              ),
-            ],
-          );
-        },
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: counterViewModel.increment,
+            tooltip: 'Increment',
+            child: Icon(Icons.add),
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          FloatingActionButton(
+            onPressed: counterViewModel.decrement,
+            tooltip: 'Decrement',
+            child: Icon(Icons.remove),
+          ),
+        ],
       ),
     );
   }

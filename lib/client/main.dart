@@ -10,7 +10,6 @@ Future<void> main() async {
     domain: 'https://virtualhole.app',
   );
 
-  ViewModelContainer.instance.add(vHoleApi);
   ViewModelContainer.instance.add(CounterViewModel());
   ViewModelContainer.instance.add(SupportListViewModel(
     resourcesClient: vHoleApi.resources,

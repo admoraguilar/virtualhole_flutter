@@ -5,7 +5,7 @@ class ViewModelAdapter extends StatefulWidget {
   ViewModelAdapter({Key key, this.observables, @required this.builder})
       : super(key: key);
 
-  final List<Observable> Function(BuildContext, ViewModelContainer) observables;
+  final List<ViewModel> Function(BuildContext, ViewModelContainer) observables;
   final Widget Function(BuildContext, ViewModelContainer) builder;
 
   @override
@@ -38,15 +38,15 @@ class _ViewModelAdapterState extends State<ViewModelAdapter> {
   void _initObservables() {
     if (widget.observables == null) return;
     widget.observables(context, ViewModelContainer.instance).forEach((element) {
-      element.onChangeVoid.remove(_rebuild);
-      element.onChangeVoid.add(_rebuild);
+      element.onSetState.remove(_rebuild);
+      element.onSetState.add(_rebuild);
     });
   }
 
   void _deInitObservables() {
     if (widget.observables == null) return;
     widget.observables(context, ViewModelContainer.instance).forEach((element) {
-      element.onChangeVoid.remove(_rebuild);
+      element.onSetState.remove(_rebuild);
     });
   }
 }
@@ -55,17 +55,26 @@ class ViewModelContainer {
   static ViewModelContainer get instance => _instance ??= ViewModelContainer();
   static ViewModelContainer _instance;
 
-  Map<Type, Object> _instanceMap = Map<Type, Object>();
+  Map<Type, ViewModel> _instanceMap = Map<Type, ViewModel>();
 
   T get<T>() {
-    return _instanceMap[T];
+    return _instanceMap[T] as T;
   }
 
-  void add(Object viewModel) {
+  void add(ViewModel viewModel) {
     _instanceMap[viewModel.runtimeType] = viewModel;
   }
 
-  void remove(Object viewModel) {
+  void remove(ViewModel viewModel) {
     _instanceMap.remove(viewModel.runtimeType);
+  }
+}
+
+abstract class ViewModel {
+  VoidCallbackListReadOnly get onSetState => _onSetState;
+  VoidCallbackList _onSetState = VoidCallbackList();
+
+  void setState() {
+    _onSetState.invoke();
   }
 }

@@ -1,9 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:virtualhole_flutter/common/common.dart';
 
-class AppPageViewModel {
-  AppPageViewModel({
-    @required this.currentIndex,
-  });
+class AppPageViewModel extends ViewModel {
+  int get currentIndex => _currentIndex;
+  set currentIndex(int value) {
+    _currentIndex = value;
+    setState();
+  }
 
-  final int currentIndex;
+  int _currentIndex;
 }

@@ -17,10 +17,10 @@ class CounterController {
   }
 
   void onIncrement() {
-    counterViewModel.counter.value++;
+    counterViewModel.counter++;
   }
 
   void onDecrement() {
-    counterViewModel.counter.value--;
+    counterViewModel.counter--;
   }
 }
