@@ -1,7 +1,19 @@
 import 'cache.dart';
 
 class SimpleCache<T> extends Cache<T> {
+  static Map<Type, Object> _instances = {};
+
+  SimpleCache();
+
   Map<String, T> _map = {};
+
+  factory SimpleCache.get() {
+    if (!_instances.containsKey(T)) {
+      return _instances[T] = SimpleCache<T>();
+    } else {
+      return _instances[T];
+    }
+  }
 
   @override
   T getOrUpsert(String key, T Function() dataFactory) {

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'platform.dart';
+import 'package:virtualhole_flutter/api/contents/types/youtube_broadcast.dart';
+import 'package:virtualhole_flutter/api/contents/types/youtube_video.dart';
 
 class Content implements Equatable {
   static List<Content> fromJsonDecode(dynamic jsonDecode) {
@@ -10,59 +11,58 @@ class Content implements Equatable {
   }
 
   const Content({
-    this.title,
-    this.platform,
-    this.id,
-    this.url,
-    this.creator,
+    this.socialType,
+    this.contentType,
     this.creatorId,
-    this.creatorUniversal,
-    this.creatorIdUniversal,
+    this.id,
+    this.title,
+    this.url,
     this.creationDate,
-    this.creationDateDisplay,
     this.tags,
   });
 
-  final String title;
-  final Platform platform;
-  final String id;
-  final String url;
-  final String creator;
+  final String socialType;
+  final String contentType;
   final String creatorId;
-  final String creatorUniversal;
-  final String creatorIdUniversal;
+  final String id;
+  final String title;
+  final String url;
   final DateTime creationDate;
-  final String creationDateDisplay;
   final List<String> tags;
 
   factory Content.fromJson(Map<String, dynamic> json) {
+    String socialTypeKey = 'socialType';
+    String contentTypeKey = 'contentType';
+
+    if (json[socialTypeKey] == 'youtube') {
+      if (json[contentTypeKey] == 'video') {
+        return YouTubeVideo.fromJson(json);
+      } else if (json[contentTypeKey] == 'broadcast') {
+        return YouTubeBroadcast.fromJson(json);
+      }
+    }
+
     return Content(
-      title: json['title'],
-      platform: Platform.values[json['platform']],
-      id: json['id'],
-      url: json['url'],
-      creator: json['creator'],
+      socialType: json['socialType'],
+      contentType: json['contentType'],
       creatorId: json['creatorId'],
-      creatorUniversal: json['creatorUniversal'],
-      creatorIdUniversal: json['creatorIdUniversal'],
+      id: json['id'],
+      title: json['title'],
+      url: json['url'],
       creationDate: DateTime.parse(json['creationDate']),
-      creationDateDisplay: json['creationDateDisplay'],
       tags: List<String>.from(json['tags']),
     );
   }
 
   @override
   List<Object> get props => [
-        title,
-        platform,
-        id,
-        url,
-        creator,
+        socialType,
+        contentType,
         creatorId,
-        creatorUniversal,
-        creatorIdUniversal,
+        id,
+        title,
+        url,
         creationDate,
-        creationDateDisplay,
         tags,
       ];
 

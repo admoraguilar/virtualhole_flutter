@@ -10,15 +10,15 @@ abstract class APIClient {
   String get version;
   String get path;
 
+  Future<dynamic> getAsync<T>(String url) async {
+    http.Response res = await http.get(url);
+    return json.decode(res.body);
+  }
+
   Future<dynamic> postAsync(String url, dynamic body) async {
     http.Response res = await http.post(url,
         headers: <String, String>{'Content-Type': 'application/json'},
         body: body);
-    return json.decode(res.body);
-  }
-
-  Future<dynamic> getAsync<T>(String url) async {
-    http.Response res = await http.get(url);
     return json.decode(res.body);
   }
 

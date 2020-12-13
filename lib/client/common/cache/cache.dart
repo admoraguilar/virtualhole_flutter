@@ -1,3 +1,6 @@
+/// TODO: Do something like interceptors where you can wrap
+/// a call and have it cached.
+/// var data = cache(() => http.get('google.com'), lifetime: Duration(days: 1));
 abstract class Cache<T> {
   T getOrUpsert(
     String key,

@@ -15,7 +15,8 @@ class ResourcesClient extends APIClient {
   @override
   String get path => "resources";
 
-  Future<List<SupportInfo>> getSupportList(ResourceRequest request) async {
-    return SupportInfo.fromJsonDecode(await getAsync(createUri(path)));
+  Future<List<SupportInfo>> getSupportListAsync() async {
+    String slug = 'dynamic/support-list.json';
+    return SupportInfo.fromJsonDecode(await getAsync(createUri(slug)));
   }
 }

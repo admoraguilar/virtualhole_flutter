@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:virtualhole_flutter/api/storage/dynamic/support_info.dart';
-import 'package:virtualhole_flutter/client/viewmodels/support_list_viewmodel.dart';
+import 'package:virtualhole_flutter/api/virtualhole_api_wrapper.dart';
 import 'package:virtualhole_flutter/common/common.dart';
+import 'package:virtualhole_flutter/client/viewmodels/support_list_viewmodel.dart';
 
 class SupportPage extends StatelessWidget {
   const SupportPage({Key key}) : super(key: key);
@@ -12,8 +12,7 @@ class SupportPage extends StatelessWidget {
         ViewModelContainer.instance.get<SupportListViewModel>();
 
     return FutureBuilder(
-        future: supportListViewModel.storageClient.dynamic
-            .getListSupportInfoAsync(),
+        future: supportListViewModel.resourcesClient.getSupportListAsync(),
         builder:
             (BuildContext context, AsyncSnapshot<List<SupportInfo>> snapshot) {
           if (snapshot.hasData) {

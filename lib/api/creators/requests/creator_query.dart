@@ -1,28 +1,28 @@
 import 'package:virtualhole_flutter/api/common/paged_request.dart';
-import 'package:virtualhole_flutter/api/contents/videos/requests/sort_mode.dart';
 
-class ListVideosRequest extends PagedRequest {
-  const ListVideosRequest({
+class CreatorQuery extends PagedRequest {
+  const CreatorQuery({
+    DateTime timestamp,
+    String locale,
     int page,
     int pageSize,
     int maxPages,
-    this.sortMode,
-    this.isSortAscending,
+    this.search,
   }) : super(
+          timestamp: timestamp,
+          locale: locale,
           page: page,
           pageSize: pageSize,
           maxPages: maxPages,
         );
 
-  final SortMode sortMode;
-  final bool isSortAscending;
+  final String search;
 
   @override
   Map<String, dynamic> toJson() {
     Map<String, dynamic> superMap = super.toJson();
     superMap.addAll({
-      'sortMode': sortMode,
-      'isSortAscending': isSortAscending,
+      'search': search,
     });
     return superMap;
   }
