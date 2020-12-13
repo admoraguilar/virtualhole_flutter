@@ -8,7 +8,7 @@ abstract class APIClient {
   final String domain;
 
   String get version;
-  String get path;
+  String get rootPath;
 
   Future<dynamic> getAsync<T>(String url) async {
     http.Response res = await http.get(url);
@@ -22,19 +22,19 @@ abstract class APIClient {
     return json.decode(res.body);
   }
 
-  String createUri(String slug, {String overridePath}) {
+  String createUri(String slug, {String subPath}) {
     String fullPath = '$domain';
 
     if (version.isNotEmpty) {
       fullPath += '/$version';
     }
 
-    if (path.isNotEmpty) {
-      fullPath += '/$path';
+    if (rootPath.isNotEmpty) {
+      fullPath += '/$rootPath';
     }
 
-    if (overridePath != null && overridePath.isNotEmpty) {
-      fullPath += '/$overridePath';
+    if (subPath != null && subPath.isNotEmpty) {
+      fullPath += '/$subPath';
     }
 
     fullPath += '/$slug';

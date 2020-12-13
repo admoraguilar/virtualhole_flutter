@@ -51,12 +51,14 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    VirtualHoleApiWrapperClient vHoleApi = VirtualHoleApiWrapperClient.managed(
+      domain: 'https://virtualhole.app',
+    );
+
     ViewModelContainer.instance.add(CounterViewModel());
-    // ViewModelContainer.instance.add(SupportListViewModel(
-    //   storageClient: StorageClient(
-    //     domain: 'https://virtualhole.b-cdn.net/',
-    //   ),
-    // ));
+    ViewModelContainer.instance.add(SupportListViewModel(
+      resourcesClient: vHoleApi.resources,
+    ));
 
     // ignore: unused_local_variable
     CounterController counterController = CounterController();

@@ -1,7 +1,7 @@
 import 'package:virtualhole_flutter/api/common/paged_request.dart';
 
-class ContentQuery extends PagedRequest {
-  const ContentQuery(
+class ContentRequest extends PagedRequest {
+  const ContentRequest(
       {DateTime timestamp,
       String locale,
       int page,

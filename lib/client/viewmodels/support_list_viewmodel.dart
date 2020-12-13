@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:virtualhole_flutter/common/common.dart';
 import 'package:virtualhole_flutter/api/virtualhole_api_wrapper.dart';
 
 class SupportListViewModel {

@@ -1,5 +1,5 @@
 import 'package:virtualhole_flutter/api/common/api_client.dart';
-import '../creators/requests/creator_query.dart';
+import 'requests/creator_request.dart';
 import 'creator.dart';
 
 export 'creator.dart';
@@ -13,9 +13,9 @@ class CreatorsClient extends APIClient {
   String get version => 'api/v1';
 
   @override
-  String get path => 'creators';
+  String get rootPath => 'creators';
 
-  Future<List<Creator>> get(CreatorQuery request) async {
+  Future<List<Creator>> get(CreatorRequest request) async {
     String path = '?Search=${request.search}';
     return Creator.fromJsonDecode(await getAsync(createUri(path)));
   }
