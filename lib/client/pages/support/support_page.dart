@@ -10,11 +10,8 @@ class SupportPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ResourcesClient resourcesClient = ViewModelContainer.instance
-        .get<VirtualHoleApiWrapperClient>()
-        .resources;
     SupportListViewModel supportListViewModel =
-        ViewModelContainer.instance.get<SupportListViewModel>();
+        ViewModel.get<SupportListViewModel>();
 
     return FutureBuilder(
         future: supportListViewModel.resourcesClient.getSupportListAsync(),
@@ -38,7 +35,7 @@ class SupportPage extends StatelessWidget {
                       InfoCard(
                         header: supportInfo.header,
                         content: supportInfo.content,
-                        imageUrl: resourcesClient
+                        imageUrl: supportListViewModel.resourcesClient
                             .buildObjectUrl(supportInfo.imagePath),
                         onTap: () => launch(supportInfo.url),
                       ),

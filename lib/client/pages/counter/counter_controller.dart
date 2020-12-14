@@ -1,10 +1,10 @@
 import 'package:virtualhole_flutter/common/common.dart';
 import 'counter_viewmodel.dart';
 
-class CounterController {
+class CounterController extends ViewModelController {
   CounterController({CounterViewModel counterViewModel})
-      : counterViewModel = counterViewModel ??
-            ViewModelContainer.instance.get<CounterViewModel>() {
+      : counterViewModel =
+            counterViewModel ?? ViewModel.get<CounterViewModel>() {
     this.counterViewModel.onIncrement.add(onIncrement);
     this.counterViewModel.onDecrement.add(onDecrement);
   }

@@ -1,104 +1,102 @@
 import 'package:flutter/material.dart';
 import 'package:virtualhole_flutter/client/pages/discover/discover_page.dart';
+import 'package:virtualhole_flutter/client/pages/page_navigator.dart';
+import 'package:virtualhole_flutter/client/pages/pages.dart';
 import 'package:virtualhole_flutter/common/common.dart';
-import 'package:virtualhole_flutter/client/pages/counter/counter_viewmodel.dart';
 
 class AppPage extends StatelessWidget {
-  AppPage({Key key, this.title, CounterViewModel counterViewModel})
-      : counterViewModel = counterViewModel ??
-            ViewModelContainer.instance.get<CounterViewModel>(),
-        super(key: key);
+  AppPage({
+    Key key,
+    this.title,
+  }) : super(key: key);
 
   final String title;
-  final CounterViewModel counterViewModel;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      // body: Center(
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: <Widget>[
-      //       ContentCard(
-      //         url: 'https://i.ytimg.com/vi/wtEqQ2HS08U/hq720.jpg',
-      //       ),
-      //       SizedBox(
-      //         height: 8.0,
-      //       ),
-      //       Text(
-      //         'You have pushed the button this many times:',
-      //         style: TextStyle(
-      //           color: Colors.white,
-      //         ),
-      //       ),
-      //       ViewModelAdapter(
-      //         observables: (context, container) {
-      //           return [counterViewModel.counter];
-      //         },
-      //         builder: (context, container) {
-      //           return Text(
-      //             '${counterViewModel.counter.value}',
-      //             style: TextStyle(
-      //               color: Colors.white,
-      //               fontSize: 40,
-      //             ),
-      //           );
-      //         },
-      //       ),
-      //     ],
-      //   ),
-      // ),
-      body: DiscoverPage(),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Discover',
+    PageNavigatorViewModel pageNavigatorViewModel =
+        ViewModel.get<PageNavigatorViewModel>();
+
+    return ViewModelAdapter(
+      observables: (BuildContext context) => [
+        pageNavigatorViewModel,
+      ],
+      builder: (BuildContext context) {
+        return Scaffold(
+          backgroundColor: Colors.black,
+          body: WillPopScope(
+            onWillPop: () async {
+              bool shouldExit = !pageNavigatorViewModel.pages.state.canPop();
+              if (!shouldExit) {
+                pageNavigatorViewModel.pages.state.pop();
+              }
+              pageNavigatorViewModel.update();
+              return shouldExit;
+            },
+            child: Navigator(
+              key: pageNavigatorViewModel.pages.key,
+              onGenerateInitialRoutes:
+                  (NavigatorState state, String initialPage) =>
+                      pageNavigatorViewModel.pages
+                          .generateInitialRoutes(initialPage),
+              onGenerateRoute: pageNavigatorViewModel.pages.generateRoute,
+            ),
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.flash_on),
-          //   label: 'Feed',
-          // ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'Feed',
+          bottomNavigationBar: BottomNavigationBar(
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Discover',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.list),
+                label: 'Feed',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'Search',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.favorite),
+                label: 'Support',
+              ),
+            ],
+            currentIndex: pageNavigatorViewModel.pages.activeIndex,
+            backgroundColor: Colors.black,
+            unselectedItemColor: Colors.grey,
+            type: BottomNavigationBarType.fixed,
+            onTap: (i) {
+              if (i == 0) {
+                pageNavigatorViewModel.pages.state
+                    .pushNamed(PageNavigatorKey.discover);
+              } else if (i == 3) {
+                pageNavigatorViewModel.pages.state
+                    .pushNamed(PageNavigatorKey.support);
+              }
+
+              pageNavigatorViewModel.update();
+            },
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+          floatingActionButton: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              // FloatingActionButton(
+              //   onPressed: counterViewModel.increment,
+              //   tooltip: 'Increment',
+              //   child: Icon(Icons.add),
+              // ),
+              // SizedBox(
+              //   height: 10.0,
+              // ),
+              // FloatingActionButton(
+              //   onPressed: counterViewModel.decrement,
+              //   tooltip: 'Decrement',
+              //   child: Icon(Icons.remove),
+              // ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Support',
-          ),
-        ],
-        currentIndex: 3,
-        backgroundColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType.fixed,
-        onTap: (i) {
-          print(i);
-        },
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: counterViewModel.increment,
-            tooltip: 'Increment',
-            child: Icon(Icons.add),
-          ),
-          SizedBox(
-            height: 10.0,
-          ),
-          FloatingActionButton(
-            onPressed: counterViewModel.decrement,
-            tooltip: 'Decrement',
-            child: Icon(Icons.remove),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:virtualhole_flutter/client/pages/page_navigator.dart';
 import 'package:virtualhole_flutter/common/common.dart';
 import 'package:virtualhole_flutter/api/virtualhole_api_wrapper.dart';
 import 'pages/pages.dart';
@@ -10,13 +11,11 @@ Future<void> main() async {
     domain: 'https://virtualhole.app',
   );
 
-  ViewModelContainer.instance.add(CounterViewModel());
-  ViewModelContainer.instance.add(SupportListViewModel(
+  ViewModel.add(PageNavigatorViewModel());
+
+  ViewModel.add(SupportListViewModel(
     resourcesClient: vHoleApi.resources,
   ));
-
-  // ignore: unused_local_variable
-  CounterController counterController = CounterController();
 
   runApp(MyApp());
 }
@@ -24,7 +23,11 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    PageNavigatorViewModel pageNavigatorViewModel =
+        ViewModel.get<PageNavigatorViewModel>();
+
     return MaterialApp(
+      navigatorKey: pageNavigatorViewModel.root.key,
       title: 'holohole',
       theme: ThemeData(
         primaryColor: Colors.blue[900],
@@ -34,9 +37,9 @@ class MyApp extends StatelessWidget {
           headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
         ),
       ),
-      home: AppPage(
-        title: 'holohole',
-      ),
+      onGenerateInitialRoutes:
+          pageNavigatorViewModel.root.generateInitialRoutes,
+      onGenerateRoute: pageNavigatorViewModel.root.generateRoute,
     );
   }
 }
