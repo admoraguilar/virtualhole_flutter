@@ -1,4 +1,4 @@
-import 'package:virtualhole_flutter/common/common.dart';
+import 'package:virtualhole_flutter/midnight_flutter/midnight_flutter.dart';
 
 class CounterViewModel extends ViewModel {
   VoidCallbackListReadOnly get onIncrement => _onIncrement;

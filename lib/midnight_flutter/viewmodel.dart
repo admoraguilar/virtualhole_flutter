@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:virtualhole_flutter/common/common.dart';
+import 'callback.dart';
 
 class ViewModelAdapter extends StatefulWidget {
   ViewModelAdapter({Key key, this.observables, @required this.builder})

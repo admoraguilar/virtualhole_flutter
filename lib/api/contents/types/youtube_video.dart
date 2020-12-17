@@ -1,5 +1,5 @@
 import 'package:virtualhole_flutter/api/contents/content.dart';
-import 'package:virtualhole_flutter/common/duration_extensions.dart';
+import 'package:virtualhole_flutter/midnight_flutter/midnight_flutter.dart';
 
 class YouTubeVideo extends Content {
   static List<YouTubeVideo> fromJsonDecode(dynamic jsonDecode) {

@@ -1,4 +1,4 @@
-import 'package:virtualhole_flutter/common/common.dart';
+import 'callback.dart';
 
 class Observable<T> with GenericObservableReadOnly<T>, ObservableReadOnly {
   Observable(T value) {
