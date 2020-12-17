@@ -13,7 +13,9 @@ class AppPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return null;
+    return Center(
+      child: Text('Flow Scaffold!'),
+    );
     // PageNavigatorViewModel pageNavigatorViewModel =
     //     ViewModel.get<PageNavigatorViewModel>();
 

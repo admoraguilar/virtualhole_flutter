@@ -1,5 +1,4 @@
-import 'dart:ffi';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +6,82 @@ class FlowHandler extends StatelessWidget {
   FlowHandler({
     Key key,
     this.builder,
+    this.settings,
+  }) : super(
+          key: key,
+        );
+
+  final Widget Function(
+          BuildContext context, FlowHandlerRouterDelegateParameters parameters)
+      builder;
+
+  final FlowHandlerSettings settings;
+
+  @override
+  Widget build(BuildContext context) {
+    if (settings.appType == FlowHandlerAppType.Material) {
+      return MaterialApp.router(
+        routerDelegate: FlowHandlerRouterDelegate(
+          builder: builder,
+        ),
+        routeInformationParser: FlowHandlerRouteInformationParser(),
+        backButtonDispatcher: RootBackButtonDispatcher(),
+        title: settings.title,
+        onGenerateTitle: settings.onGenerateTitle,
+        theme: settings.theme,
+        darkTheme: settings.darkTheme,
+        highContrastTheme: settings.highContrastTheme,
+        highContrastDarkTheme: settings.highContrastDarkTheme,
+        themeMode: settings.themeMode,
+        color: settings.color,
+        locale: settings.locale,
+        localizationsDelegates: settings.localizationsDelegates,
+        localeListResolutionCallback: settings.localeListResolutionCallback,
+        localeResolutionCallback: settings.localeResolutionCallback,
+        supportedLocales: settings.supportedLocales,
+        showPerformanceOverlay: settings.showPerformanceOverlay,
+        checkerboardRasterCacheImages: settings.checkerboardRasterCacheImages,
+        checkerboardOffscreenLayers: settings.checkerboardOffscreenLayers,
+        showSemanticsDebugger: settings.showSemanticsDebugger,
+        debugShowCheckedModeBanner: settings.debugShowCheckedModeBanner,
+        shortcuts: settings.shortcuts,
+        actions: settings.actions,
+        debugShowMaterialGrid: settings.debugShowMaterialGrid,
+      );
+    } else if (settings.appType == FlowHandlerAppType.Cupertino) {
+      return CupertinoApp.router(
+        routerDelegate: FlowHandlerRouterDelegate(
+          builder: builder,
+        ),
+        routeInformationParser: FlowHandlerRouteInformationParser(),
+        backButtonDispatcher: RootBackButtonDispatcher(),
+        title: settings.title,
+        onGenerateTitle: settings.onGenerateTitle,
+        color: settings.color,
+        locale: settings.locale,
+        localizationsDelegates: settings.localizationsDelegates,
+        localeListResolutionCallback: settings.localeListResolutionCallback,
+        localeResolutionCallback: settings.localeResolutionCallback,
+        supportedLocales: settings.supportedLocales,
+        showPerformanceOverlay: settings.showPerformanceOverlay,
+        checkerboardRasterCacheImages: settings.checkerboardRasterCacheImages,
+        checkerboardOffscreenLayers: settings.checkerboardOffscreenLayers,
+        showSemanticsDebugger: settings.showSemanticsDebugger,
+        debugShowCheckedModeBanner: settings.debugShowCheckedModeBanner,
+        shortcuts: settings.shortcuts,
+        actions: settings.actions,
+      );
+    } else {
+      throw Exception('[Flow Handler] Unsupported app type.');
+    }
+  }
+}
+
+class FlowHandlerSettings {
+  FlowHandlerSettings({
+    @required this.appType,
     this.title,
+    this.onGenerateTitle,
     this.theme,
     this.darkTheme,
     this.highContrastTheme,
@@ -27,15 +101,11 @@ class FlowHandler extends StatelessWidget {
     this.shortcuts,
     this.actions,
     this.debugShowMaterialGrid,
-  }) : super(
-          key: key,
-        );
+  });
 
-  final Widget Function(
-          BuildContext context, FlowHandlerRouterDelegateParameters parameters)
-      builder;
-
+  final FlowHandlerAppType appType;
   final String title;
+  final String Function(BuildContext) onGenerateTitle;
   final ThemeData theme;
   final ThemeData darkTheme;
   final ThemeData highContrastTheme;
@@ -55,37 +125,11 @@ class FlowHandler extends StatelessWidget {
   final Map<LogicalKeySet, Intent> shortcuts;
   final Map<Type, Action<Intent>> actions;
   final bool debugShowMaterialGrid;
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerDelegate: FlowHandlerRouterDelegate(
-        builder: builder,
-      ),
-      routeInformationParser: FlowHandlerRouteInformationParser(),
-      backButtonDispatcher: RootBackButtonDispatcher(),
-      title: title,
-      theme: theme,
-      darkTheme: darkTheme,
-      highContrastTheme: highContrastTheme,
-      highContrastDarkTheme: highContrastDarkTheme,
-      themeMode: themeMode,
-      color: color,
-      locale: locale,
-      localizationsDelegates: localizationsDelegates,
-      localeListResolutionCallback: localeListResolutionCallback,
-      localeResolutionCallback: localeResolutionCallback,
-      supportedLocales: supportedLocales,
-      showPerformanceOverlay: showPerformanceOverlay,
-      checkerboardRasterCacheImages: checkerboardRasterCacheImages,
-      checkerboardOffscreenLayers: checkerboardOffscreenLayers,
-      showSemanticsDebugger: showSemanticsDebugger,
-      debugShowCheckedModeBanner: debugShowCheckedModeBanner,
-      shortcuts: shortcuts,
-      actions: actions,
-      debugShowMaterialGrid: debugShowMaterialGrid,
-    );
-  }
+enum FlowHandlerAppType {
+  Material,
+  Cupertino,
 }
 
 class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
