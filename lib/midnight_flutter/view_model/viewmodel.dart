@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'callback.dart';
+import '../observable/callback.dart';
 
 class ViewModelAdapter extends StatefulWidget {
   ViewModelAdapter({Key key, this.observables, @required this.builder})

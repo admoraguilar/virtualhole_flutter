@@ -1,10 +1,12 @@
+import 'dart:ffi';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class FlowHandler extends StatelessWidget {
   FlowHandler({
     Key key,
-    this.child,
+    this.builder,
     this.title,
     this.theme,
     this.darkTheme,
@@ -29,7 +31,9 @@ class FlowHandler extends StatelessWidget {
           key: key,
         );
 
-  final Widget child;
+  final Widget Function(
+          BuildContext context, FlowHandlerRouterDelegateParameters parameters)
+      builder;
 
   final String title;
   final ThemeData theme;
@@ -56,7 +60,7 @@ class FlowHandler extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerDelegate: FlowHandlerRouterDelegate(
-        child: child,
+        builder: builder,
       ),
       routeInformationParser: FlowHandlerRouteInformationParser(),
       backButtonDispatcher: RootBackButtonDispatcher(),
@@ -86,9 +90,13 @@ class FlowHandler extends StatelessWidget {
 
 class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<FlowHandlerRoutePath> {
-  FlowHandlerRouterDelegate({this.child});
+  FlowHandlerRouterDelegate({
+    this.builder,
+  });
 
-  final Widget child;
+  final Widget Function(
+          BuildContext context, FlowHandlerRouterDelegateParameters parameters)
+      builder;
 
   @override
   GlobalKey<NavigatorState> get navigatorKey => GlobalKey<NavigatorState>();
@@ -105,7 +113,12 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
       key: navigatorKey,
       pages: [
         MaterialPage(
-          child: child,
+          key: ValueKey('root'),
+          child: builder(
+              context,
+              FlowHandlerRouterDelegateParameters(
+                navigatorKey: navigatorKey,
+              )),
         )
       ],
       onPopPage: (Route<dynamic> route, dynamic result) {
@@ -114,6 +127,14 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
       },
     );
   }
+}
+
+class FlowHandlerRouterDelegateParameters {
+  FlowHandlerRouterDelegateParameters({
+    this.navigatorKey,
+  });
+
+  final GlobalKey<NavigatorState> navigatorKey;
 }
 
 class FlowHandlerRouteInformationParser
