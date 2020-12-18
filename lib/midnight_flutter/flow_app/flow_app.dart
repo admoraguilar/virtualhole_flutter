@@ -26,7 +26,7 @@ class FlowAppState extends State<FlowApp> {
       setState(() {
         pages.removeLast();
       });
-      print('page count: ${pages.length}');
+      print('[Flow App State] Page count: ${pages.length}');
       return SynchronousFuture<bool>(true);
     }
     return SynchronousFuture<bool>(false);
@@ -53,11 +53,10 @@ class FlowAppState extends State<FlowApp> {
         scaffoldSettings: topPage.scaffoldSettings,
         handlerSettings: topPage.handlerSettings,
       );
-    } else {
-      return Center(
-        child: Text('Page stack is empty!'),
-      );
     }
+
+    throw Exception(
+        "[Flow App State] Page stack is empty! Make sure initial pages are not empty or that you're not emptying the page stack.");
   }
 }
 

@@ -12,7 +12,7 @@ Future<void> main() async {
 
   ViewModel.add(SupportListViewModel(resourcesClient: vHoleApi.resources));
 
-  runApp(FlowApp(initialPages: [
-    createDiscoverPage(),
-  ]));
+  runApp(
+    FlowApp(initialPages: AppPage().generateInitialPages()),
+  );
 }

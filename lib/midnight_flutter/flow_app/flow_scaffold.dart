@@ -29,10 +29,9 @@ class _FlowScaffoldState extends State<FlowScaffold> {
       builder: (BuildContext context) {
         return Scaffold(
           body: Navigator(
-            key: GlobalKey<NavigatorState>(),
             pages: widget.pages,
             onPopPage: (Route<dynamic> route, dynamic result) {
-              print('[Flow Scaffold] Pop scaffold navigator');
+              print('[Flow Scaffold] Pop scaffold navigator.');
 
               bool didPop = route.didPop(result);
               widget.pages.removeLast();
@@ -193,6 +192,6 @@ abstract class FlowPage<T> extends Page<T> {
       ).createRoute(context);
     }
 
-    throw Exception('[Flow Page] Unsupported app type.');
+    throw Exception('[Flow Page] Unsupported flow design type.');
   }
 }

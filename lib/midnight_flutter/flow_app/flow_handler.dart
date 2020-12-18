@@ -76,7 +76,7 @@ class FlowHandler extends StatelessWidget {
       );
     }
 
-    throw Exception('[Flow Handler] Unsupported app type.');
+    throw Exception('[Flow Handler] Unsupported flow design type.');
   }
 }
 
@@ -101,7 +101,7 @@ class FlowHandlerSettings {
     this.checkerboardRasterCacheImages = false,
     this.checkerboardOffscreenLayers = false,
     this.showSemanticsDebugger = false,
-    this.debugShowCheckedModeBanner = true,
+    this.debugShowCheckedModeBanner = false,
     this.shortcuts,
     this.actions,
     this.onDeviceBackButtonPressed,
