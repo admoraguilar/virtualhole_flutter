@@ -1,4 +1,3 @@
-export 'app/app_page.dart';
 export 'counter/counter_viewmodel.dart';
 export 'counter/counter_page.dart';
 export 'counter/counter_controller.dart';

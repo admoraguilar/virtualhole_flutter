@@ -12,63 +12,150 @@ FlowAppPage createDiscoverPage() {
       return FlowHandlerSettings(
         designType: FlowDesignType.Material,
         title: '${config.appName}',
+        theme: ThemeData(
+          primaryColor: Colors.blue[900],
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          textTheme: TextTheme(
+            headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+            headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          ),
+        ),
         onDeviceBackButtonPressed: flowAppState.handleBackButton,
       );
     },
     scaffoldSettingsBuilder: (FlowAppState flowAppState) {
       return FlowScaffoldSettings(
-          appBar: AppBar(
-            title: Text('${config.appName}'),
-            automaticallyImplyLeading: false,
-            leading: Builder(
-              builder: (BuildContext context) {
-                return IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: flowAppState.handleBackButton,
-                );
-              },
-            ),
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            currentIndex: 0,
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.explore),
-                label: 'Discover',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.list),
-                label: 'Feed',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'Search',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.favorite),
-                label: 'Support',
-              ),
-            ],
-            onTap: (int index) {
-              if (index == 1) {
-                flowAppState.triggerSetState(
-                  () => flowAppState.pages.add(
-                    createTestPage(),
-                  ),
-                );
-              } else if (index == 2) {
-                flowAppState.triggerSetState(
-                  () => flowAppState.pages.add(
-                    createErrorPage(),
-                  ),
-                );
-              }
+        appBar: AppBar(
+          title: Text('${config.appName}'),
+          automaticallyImplyLeading: false,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: flowAppState.handleBackButton,
+              );
             },
-          ));
+          ),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          currentIndex: 0,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.explore),
+              label: 'Discover',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list),
+              label: 'Feed',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: 'Support',
+            ),
+          ],
+          onTap: (int index) {
+            if (index == 1) {
+              flowAppState.triggerSetState(
+                () => flowAppState.pages.add(createTestPage()),
+              );
+            } else if (index == 2) {
+              flowAppState.triggerSetState(
+                () => flowAppState.pages.add(createErrorPage()),
+              );
+            } else if (index == 3) {
+              flowAppState.triggerSetState(
+                () => flowAppState.pages.add(createSupportPage()),
+              );
+            }
+          },
+        ),
+      );
     },
     builder: (FlowAppState flowAppState) {
       return DiscoverPage();
+    },
+  );
+}
+
+FlowAppPage createSupportPage() {
+  return FlowAppPage(
+    key: ValueKey('/support'),
+    name: '/support',
+    handlerSettingsBuilder: (FlowAppState flowAppState) {
+      return FlowHandlerSettings(
+        designType: FlowDesignType.Material,
+        title: '${config.appName}',
+        theme: ThemeData(
+          primaryColor: Colors.blue[900],
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          textTheme: TextTheme(
+            headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+            headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          ),
+        ),
+        onDeviceBackButtonPressed: flowAppState.handleBackButton,
+      );
+    },
+    scaffoldSettingsBuilder: (FlowAppState flowAppState) {
+      return FlowScaffoldSettings(
+        appBar: AppBar(
+          title: Text('${config.appName}'),
+          automaticallyImplyLeading: false,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: flowAppState.handleBackButton,
+              );
+            },
+          ),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          currentIndex: 3,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.explore),
+              label: 'Discover',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list),
+              label: 'Feed',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: 'Support',
+            ),
+          ],
+          onTap: (int index) {
+            if (index == 1) {
+              flowAppState.triggerSetState(
+                () => flowAppState.pages.add(
+                  createTestPage(),
+                ),
+              );
+            } else if (index == 2) {
+              flowAppState.triggerSetState(
+                () => flowAppState.pages.add(
+                  createErrorPage(),
+                ),
+              );
+            }
+          },
+        ),
+      );
+    },
+    builder: (FlowAppState flowAppState) {
+      return SupportPage();
     },
   );
 }
@@ -81,46 +168,55 @@ FlowAppPage createTestPage() {
       return FlowHandlerSettings(
         designType: FlowDesignType.Material,
         title: '${config.appName}',
+        theme: ThemeData(
+          primaryColor: Colors.blue[900],
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          textTheme: TextTheme(
+            headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+            headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          ),
+        ),
         onDeviceBackButtonPressed: flowAppState.handleBackButton,
       );
     },
     scaffoldSettingsBuilder: (FlowAppState flowAppState) {
       return FlowScaffoldSettings(
-          appBar: AppBar(
-            title: Text('${config.appName}'),
-            automaticallyImplyLeading: false,
-            leading: Builder(
-              builder: (BuildContext context) {
-                return IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: flowAppState.handleBackButton,
-                );
-              },
-            ),
+        appBar: AppBar(
+          title: Text('${config.appName}'),
+          automaticallyImplyLeading: false,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: flowAppState.handleBackButton,
+              );
+            },
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            currentIndex: 1,
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.explore),
-                label: 'Discover',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.list),
-                label: 'Feed',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'Search',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.favorite),
-                label: 'Support',
-              ),
-            ],
-            onTap: (int index) {},
-          ));
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          currentIndex: 1,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.explore),
+              label: 'Discover',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list),
+              label: 'Feed',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: 'Support',
+            ),
+          ],
+          onTap: (int index) {},
+        ),
+      );
     },
     builder: (FlowAppState flowAppState) {
       return Center(
@@ -138,46 +234,32 @@ FlowAppPage createErrorPage() {
       return FlowHandlerSettings(
         designType: FlowDesignType.Material,
         title: '${config.appName}',
+        theme: ThemeData(
+          primaryColor: Colors.blue[900],
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          textTheme: TextTheme(
+            headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+            headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          ),
+        ),
         onDeviceBackButtonPressed: flowAppState.handleBackButton,
       );
     },
     scaffoldSettingsBuilder: (FlowAppState flowAppState) {
       return FlowScaffoldSettings(
-          appBar: AppBar(
-            title: Text('${config.appName}'),
-            automaticallyImplyLeading: false,
-            leading: Builder(
-              builder: (BuildContext context) {
-                return IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: flowAppState.handleBackButton,
-                );
-              },
-            ),
+        appBar: AppBar(
+          title: Text('${config.appName}'),
+          automaticallyImplyLeading: false,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: flowAppState.handleBackButton,
+              );
+            },
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            currentIndex: 2,
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.explore),
-                label: 'Discover',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.list),
-                label: 'Feed',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'Search',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.favorite),
-                label: 'Support',
-              ),
-            ],
-            onTap: (int index) {},
-          ));
+        ),
+      );
     },
     builder: (FlowAppState flowAppState) {
       return Center(

@@ -46,7 +46,9 @@ class SupportPage extends StatelessWidget {
               itemCount: supportList.length,
             );
           } else {
-            return CircularProgressIndicator();
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
         });
   }
