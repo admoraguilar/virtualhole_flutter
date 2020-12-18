@@ -8,23 +8,26 @@ class FlowHandler extends StatelessWidget {
     @required this.builder,
     @required this.settings,
     this.onDeviceBackButtonPressed,
+    this.onSetNewRoutePath,
   })  : assert(builder != null),
         assert(settings != null),
         super(key: key);
 
-  final Widget Function(BuildContext context) builder;
+  final Widget Function(BuildContext) builder;
   final Future<bool> Function() onDeviceBackButtonPressed;
+  final Future<void> Function(FlowHandlerRoutePath) onSetNewRoutePath;
 
   final FlowHandlerSettings settings;
 
   @override
   Widget build(BuildContext context) {
-    if (settings.appType == FlowHandlerAppType.Material) {
+    if (settings.designType == FlowDesignType.Material) {
       return MaterialApp.router(
         routerDelegate: FlowHandlerRouterDelegate(
-          appType: settings.appType,
+          designType: settings.designType,
           builder: builder,
           onDeviceBackButtonPressed: onDeviceBackButtonPressed,
+          onSetNewRoutePath: onSetNewRoutePath,
         ),
         routeInformationParser: FlowHandlerRouteInformationParser(),
         backButtonDispatcher: RootBackButtonDispatcher(),
@@ -50,10 +53,10 @@ class FlowHandler extends StatelessWidget {
         actions: settings.actions,
         debugShowMaterialGrid: settings.debugShowMaterialGrid,
       );
-    } else if (settings.appType == FlowHandlerAppType.Cupertino) {
+    } else if (settings.designType == FlowDesignType.Cupertino) {
       return CupertinoApp.router(
         routerDelegate: FlowHandlerRouterDelegate(
-          appType: settings.appType,
+          designType: settings.designType,
           builder: builder,
           onDeviceBackButtonPressed: onDeviceBackButtonPressed,
         ),
@@ -75,15 +78,15 @@ class FlowHandler extends StatelessWidget {
         shortcuts: settings.shortcuts,
         actions: settings.actions,
       );
-    } else {
-      throw Exception('[Flow Handler] Unsupported app type.');
     }
+
+    throw Exception('[Flow Handler] Unsupported app type.');
   }
 }
 
 class FlowHandlerSettings {
   FlowHandlerSettings({
-    @required this.appType,
+    @required this.designType,
     this.title,
     this.onGenerateTitle,
     this.theme,
@@ -105,9 +108,9 @@ class FlowHandlerSettings {
     this.debugShowCheckedModeBanner = true,
     this.shortcuts,
     this.actions,
-  }) : assert(appType != null);
+  }) : assert(designType != null);
 
-  final FlowHandlerAppType appType;
+  final FlowDesignType designType;
   final String title;
   final String Function(BuildContext) onGenerateTitle;
   final ThemeData theme;
@@ -131,7 +134,7 @@ class FlowHandlerSettings {
   final Map<Type, Action<Intent>> actions;
 }
 
-enum FlowHandlerAppType {
+enum FlowDesignType {
   Material,
   Cupertino,
 }
@@ -139,15 +142,17 @@ enum FlowHandlerAppType {
 class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<FlowHandlerRoutePath> {
   FlowHandlerRouterDelegate({
-    @required this.appType,
+    @required this.designType,
     @required this.builder,
     this.onDeviceBackButtonPressed,
-  })  : assert(appType != null),
+    this.onSetNewRoutePath,
+  })  : assert(designType != null),
         assert(builder != null);
 
-  final FlowHandlerAppType appType;
-  final Widget Function(BuildContext context) builder;
+  final FlowDesignType designType;
+  final Widget Function(BuildContext) builder;
   final Future<bool> Function() onDeviceBackButtonPressed;
+  final Future<void> Function(FlowHandlerRoutePath) onSetNewRoutePath;
 
   @override
   GlobalKey<NavigatorState> get navigatorKey => GlobalKey<NavigatorState>();
@@ -155,7 +160,10 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
   @override
   Future<void> setNewRoutePath(FlowHandlerRoutePath configuration) async {
     print('[Flow Handler] Set new route path: ${configuration.location}.');
-    notifyListeners();
+    if (onSetNewRoutePath != null) {
+      onSetNewRoutePath(configuration);
+      notifyListeners();
+    }
     return SynchronousFuture<void>(null);
   }
 
@@ -173,14 +181,14 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
     LocalKey rootFlowKey = ValueKey('root_flow');
     Page<dynamic> rootFlow;
 
-    if (appType == FlowHandlerAppType.Material) {
+    if (designType == FlowDesignType.Material) {
       rootFlow = MaterialPage(
         key: rootFlowKey,
         child: builder(
           context,
         ),
       );
-    } else if (appType == FlowHandlerAppType.Cupertino) {
+    } else if (designType == FlowDesignType.Cupertino) {
       rootFlow = CupertinoPage(
         key: rootFlowKey,
         child: builder(

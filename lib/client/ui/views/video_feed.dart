@@ -11,7 +11,7 @@ class VideoFeed extends StatelessWidget {
           return Column(
             children: [
               ContentCard(
-                url: 'https://i.ytimg.com/vi/aqVluRmvNXM/mqdefault.jpg',
+                url: 'https://i.ytimg.com/vi/vQHVGXdcqEQ/mqdefault.jpg',
               ),
               SizedBox(
                 height: 8.0,

@@ -6,3 +6,4 @@ export 'discover/discover_page.dart';
 export 'home/home_page.dart';
 export 'support/support_list_viewmodel.dart';
 export 'support/support_page.dart';
+export 'page_factory.dart';

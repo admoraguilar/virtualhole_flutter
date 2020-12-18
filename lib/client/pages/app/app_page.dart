@@ -1,15 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:virtualhole_flutter/client/pages/pages.dart';
 import 'package:virtualhole_flutter/midnight_flutter/midnight_flutter.dart';
+import 'package:virtualhole_flutter/api/virtualhole_api_wrapper.dart';
+import 'package:virtualhole_flutter/client/config/config.dart' as config;
+import 'package:virtualhole_flutter/client/pages/pages.dart';
 
 class AppPage extends StatefulWidget {
-  AppPage({
-    Key key,
-    @required this.title,
-  }) : super(key: key);
-
-  final String title;
+  AppPage({Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _AppPageState();
@@ -17,22 +14,28 @@ class AppPage extends StatefulWidget {
 
 class _AppPageState extends State<AppPage> {
   _AppPageState() {
+    VirtualHoleApiWrapperClient vHoleApi =
+        VirtualHoleApiWrapperClient.managed(domain: config.virtualHoleApi);
+
+    ViewModel.add(SupportListViewModel(resourcesClient: vHoleApi.resources));
+
+    _title = config.appName;
+
     _pages = [
-      MaterialPage(
-        key: ValueKey('discover_page'),
-        child: DiscoverPage(),
-      ),
+      createDiscoverPage(),
+      createTestPage(),
     ];
   }
 
-  List<Page<dynamic>> _pages;
+  String _title;
+  List<FlowPage> _pages;
 
   @override
   Widget build(BuildContext context) {
     return FlowScaffold(
       handlerSettings: FlowHandlerSettings(
-        appType: FlowHandlerAppType.Material,
-        title: widget.title,
+        designType: FlowDesignType.Material,
+        title: _title,
         theme: ThemeData(
           primaryColor: Colors.blue[900],
           visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -45,7 +48,7 @@ class _AppPageState extends State<AppPage> {
       onDeviceBackButtonPressed: _handleBackButton,
       pages: _pages,
       appBar: AppBar(
-        title: Text('${widget.title}'),
+        title: Text('$_title'),
         automaticallyImplyLeading: false,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -56,6 +59,7 @@ class _AppPageState extends State<AppPage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
+        currentIndex: getTopFlowPageIndex(),
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.explore),
@@ -87,5 +91,11 @@ class _AppPageState extends State<AppPage> {
     }
 
     return SynchronousFuture<bool>(false);
+  }
+
+  int getTopFlowPageIndex() {
+    int index = _pages.lastIndexWhere((element) => element.index != null);
+    FlowPage flowPage = index > -1 ? _pages[index] : null;
+    return flowPage != null ? flowPage.index : 0;
   }
 }

@@ -75,7 +75,7 @@ class ContentCard extends StatelessWidget {
                               CircleAvatar(
                                 radius: 8,
                                 backgroundImage: NetworkImage(
-                                  'https://yt3.ggpht.com/ytc/AAUvwnimjdERaJDGopfH8UaB0r9tr_p8uyuEWWyYVkAd5Q=s900-c-k-c0x00ffffff-no-rj',
+                                  'https://yt3.ggpht.com/ytc/AAUvwnjdAl5rn3IjWzl55_0-skvKced7znPZRuPC5xLB=s900-c-k-c0x00ffffff-no-rj',
                                   scale: 1,
                                 ),
                               ),
@@ -83,7 +83,7 @@ class ContentCard extends StatelessWidget {
                                 width: 4,
                               ),
                               Text(
-                                'Korone Ch. 戌神ころね',
+                                'Suisei Channel',
                                 style: TextStyle(
                                   fontSize: 11,
                                   color: Colors.white,

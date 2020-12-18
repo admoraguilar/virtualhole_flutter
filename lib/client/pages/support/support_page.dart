@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:virtualhole_flutter/midnight_flutter/midnight_flutter.dart';
 import 'package:virtualhole_flutter/api/virtualhole_api_wrapper.dart';
-import 'package:virtualhole_flutter/client/ui/elements/info_card.dart';
+import 'package:virtualhole_flutter/client/ui/ui.dart';
 import 'package:virtualhole_flutter/client/pages/support/support_list_viewmodel.dart';
 
 class SupportPage extends StatelessWidget {

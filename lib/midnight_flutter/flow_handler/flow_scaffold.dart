@@ -1,13 +1,57 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'flow_handler.dart';
+
+class FlowPage<T> extends Page<T> {
+  FlowPage({
+    @required this.designType,
+    this.index,
+    this.child,
+    LocalKey key,
+    String name,
+    Object arguments,
+  })  : assert(designType != null),
+        super(
+          key: key,
+          name: name,
+          arguments: arguments,
+        );
+
+  final FlowDesignType designType;
+  final int index;
+  final Widget child;
+
+  @override
+  Route<T> createRoute(BuildContext context) {
+    if (designType == FlowDesignType.Material) {
+      return MaterialPage(
+        key: key,
+        name: name,
+        arguments: arguments,
+        child: child,
+      ).createRoute(context);
+    } else if (designType == FlowDesignType.Cupertino) {
+      return CupertinoPage(
+        key: key,
+        title: name,
+        name: name,
+        arguments: arguments,
+        child: child,
+      ).createRoute(context);
+    }
+
+    throw Exception('[Flow Page] Unsupported app type.');
+  }
+}
 
 class FlowScaffold extends StatefulWidget {
   FlowScaffold({
     Key key,
     @required this.handlerSettings,
     this.onDeviceBackButtonPressed,
+    this.onSetNewRoutePath,
     this.appBar,
     this.pages,
     this.floatingActionButton,
@@ -55,6 +99,7 @@ class FlowScaffold extends StatefulWidget {
   final bool endDrawerEnableOpenDragGesture;
 
   final Future<bool> Function() onDeviceBackButtonPressed;
+  final Future<void> Function(FlowHandlerRoutePath) onSetNewRoutePath;
   final FlowHandlerSettings handlerSettings;
 
   @override
@@ -104,6 +149,7 @@ class _FlowScaffoldState extends State<FlowScaffold> {
       },
       settings: widget.handlerSettings,
       onDeviceBackButtonPressed: widget.onDeviceBackButtonPressed,
+      onSetNewRoutePath: widget.onSetNewRoutePath,
     );
   }
 }
