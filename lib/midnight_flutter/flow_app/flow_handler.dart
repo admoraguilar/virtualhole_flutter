@@ -7,16 +7,11 @@ class FlowHandler extends StatelessWidget {
     Key key,
     @required this.builder,
     @required this.settings,
-    this.onDeviceBackButtonPressed,
-    this.onSetNewRoutePath,
   })  : assert(builder != null),
         assert(settings != null),
         super(key: key);
 
   final Widget Function(BuildContext) builder;
-  final Future<bool> Function() onDeviceBackButtonPressed;
-  final Future<void> Function(FlowHandlerRoutePath) onSetNewRoutePath;
-
   final FlowHandlerSettings settings;
 
   @override
@@ -26,8 +21,8 @@ class FlowHandler extends StatelessWidget {
         routerDelegate: FlowHandlerRouterDelegate(
           designType: settings.designType,
           builder: builder,
-          onDeviceBackButtonPressed: onDeviceBackButtonPressed,
-          onSetNewRoutePath: onSetNewRoutePath,
+          onDeviceBackButtonPressed: settings.onDeviceBackButtonPressed,
+          onSetNewRoutePath: settings.onSetNewRoutePath,
         ),
         routeInformationParser: FlowHandlerRouteInformationParser(),
         backButtonDispatcher: RootBackButtonDispatcher(),
@@ -58,7 +53,8 @@ class FlowHandler extends StatelessWidget {
         routerDelegate: FlowHandlerRouterDelegate(
           designType: settings.designType,
           builder: builder,
-          onDeviceBackButtonPressed: onDeviceBackButtonPressed,
+          onDeviceBackButtonPressed: settings.onDeviceBackButtonPressed,
+          onSetNewRoutePath: settings.onSetNewRoutePath,
         ),
         routeInformationParser: FlowHandlerRouteInformationParser(),
         backButtonDispatcher: RootBackButtonDispatcher(),
@@ -108,7 +104,16 @@ class FlowHandlerSettings {
     this.debugShowCheckedModeBanner = true,
     this.shortcuts,
     this.actions,
-  }) : assert(designType != null);
+    this.onDeviceBackButtonPressed,
+    this.onSetNewRoutePath,
+  })  : assert(designType != null),
+        assert(title != null),
+        assert(debugShowMaterialGrid != null),
+        assert(showPerformanceOverlay != null),
+        assert(checkerboardRasterCacheImages != null),
+        assert(checkerboardOffscreenLayers != null),
+        assert(showSemanticsDebugger != null),
+        assert(debugShowCheckedModeBanner != null);
 
   final FlowDesignType designType;
   final String title;
@@ -132,6 +137,8 @@ class FlowHandlerSettings {
   final bool debugShowCheckedModeBanner;
   final Map<LogicalKeySet, Intent> shortcuts;
   final Map<Type, Action<Intent>> actions;
+  final Future<bool> Function() onDeviceBackButtonPressed;
+  final Future<void> Function(FlowHandlerRoutePath) onSetNewRoutePath;
 }
 
 enum FlowDesignType {
