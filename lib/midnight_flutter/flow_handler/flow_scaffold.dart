@@ -102,8 +102,8 @@ class _FlowScaffoldState extends State<FlowScaffold> {
           endDrawerEnableOpenDragGesture: widget.endDrawerEnableOpenDragGesture,
         );
       },
-      onDeviceBackButtonPressed: widget.onDeviceBackButtonPressed,
       settings: widget.handlerSettings,
+      onDeviceBackButtonPressed: widget.onDeviceBackButtonPressed,
     );
   }
 }

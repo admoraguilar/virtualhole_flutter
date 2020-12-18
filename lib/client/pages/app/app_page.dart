@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:virtualhole_flutter/client/pages/counter/counter_page.dart';
 import 'package:virtualhole_flutter/client/pages/pages.dart';
 import 'package:virtualhole_flutter/midnight_flutter/midnight_flutter.dart';
 
@@ -19,17 +18,24 @@ class AppPage extends StatefulWidget {
 class _AppPageState extends State<AppPage> {
   _AppPageState() {
     _pages = [
-      _buildCounterPage(),
+      // MaterialPage(
+      //   key: ValueKey('discover_page'),
+      //   child: DiscoverPage(),
+      // ),
+      MaterialPage(
+        key: ValueKey('test_page'),
+        child: Center(
+          child: Text('test'),
+        ),
+      ),
     ];
   }
 
   List<Page<dynamic>> _pages;
-  int _counter;
 
   @override
   Widget build(BuildContext context) {
     return FlowScaffold(
-      onDeviceBackButtonPressed: _handleBackButton,
       handlerSettings: FlowHandlerSettings(
         appType: FlowHandlerAppType.Material,
         title: widget.title,
@@ -42,6 +48,7 @@ class _AppPageState extends State<AppPage> {
           ),
         ),
       ),
+      onDeviceBackButtonPressed: _handleBackButton,
       pages: _pages,
       appBar: AppBar(
         title: Text('${widget.title}'),
@@ -56,36 +63,24 @@ class _AppPageState extends State<AppPage> {
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.ac_unit),
-            label: 'Temperatures',
+            icon: Icon(Icons.explore),
+            label: 'Discover',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Adjustments',
+            icon: Icon(Icons.list),
+            label: 'Feed',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Support',
           ),
         ],
       ),
     );
-  }
-
-  Page _buildCounterPage() {
-    Page makeCounterPage(VoidCallback onExtraTap) {
-      return MaterialPage(
-        key: ValueKey('counter_page$_counter'),
-        child: CounterPage(
-          key: GlobalKey<NavigatorState>(),
-          onExtraTap: onExtraTap,
-        ),
-      );
-    }
-
-    void addCounterPage() {
-      _pages.add(makeCounterPage(addCounterPage));
-      setState(() {});
-      print('page count: ${_pages.length}');
-    }
-
-    return makeCounterPage(addCounterPage);
   }
 
   Future<bool> _handleBackButton() {
