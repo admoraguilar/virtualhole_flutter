@@ -18,15 +18,9 @@ class AppPage extends StatefulWidget {
 class _AppPageState extends State<AppPage> {
   _AppPageState() {
     _pages = [
-      // MaterialPage(
-      //   key: ValueKey('discover_page'),
-      //   child: DiscoverPage(),
-      // ),
       MaterialPage(
-        key: ValueKey('test_page'),
-        child: Center(
-          child: Text('test'),
-        ),
+        key: ValueKey('discover_page'),
+        child: DiscoverPage(),
       ),
     ];
   }
@@ -61,6 +55,7 @@ class _AppPageState extends State<AppPage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.explore),

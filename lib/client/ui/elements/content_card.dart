@@ -15,28 +15,38 @@ class ContentCard extends StatelessWidget {
     return GestureDetector(
       child: Card(
         margin: EdgeInsets.symmetric(horizontal: 8.0),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Stack(
-            children: [
-              Container(
-                width: double.infinity,
-                height: 220,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(url, scale: 1),
-                    fit: BoxFit.cover,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Stack(
+          children: [
+            Container(
+              width: double.infinity,
+              height: 220,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(
+                    url,
+                    scale: 1,
                   ),
-                ),
-                foregroundDecoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.transparent, Colors.black],
-                    begin: Alignment.center,
-                    end: Alignment.bottomCenter,
-                  ),
+                  fit: BoxFit.cover,
                 ),
               ),
-              Row(
+              foregroundDecoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.transparent,
+                    Colors.black,
+                  ],
+                  begin: Alignment.center,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -113,8 +123,8 @@ class ContentCard extends StatelessWidget {
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         color: Colors.black,
       ),
