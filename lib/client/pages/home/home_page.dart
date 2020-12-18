@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:virtualhole_flutter/client/pages/discover/discover_page.dart';
-import 'package:virtualhole_flutter/client/pages/pages.dart';
-import 'package:virtualhole_flutter/midnight_flutter/midnight_flutter.dart';
 
-class AppPage extends StatelessWidget {
-  AppPage({
+class HomePage extends StatelessWidget {
+  HomePage({
     Key key,
-    this.title,
   }) : super(key: key);
-
-  final String title;
 
   @override
   Widget build(BuildContext context) {

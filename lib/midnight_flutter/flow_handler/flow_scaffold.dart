@@ -6,6 +6,7 @@ import 'flow_handler.dart';
 class FlowScaffold extends StatefulWidget {
   FlowScaffold({
     Key key,
+    this.onDeviceBackButtonPressed,
     @required this.handlerSettings,
     this.appBar,
     this.pages,
@@ -54,6 +55,7 @@ class FlowScaffold extends StatefulWidget {
   final bool drawerEnableOpenDragGesture;
   final bool endDrawerEnableOpenDragGesture;
 
+  final Future<bool> Function() onDeviceBackButtonPressed;
   final FlowHandlerSettings handlerSettings;
 
   @override
@@ -64,26 +66,19 @@ class _FlowScaffoldState extends State<FlowScaffold> {
   @override
   Widget build(BuildContext context) {
     return FlowHandler(
-      builder: (BuildContext context,
-          FlowHandlerRouterDelegateParameters parameters) {
+      builder: (BuildContext context) {
         return Scaffold(
           body: Navigator(
-            key: parameters.navigatorKey,
+            key: GlobalKey<NavigatorState>(),
             pages: widget.pages,
             onPopPage: (Route<dynamic> route, dynamic result) {
               print('[Flow Scaffold] Pop scaffold navigator');
 
-              bool result = false;
-
+              bool didPop = route.didPop(result);
               widget.pages.removeLast();
-              if (!route.didPop(result)) {
-                result = false;
-              }
-
-              result = true;
               setState(() {});
 
-              return result;
+              return didPop;
             },
           ),
           appBar: widget.appBar,
@@ -108,6 +103,7 @@ class _FlowScaffoldState extends State<FlowScaffold> {
           endDrawerEnableOpenDragGesture: widget.endDrawerEnableOpenDragGesture,
         );
       },
+      onDeviceBackButtonPressed: widget.onDeviceBackButtonPressed,
       settings: widget.handlerSettings,
     );
   }

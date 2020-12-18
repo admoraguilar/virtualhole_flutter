@@ -6,15 +6,14 @@ class FlowHandler extends StatelessWidget {
   FlowHandler({
     Key key,
     this.builder,
+    this.onDeviceBackButtonPressed,
     this.settings,
   }) : super(
           key: key,
         );
 
-  final Widget Function(
-          BuildContext context, FlowHandlerRouterDelegateParameters parameters)
-      builder;
-
+  final Widget Function(BuildContext context) builder;
+  final Future<bool> Function() onDeviceBackButtonPressed;
   final FlowHandlerSettings settings;
 
   @override
@@ -23,6 +22,7 @@ class FlowHandler extends StatelessWidget {
       return MaterialApp.router(
         routerDelegate: FlowHandlerRouterDelegate(
           builder: builder,
+          onDeviceBackButtonPressed: onDeviceBackButtonPressed,
         ),
         routeInformationParser: FlowHandlerRouteInformationParser(),
         backButtonDispatcher: RootBackButtonDispatcher(),
@@ -52,6 +52,7 @@ class FlowHandler extends StatelessWidget {
       return CupertinoApp.router(
         routerDelegate: FlowHandlerRouterDelegate(
           builder: builder,
+          onDeviceBackButtonPressed: onDeviceBackButtonPressed,
         ),
         routeInformationParser: FlowHandlerRouteInformationParser(),
         backButtonDispatcher: RootBackButtonDispatcher(),
@@ -92,15 +93,15 @@ class FlowHandlerSettings {
     this.localizationsDelegates,
     this.localeResolutionCallback,
     this.localeListResolutionCallback,
-    this.supportedLocales,
-    this.showPerformanceOverlay,
-    this.checkerboardRasterCacheImages,
-    this.checkerboardOffscreenLayers,
-    this.showSemanticsDebugger,
-    this.debugShowCheckedModeBanner,
+    this.supportedLocales = const <Locale>[Locale('en', 'US')],
+    this.debugShowMaterialGrid = false,
+    this.showPerformanceOverlay = false,
+    this.checkerboardRasterCacheImages = false,
+    this.checkerboardOffscreenLayers = false,
+    this.showSemanticsDebugger = false,
+    this.debugShowCheckedModeBanner = true,
     this.shortcuts,
     this.actions,
-    this.debugShowMaterialGrid,
   });
 
   final FlowHandlerAppType appType;
@@ -117,6 +118,7 @@ class FlowHandlerSettings {
   final LocaleListResolutionCallback localeListResolutionCallback;
   final LocaleResolutionCallback localeResolutionCallback;
   final Iterable<Locale> supportedLocales;
+  final bool debugShowMaterialGrid;
   final bool showPerformanceOverlay;
   final bool checkerboardRasterCacheImages;
   final bool checkerboardOffscreenLayers;
@@ -124,7 +126,6 @@ class FlowHandlerSettings {
   final bool debugShowCheckedModeBanner;
   final Map<LogicalKeySet, Intent> shortcuts;
   final Map<Type, Action<Intent>> actions;
-  final bool debugShowMaterialGrid;
 }
 
 enum FlowHandlerAppType {
@@ -136,19 +137,29 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<FlowHandlerRoutePath> {
   FlowHandlerRouterDelegate({
     this.builder,
+    this.onDeviceBackButtonPressed,
   });
 
-  final Widget Function(
-          BuildContext context, FlowHandlerRouterDelegateParameters parameters)
-      builder;
+  final Widget Function(BuildContext context) builder;
+  final Future<bool> Function() onDeviceBackButtonPressed;
 
   @override
   GlobalKey<NavigatorState> get navigatorKey => GlobalKey<NavigatorState>();
 
   @override
   Future<void> setNewRoutePath(FlowHandlerRoutePath configuration) async {
+    print('[Flow Handler] Set new route path: ${configuration.location}.');
     notifyListeners();
     return SynchronousFuture<void>(null);
+  }
+
+  @override
+  Future<bool> popRoute() {
+    print('[Flow Handler] Back button dispatcher pop.');
+    if (onDeviceBackButtonPressed == null) {
+      return super.popRoute();
+    }
+    return onDeviceBackButtonPressed();
   }
 
   @override
@@ -157,28 +168,18 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
       key: navigatorKey,
       pages: [
         MaterialPage(
-          key: ValueKey('root'),
+          key: ValueKey('root_flow'),
           child: builder(
-              context,
-              FlowHandlerRouterDelegateParameters(
-                navigatorKey: navigatorKey,
-              )),
-        )
+            context,
+          ),
+        ),
       ],
       onPopPage: (Route<dynamic> route, dynamic result) {
-        print('[Flow Handler] Pop root navigator.');
-        return false;
+        print('[Flow Handler] Navigator pop.');
+        return route.didPop(result);
       },
     );
   }
-}
-
-class FlowHandlerRouterDelegateParameters {
-  FlowHandlerRouterDelegateParameters({
-    this.navigatorKey,
-  });
-
-  final GlobalKey<NavigatorState> navigatorKey;
 }
 
 class FlowHandlerRouteInformationParser
