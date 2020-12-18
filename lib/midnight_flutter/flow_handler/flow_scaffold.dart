@@ -6,8 +6,8 @@ import 'flow_handler.dart';
 class FlowScaffold extends StatefulWidget {
   FlowScaffold({
     Key key,
-    this.onDeviceBackButtonPressed,
     @required this.handlerSettings,
+    this.onDeviceBackButtonPressed,
     this.appBar,
     this.pages,
     this.floatingActionButton,
@@ -29,9 +29,8 @@ class FlowScaffold extends StatefulWidget {
     this.drawerEdgeDragWidth,
     this.drawerEnableOpenDragGesture = true,
     this.endDrawerEnableOpenDragGesture = true,
-  }) : super(
-          key: key,
-        );
+  })  : assert(handlerSettings != null),
+        super(key: key);
 
   final AppBar appBar;
   final List<Page<dynamic>> pages;

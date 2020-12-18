@@ -5,15 +5,16 @@ import 'package:flutter/material.dart';
 class FlowHandler extends StatelessWidget {
   FlowHandler({
     Key key,
-    this.builder,
+    @required this.builder,
+    @required this.settings,
     this.onDeviceBackButtonPressed,
-    this.settings,
-  }) : super(
-          key: key,
-        );
+  })  : assert(builder != null),
+        assert(settings != null),
+        super(key: key);
 
   final Widget Function(BuildContext context) builder;
   final Future<bool> Function() onDeviceBackButtonPressed;
+
   final FlowHandlerSettings settings;
 
   @override
@@ -21,6 +22,7 @@ class FlowHandler extends StatelessWidget {
     if (settings.appType == FlowHandlerAppType.Material) {
       return MaterialApp.router(
         routerDelegate: FlowHandlerRouterDelegate(
+          appType: settings.appType,
           builder: builder,
           onDeviceBackButtonPressed: onDeviceBackButtonPressed,
         ),
@@ -51,6 +53,7 @@ class FlowHandler extends StatelessWidget {
     } else if (settings.appType == FlowHandlerAppType.Cupertino) {
       return CupertinoApp.router(
         routerDelegate: FlowHandlerRouterDelegate(
+          appType: settings.appType,
           builder: builder,
           onDeviceBackButtonPressed: onDeviceBackButtonPressed,
         ),
@@ -102,7 +105,7 @@ class FlowHandlerSettings {
     this.debugShowCheckedModeBanner = true,
     this.shortcuts,
     this.actions,
-  });
+  }) : assert(appType != null);
 
   final FlowHandlerAppType appType;
   final String title;
@@ -136,10 +139,13 @@ enum FlowHandlerAppType {
 class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<FlowHandlerRoutePath> {
   FlowHandlerRouterDelegate({
-    this.builder,
+    @required this.appType,
+    @required this.builder,
     this.onDeviceBackButtonPressed,
-  });
+  })  : assert(appType != null),
+        assert(builder != null);
 
+  final FlowHandlerAppType appType;
   final Widget Function(BuildContext context) builder;
   final Future<bool> Function() onDeviceBackButtonPressed;
 
@@ -164,15 +170,29 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
 
   @override
   Widget build(BuildContext context) {
+    LocalKey rootFlowKey = ValueKey('root_flow');
+    Page<dynamic> rootFlow;
+
+    if (appType == FlowHandlerAppType.Material) {
+      rootFlow = MaterialPage(
+        key: rootFlowKey,
+        child: builder(
+          context,
+        ),
+      );
+    } else if (appType == FlowHandlerAppType.Cupertino) {
+      rootFlow = CupertinoPage(
+        key: rootFlowKey,
+        child: builder(
+          context,
+        ),
+      );
+    }
+
     return Navigator(
       key: navigatorKey,
       pages: [
-        MaterialPage(
-          key: ValueKey('root_flow'),
-          child: builder(
-            context,
-          ),
-        ),
+        rootFlow,
       ],
       onPopPage: (Route<dynamic> route, dynamic result) {
         print('[Flow Handler] Navigator pop.');
@@ -200,7 +220,7 @@ class FlowHandlerRouteInformationParser
 class FlowHandlerRoutePath {
   FlowHandlerRoutePath({
     this.location,
-  });
+  }) : assert(location != null || location.isNotEmpty);
 
   final String location;
 }
