@@ -4,8 +4,6 @@ import 'package:virtualhole_flutter/client/config/config.dart' as config;
 import 'package:virtualhole_flutter/client/pages/pages.dart';
 
 class AppPage {
-  AppPage();
-
   List<FlowPage> generateInitialPages() {
     return [_generateDiscoverPage()];
   }
@@ -69,11 +67,9 @@ class AppPage {
       child: CounterScreen(
         key: GlobalKey<NavigatorState>(),
         onExtraTap: () {
-          FlowHandler.instance()
-              .routerDelegate
-              .pages
-              .add(_generateCounterPage());
-          FlowHandler.instance().routerDelegate.triggerNotifyListeners();
+          FlowHandler.get().routerDelegate.setDirty(() {
+            FlowHandler.get().routerDelegate.pages.add(_generateCounterPage());
+          });
         },
       ),
     );
@@ -102,7 +98,7 @@ class AppPage {
           builder: (BuildContext context) {
             return IconButton(
               icon: Icon(Icons.arrow_back),
-              onPressed: FlowHandler.instance().routerDelegate.popRoute,
+              onPressed: FlowHandler.get().routerDelegate.popRoute,
             );
           },
         ),
@@ -115,8 +111,9 @@ class AppPage {
     assert(currentIndex != null && currentIndex > -1);
 
     void pushPage(FlowPage flowAppPage) {
-      FlowHandler.instance().routerDelegate.pages.add(flowAppPage);
-      FlowHandler.instance().routerDelegate.triggerNotifyListeners();
+      FlowHandler.get().routerDelegate.setDirty(() {
+        FlowHandler.get().routerDelegate.pages.add(flowAppPage);
+      });
     }
 
     return BottomNavigationBar(
@@ -151,56 +148,6 @@ class AppPage {
           pushPage(_generateSupportPage());
         }
       },
-    );
-  }
-}
-
-class CounterScreen extends StatefulWidget {
-  CounterScreen({
-    Key key,
-    this.onExtraTap,
-  }) : super(key: key);
-
-  final VoidCallback onExtraTap;
-
-  @override
-  _CounterScreenState createState() => _CounterScreenState();
-}
-
-class _CounterScreenState extends State<CounterScreen> {
-  int _counter = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('Count: $_counter'),
-          FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: () {
-              setState(() {
-                _counter++;
-              });
-              // print(_counter);
-            },
-          ),
-          FloatingActionButton(
-            child: Icon(Icons.remove),
-            onPressed: () {
-              setState(() {
-                _counter--;
-              });
-              // print(_counter);
-            },
-          ),
-          FloatingActionButton(
-            child: Icon(Icons.settings),
-            onPressed: widget.onExtraTap,
-          ),
-        ],
-      ),
     );
   }
 }

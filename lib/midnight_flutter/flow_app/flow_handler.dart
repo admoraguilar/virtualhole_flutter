@@ -6,16 +6,7 @@ import 'package:flutter/material.dart';
 FlowHandler _flowHandler;
 
 class FlowHandler extends StatelessWidget {
-  static FlowHandler of(BuildContext context) {
-    FlowHandler flowHandler;
-    flowHandler = context.findAncestorWidgetOfExactType<FlowHandler>();
-    if (flowHandler == null) {
-      throw Exception('[Flow Handler] No Flow Handler ancestor for context.');
-    }
-    return flowHandler;
-  }
-
-  static FlowHandler instance() {
+  static FlowHandler get() {
     if (_flowHandler == null) {
       throw Exception('[Flow Handler] No current instance of FlowHandler');
     }
@@ -185,7 +176,9 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
   @override
   GlobalKey<NavigatorState> get navigatorKey => GlobalKey<NavigatorState>();
 
-  void triggerNotifyListeners() {
+  void setDirty(Function() fn) {
+    assert(fn != null);
+    fn();
     notifyListeners();
   }
 
