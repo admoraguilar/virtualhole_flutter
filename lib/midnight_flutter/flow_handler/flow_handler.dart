@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 FlowHandler _flowHandler;
@@ -214,52 +213,21 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
 
   @override
   Widget build(BuildContext context) {
-    Widget generateScaffold() {
+    Widget generateInnerNavigator() {
       FlowPage topPage = pages.length > 0 ? pages.last : null;
       if (topPage != null) {
-        return Scaffold(
-          body: Navigator(
-            key: navigatorKey,
-            pages: pages,
-            onPopPage: (Route<dynamic> route, dynamic result) {
-              print('[Flow Handler] Navigator pop.');
+        return Navigator(
+          key: navigatorKey,
+          pages: pages,
+          onPopPage: (Route<dynamic> route, dynamic result) {
+            print('[Flow Handler] Navigator pop.');
 
-              bool didPop = route.didPop(result);
-              pages.removeLast();
-              notifyListeners();
+            bool didPop = route.didPop(result);
+            pages.removeLast();
+            notifyListeners();
 
-              return didPop;
-            },
-          ),
-          appBar: topPage.scaffoldSettings.appBar,
-          floatingActionButton: topPage.scaffoldSettings.floatingActionButton,
-          floatingActionButtonLocation:
-              topPage.scaffoldSettings.floatingActionButtonLocation,
-          floatingActionButtonAnimator:
-              topPage.scaffoldSettings.floatingActionButtonAnimator,
-          persistentFooterButtons:
-              topPage.scaffoldSettings.persistentFooterButtons,
-          drawer: topPage.scaffoldSettings.drawer,
-          endDrawer: topPage.scaffoldSettings.endDrawer,
-          bottomNavigationBar: topPage.scaffoldSettings.bottomNavigationBar,
-          bottomSheet: topPage.scaffoldSettings.bottomSheet,
-          backgroundColor: topPage.scaffoldSettings.backgroundColor,
-          resizeToAvoidBottomPadding:
-              topPage.scaffoldSettings.resizeToAvoidBottomPadding,
-          resizeToAvoidBottomInset:
-              topPage.scaffoldSettings.resizeToAvoidBottomInset,
-          primary: topPage.scaffoldSettings.primary,
-          drawerDragStartBehavior:
-              topPage.scaffoldSettings.drawerDragStartBehavior,
-          extendBody: topPage.scaffoldSettings.extendBody,
-          extendBodyBehindAppBar:
-              topPage.scaffoldSettings.extendBodyBehindAppBar,
-          drawerScrimColor: topPage.scaffoldSettings.drawerScrimColor,
-          drawerEdgeDragWidth: topPage.scaffoldSettings.drawerEdgeDragWidth,
-          drawerEnableOpenDragGesture:
-              topPage.scaffoldSettings.drawerEnableOpenDragGesture,
-          endDrawerEnableOpenDragGesture:
-              topPage.scaffoldSettings.endDrawerEnableOpenDragGesture,
+            return didPop;
+          },
         );
       }
 
@@ -275,12 +243,12 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
         if (designType == FlowDesignType.Material)
           MaterialPage(
             key: rootFlowKey,
-            child: generateScaffold(),
+            child: generateInnerNavigator(),
           ),
         if (designType == FlowDesignType.Cupertino)
           CupertinoPage(
             key: rootFlowKey,
-            child: generateScaffold(),
+            child: generateInnerNavigator(),
           ),
       ],
       onPopPage: (Route<dynamic> route, dynamic result) {
@@ -317,13 +285,11 @@ class FlowHandlerRoutePath {
 class FlowPage<T> extends Page<T> {
   FlowPage({
     @required this.designType,
-    @required this.scaffoldSettings,
     @required this.child,
     LocalKey key,
     String name,
     Object arguments,
   })  : assert(designType != null),
-        assert(scaffoldSettings != null),
         assert(child != null),
         super(
           key: key ?? UniqueKey(),
@@ -332,7 +298,6 @@ class FlowPage<T> extends Page<T> {
         );
 
   final FlowDesignType designType;
-  final FlowScaffoldSettings scaffoldSettings;
   final Widget child;
 
   @override
@@ -356,55 +321,6 @@ class FlowPage<T> extends Page<T> {
 
     throw Exception('[Flow Page] Unsupported flow design type.');
   }
-}
-
-class FlowScaffoldSettings {
-  FlowScaffoldSettings({
-    this.appBar,
-    this.floatingActionButton,
-    this.floatingActionButtonLocation,
-    this.floatingActionButtonAnimator,
-    this.persistentFooterButtons,
-    this.drawer,
-    this.endDrawer,
-    this.bottomNavigationBar,
-    this.bottomSheet,
-    this.backgroundColor,
-    this.resizeToAvoidBottomPadding,
-    this.resizeToAvoidBottomInset,
-    this.primary = true,
-    this.drawerDragStartBehavior = DragStartBehavior.start,
-    this.extendBody = false,
-    this.extendBodyBehindAppBar = false,
-    this.drawerScrimColor,
-    this.drawerEdgeDragWidth,
-    this.drawerEnableOpenDragGesture = true,
-    this.endDrawerEnableOpenDragGesture = true,
-  })  : assert(primary != null),
-        assert(extendBody != null),
-        assert(extendBodyBehindAppBar != null),
-        assert(drawerDragStartBehavior != null);
-
-  final AppBar appBar;
-  final Widget floatingActionButton;
-  final FloatingActionButtonLocation floatingActionButtonLocation;
-  final FloatingActionButtonAnimator floatingActionButtonAnimator;
-  final List<Widget> persistentFooterButtons;
-  final Widget drawer;
-  final Widget endDrawer;
-  final BottomNavigationBar bottomNavigationBar;
-  final Widget bottomSheet;
-  final Color backgroundColor;
-  final bool resizeToAvoidBottomPadding;
-  final bool resizeToAvoidBottomInset;
-  final bool primary;
-  final DragStartBehavior drawerDragStartBehavior;
-  final bool extendBody;
-  final bool extendBodyBehindAppBar;
-  final Color drawerScrimColor;
-  final double drawerEdgeDragWidth;
-  final bool drawerEnableOpenDragGesture;
-  final bool endDrawerEnableOpenDragGesture;
 }
 
 enum FlowDesignType {

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:virtualhole_flutter/client/configs/app_viewmodel.dart';
 import 'package:virtualhole_flutter/midnight_flutter/midnight_flutter.dart';
 import 'package:virtualhole_flutter/api/virtualhole_api_wrapper.dart';
 import 'package:virtualhole_flutter/client/pages/pages.dart';
-import 'package:virtualhole_flutter/app/app_config.dart' as config;
-import 'app_flow.dart';
+import 'configs/configs.dart';
+import 'configs/app_config.dart' as config;
 
 void registerViewModels() {
   VirtualHoleApiWrapperClient vHoleApi =
@@ -15,7 +16,7 @@ void registerViewModels() {
 Future<void> main() async {
   print('Starting app...');
 
-  registerViewModels();
+  AppViewModel().registerViewModels();
 
   runApp(
     FlowHandler(
