@@ -32,7 +32,7 @@ class FlowHandler extends StatelessWidget {
         super(key: key) {
     if (_flowHandler != null) {
       throw Exception(
-          '[Flow Handler] There could only be one Flow Handler in the widget tree.');
+          '[Flow Handler] There could only be one Flow Handler in the entire widget tree.');
     }
     _flowHandler = this;
   }

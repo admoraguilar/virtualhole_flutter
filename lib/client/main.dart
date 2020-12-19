@@ -15,15 +15,22 @@ Future<void> main() async {
   runApp(
     FlowHandler(
       designType: FlowDesignType.Material,
-      initialPages: AppPage().generateInitialPages(),
+      initialPages: AppFlow().generateInitialPages(),
       settings: FlowHandlerSettings(
         title: '${config.appName}',
         theme: ThemeData(
-          primaryColor: Colors.blue[900],
+          brightness: Brightness.dark,
+          primaryColor: Colors.lightBlue[700],
+          accentColor: Colors.lightBlue[700],
+          backgroundColor: Colors.black,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           textTheme: TextTheme(
             headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
             headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          ),
+          scaffoldBackgroundColor: Colors.black,
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            backgroundColor: Colors.black,
           ),
         ),
         debugShowCheckedModeBanner: false,

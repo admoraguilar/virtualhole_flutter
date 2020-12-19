@@ -3,7 +3,7 @@ import 'package:virtualhole_flutter/midnight_flutter/midnight_flutter.dart';
 import 'package:virtualhole_flutter/client/config/config.dart' as config;
 import 'package:virtualhole_flutter/client/pages/pages.dart';
 
-class AppPage {
+class AppFlow {
   List<FlowPage> generateInitialPages() {
     return [_generateDiscoverPage()];
   }
