@@ -1,4 +1,4 @@
 export 'common/common.dart';
-export 'config/config.dart';
+export 'configs/configs.dart';
 export 'pages/pages.dart';
 export 'ui/ui.dart';
