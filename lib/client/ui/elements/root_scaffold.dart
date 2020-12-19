@@ -34,8 +34,10 @@ class RootScaffold extends StatelessWidget {
     return Scaffold(
       body: body,
       appBar: AppBar(
-        title: Text('$title'),
+        // title: Text('$title'),
         automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
@@ -58,6 +60,7 @@ class RootScaffold extends StatelessWidget {
         },
         currentIndex: _bottomNavigationBarIndex,
       ),
+      extendBodyBehindAppBar: true,
     );
   }
 }
