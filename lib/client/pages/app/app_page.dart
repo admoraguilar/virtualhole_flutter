@@ -6,25 +6,21 @@ import 'package:virtualhole_flutter/client/pages/pages.dart';
 class AppPage {
   AppPage();
 
-  List<FlowAppPage> generateInitialPages() {
+  List<FlowPage> generateInitialPages() {
     return [_generateDiscoverPage()];
   }
 
-  FlowAppPage _generateDiscoverPage() {
-    return FlowAppPage(
+  FlowPage _generateDiscoverPage() {
+    return FlowPage(
       key: ValueKey('/discover'),
       name: '/discover',
-      handlerSettingsBuilder: _generateHandlerSettings,
-      scaffoldSettingsBuilder: (FlowAppState flowAppState) {
-        return _generateScaffoldSettings(
-          flowAppState,
-          bottomNavigationBar: _generateBottomNavigationBar(
-            flowAppState,
-            currentIndex: 0,
-          ),
-        );
-      },
-      builder: (FlowAppState flowAppState) {
+      designType: FlowDesignType.Material,
+      scaffoldSettings: _generateScaffoldSettings(
+        bottomNavigationBar: _generateBottomNavigationBar(
+          currentIndex: 0,
+        ),
+      ),
+      builder: (_) {
         print('build discover page');
         return DiscoverPage(
           key: UniqueKey(),
@@ -33,20 +29,16 @@ class AppPage {
     );
   }
 
-  FlowAppPage _generateSupportPage() {
-    return FlowAppPage(
+  FlowPage _generateSupportPage() {
+    return FlowPage(
       key: ValueKey('/support'),
       name: '/support',
-      handlerSettingsBuilder: _generateHandlerSettings,
-      scaffoldSettingsBuilder: (FlowAppState flowAppState) {
-        return _generateScaffoldSettings(
-          flowAppState,
-          bottomNavigationBar: _generateBottomNavigationBar(
-            flowAppState,
-            currentIndex: 3,
-          ),
-        );
-      },
+      designType: FlowDesignType.Material,
+      scaffoldSettings: _generateScaffoldSettings(
+        bottomNavigationBar: _generateBottomNavigationBar(
+          currentIndex: 3,
+        ),
+      ),
       builder: (_) {
         print('build support page');
         return SupportPage(
@@ -56,20 +48,16 @@ class AppPage {
     );
   }
 
-  FlowAppPage _generateTestPage() {
-    return FlowAppPage(
+  FlowPage _generateTestPage() {
+    return FlowPage(
       key: ValueKey('/test'),
       name: '/test',
-      handlerSettingsBuilder: _generateHandlerSettings,
-      scaffoldSettingsBuilder: (FlowAppState flowAppState) {
-        return _generateScaffoldSettings(
-          flowAppState,
-          bottomNavigationBar: _generateBottomNavigationBar(
-            flowAppState,
-            currentIndex: 1,
-          ),
-        );
-      },
+      designType: FlowDesignType.Material,
+      scaffoldSettings: _generateScaffoldSettings(
+        bottomNavigationBar: _generateBottomNavigationBar(
+          currentIndex: 1,
+        ),
+      ),
       builder: (_) {
         print('build test page');
         return Center(
@@ -79,42 +67,36 @@ class AppPage {
     );
   }
 
-  FlowAppPage _generateCounterPage() {
-    return FlowAppPage(
+  FlowPage _generateCounterPage() {
+    return FlowPage(
       key: ValueKey('/counter'),
       name: '/counter',
-      handlerSettingsBuilder: _generateHandlerSettings,
-      scaffoldSettingsBuilder: (FlowAppState flowAppState) {
-        return _generateScaffoldSettings(
-          flowAppState,
-          bottomNavigationBar: _generateBottomNavigationBar(
-            flowAppState,
-            currentIndex: 1,
-          ),
-        );
-      },
-      builder: (FlowAppState flowAppState) {
+      designType: FlowDesignType.Material,
+      scaffoldSettings: _generateScaffoldSettings(
+        bottomNavigationBar: _generateBottomNavigationBar(currentIndex: 1),
+      ),
+      builder: (_) {
         print('build counter page');
         return CounterScreen(
-          key: GlobalKey<NavigatorState>(),
+          key: UniqueKey(),
           onExtraTap: () {
-            flowAppState.triggerSetState(
-              () => flowAppState.pages.add(_generateCounterPage()),
-            );
+            FlowHandler.instance()
+                .routerDelegate
+                .pages
+                .add(_generateCounterPage());
+            FlowHandler.instance().routerDelegate.triggerNotifyListeners();
           },
         );
       },
     );
   }
 
-  FlowAppPage _generateErrorPage() {
-    return FlowAppPage(
+  FlowPage _generateErrorPage() {
+    return FlowPage(
       key: ValueKey('/error'),
       name: '/error',
-      handlerSettingsBuilder: _generateHandlerSettings,
-      scaffoldSettingsBuilder: (FlowAppState flowAppState) {
-        return _generateScaffoldSettings(flowAppState);
-      },
+      designType: FlowDesignType.Material,
+      scaffoldSettings: _generateScaffoldSettings(),
       builder: (_) {
         print('build error page');
         return Center(
@@ -124,30 +106,8 @@ class AppPage {
     );
   }
 
-  FlowHandlerSettings _generateHandlerSettings(FlowAppState flowAppState) {
-    assert(flowAppState != null);
-
-    return FlowHandlerSettings(
-      designType: FlowDesignType.Material,
-      title: '${config.appName}',
-      theme: ThemeData(
-        primaryColor: Colors.blue[900],
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        textTheme: TextTheme(
-          headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-          headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-        ),
-      ),
-      onDeviceBackButtonPressed: flowAppState.handleBackButton,
-    );
-  }
-
   FlowScaffoldSettings _generateScaffoldSettings(
-    FlowAppState flowAppState, {
-    BottomNavigationBar bottomNavigationBar,
-  }) {
-    assert(flowAppState != null);
-
+      {BottomNavigationBar bottomNavigationBar}) {
     return FlowScaffoldSettings(
       appBar: AppBar(
         title: Text('${config.appName}'),
@@ -156,7 +116,7 @@ class AppPage {
           builder: (BuildContext context) {
             return IconButton(
               icon: Icon(Icons.arrow_back),
-              onPressed: flowAppState.handleBackButton,
+              onPressed: FlowHandler.instance().routerDelegate.popRoute,
             );
           },
         ),
@@ -165,15 +125,12 @@ class AppPage {
     );
   }
 
-  Widget _generateBottomNavigationBar(
-    FlowAppState flowAppState, {
-    int currentIndex = 0,
-  }) {
-    assert(flowAppState != null);
+  Widget _generateBottomNavigationBar({int currentIndex = 0}) {
     assert(currentIndex != null && currentIndex > -1);
 
-    void pushPage(FlowAppPage flowAppPage) {
-      flowAppState.triggerSetState(() => flowAppState.pages.add(flowAppPage));
+    void pushPage(FlowPage flowAppPage) {
+      FlowHandler.instance().routerDelegate.pages.add(flowAppPage);
+      FlowHandler.instance().routerDelegate.triggerNotifyListeners();
     }
 
     return BottomNavigationBar(
@@ -240,8 +197,7 @@ class _CounterScreenState extends State<CounterScreen> {
               setState(() {
                 _counter++;
               });
-
-              print(_counter);
+              // print(_counter);
             },
           ),
           FloatingActionButton(
@@ -250,7 +206,7 @@ class _CounterScreenState extends State<CounterScreen> {
               setState(() {
                 _counter--;
               });
-              print(_counter);
+              // print(_counter);
             },
           ),
           FloatingActionButton(
