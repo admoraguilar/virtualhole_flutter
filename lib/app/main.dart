@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:virtualhole_flutter/midnight_flutter/midnight_flutter.dart';
 import 'package:virtualhole_flutter/api/virtualhole_api_wrapper.dart';
-import 'package:virtualhole_flutter/client/config/config.dart' as config;
-import 'pages/pages.dart';
+import 'package:virtualhole_flutter/client/pages/pages.dart';
+import 'package:virtualhole_flutter/app/app_config.dart' as config;
+import 'app_flow.dart';
+
+void registerViewModels() {
+  VirtualHoleApiWrapperClient vHoleApi =
+      VirtualHoleApiWrapperClient.managed(domain: config.kVirtualHoleApi);
+
+  ViewModel.add(SupportListViewModel(resourcesClient: vHoleApi.resources));
+}
 
 Future<void> main() async {
   print('Starting app...');
 
-  VirtualHoleApiWrapperClient vHoleApi =
-      VirtualHoleApiWrapperClient.managed(domain: config.virtualHoleApi);
-
-  ViewModel.add(SupportListViewModel(resourcesClient: vHoleApi.resources));
+  registerViewModels();
 
   runApp(
     FlowHandler(
       designType: FlowDesignType.Material,
       initialPages: AppFlow().generateInitialPages(),
       settings: FlowHandlerSettings(
-        title: '${config.appName}',
+        title: '${config.kAppName}',
         theme: ThemeData(
           brightness: Brightness.dark,
           primaryColor: Colors.lightBlue[700],

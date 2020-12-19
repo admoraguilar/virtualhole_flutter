@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:virtualhole_flutter/midnight_flutter/midnight_flutter.dart';
-import 'package:virtualhole_flutter/client/config/config.dart' as config;
 import 'package:virtualhole_flutter/client/pages/pages.dart';
+import 'package:virtualhole_flutter/app/app_config.dart' as config;
 
 class AppFlow {
   List<FlowPage> generateInitialPages() {
@@ -92,7 +92,7 @@ class AppFlow {
       {BottomNavigationBar bottomNavigationBar}) {
     return FlowScaffoldSettings(
       appBar: AppBar(
-        title: Text('${config.appName}'),
+        title: Text('${config.kAppName}'),
         automaticallyImplyLeading: false,
         leading: Builder(
           builder: (BuildContext context) {
