@@ -2,25 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:virtualhole_flutter/midnight_flutter/midnight_flutter.dart';
 
 class RootScaffold extends StatelessWidget {
+  static int _bottomNavigationBarIndex;
+
   const RootScaffold({
     Key key,
+    this.bottomNavigationBarIndex,
     @required this.title,
     @required this.body,
-    @required this.pages,
+    @required this.pageBuilder,
     @required this.bottomNavigationBarItems,
   })  : assert(body != null),
-        assert(pages != null),
+        assert(pageBuilder != null),
         assert(bottomNavigationBarItems != null),
-        assert(pages.length == bottomNavigationBarItems.length),
         super(key: key);
 
   final String title;
   final Widget body;
-  final List<FlowPage> pages;
+  final List<FlowPage> Function() pageBuilder;
   final List<BottomNavigationBarItem> bottomNavigationBarItems;
+  final int bottomNavigationBarIndex;
 
   @override
   Widget build(BuildContext context) {
+    if (bottomNavigationBarIndex != null) {
+      _bottomNavigationBarIndex =
+          bottomNavigationBarIndex >= bottomNavigationBarItems.length
+              ? 0
+              : bottomNavigationBarIndex;
+    }
+
     return Scaffold(
       body: body,
       appBar: AppBar(
@@ -39,10 +49,14 @@ class RootScaffold extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         items: bottomNavigationBarItems,
         onTap: (int index) {
+          List<FlowPage> pages = pageBuilder();
+          assert(pages.length == bottomNavigationBarItems.length);
+
           FlowHandler.get().routerDelegate.setDirty(() {
             FlowHandler.get().routerDelegate.pages.add(pages[index]);
           });
         },
+        currentIndex: _bottomNavigationBarIndex,
       ),
     );
   }

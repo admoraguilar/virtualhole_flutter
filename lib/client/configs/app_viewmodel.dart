@@ -1,12 +1,12 @@
 import 'package:virtualhole_flutter/midnight_flutter/midnight_flutter.dart';
 import 'package:virtualhole_flutter/api/virtualhole_api_wrapper.dart';
 import 'package:virtualhole_flutter/client/pages/pages.dart';
-import 'package:virtualhole_flutter/client/configs/app_config.dart' as config;
+import 'app_config.dart';
 
 class AppViewModel {
   void registerViewModels() {
     VirtualHoleApiWrapperClient vHoleApi =
-        VirtualHoleApiWrapperClient.managed(domain: config.kVirtualHoleApi);
+        VirtualHoleApiWrapperClient.managed(domain: AppConfig.virtualHoleApi);
 
     ViewModel.add(SupportListViewModel(resourcesClient: vHoleApi.resources));
   }

@@ -4,11 +4,10 @@ import 'package:virtualhole_flutter/midnight_flutter/midnight_flutter.dart';
 import 'package:virtualhole_flutter/api/virtualhole_api_wrapper.dart';
 import 'package:virtualhole_flutter/client/pages/pages.dart';
 import 'configs/configs.dart';
-import 'configs/app_config.dart' as config;
 
 void registerViewModels() {
   VirtualHoleApiWrapperClient vHoleApi =
-      VirtualHoleApiWrapperClient.managed(domain: config.kVirtualHoleApi);
+      VirtualHoleApiWrapperClient.managed(domain: AppConfig.virtualHoleApi);
 
   ViewModel.add(SupportListViewModel(resourcesClient: vHoleApi.resources));
 }
@@ -21,9 +20,9 @@ Future<void> main() async {
   runApp(
     FlowHandler(
       designType: FlowDesignType.Material,
-      initialPages: AppFlow().generateInitialPages(),
+      initialPages: RootFlowPageHelper.generateInitialPages(),
       settings: FlowHandlerSettings(
-        title: '${config.kAppName}',
+        title: '${AppConfig.appName}',
         theme: ThemeData(
           brightness: Brightness.dark,
           primaryColor: Colors.lightBlue[700],

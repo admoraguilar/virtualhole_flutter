@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-FlowHandler _flowHandler;
-
 class FlowHandler extends StatelessWidget {
+  static FlowHandler _flowHandler;
+
   static FlowHandler get() {
     if (_flowHandler == null) {
       throw Exception('[Flow Handler] No current instance of FlowHandler');
