@@ -12,7 +12,7 @@ class AppPage {
 
   FlowPage _generateDiscoverPage() {
     return FlowPage(
-      key: ValueKey('/discover'),
+      key: UniqueKey(),
       name: '/discover',
       designType: FlowDesignType.Material,
       scaffoldSettings: _generateScaffoldSettings(
@@ -20,18 +20,15 @@ class AppPage {
           currentIndex: 0,
         ),
       ),
-      builder: (_) {
-        print('build discover page');
-        return DiscoverPage(
-          key: UniqueKey(),
-        );
-      },
+      child: DiscoverPage(
+        key: GlobalKey<NavigatorState>(),
+      ),
     );
   }
 
   FlowPage _generateSupportPage() {
     return FlowPage(
-      key: ValueKey('/support'),
+      key: UniqueKey(),
       name: '/support',
       designType: FlowDesignType.Material,
       scaffoldSettings: _generateScaffoldSettings(
@@ -39,18 +36,15 @@ class AppPage {
           currentIndex: 3,
         ),
       ),
-      builder: (_) {
-        print('build support page');
-        return SupportPage(
-          key: UniqueKey(),
-        );
-      },
+      child: SupportPage(
+        key: GlobalKey<NavigatorState>(),
+      ),
     );
   }
 
   FlowPage _generateTestPage() {
     return FlowPage(
-      key: ValueKey('/test'),
+      key: UniqueKey(),
       name: '/test',
       designType: FlowDesignType.Material,
       scaffoldSettings: _generateScaffoldSettings(
@@ -58,51 +52,43 @@ class AppPage {
           currentIndex: 1,
         ),
       ),
-      builder: (_) {
-        print('build test page');
-        return Center(
-          child: Text('Hello!!'),
-        );
-      },
+      child: Center(
+        child: Text('Hello!!'),
+      ),
     );
   }
 
   FlowPage _generateCounterPage() {
     return FlowPage(
-      key: ValueKey('/counter'),
+      key: UniqueKey(),
       name: '/counter',
       designType: FlowDesignType.Material,
       scaffoldSettings: _generateScaffoldSettings(
         bottomNavigationBar: _generateBottomNavigationBar(currentIndex: 1),
       ),
-      builder: (_) {
-        print('build counter page');
-        return CounterScreen(
-          key: UniqueKey(),
-          onExtraTap: () {
-            FlowHandler.instance()
-                .routerDelegate
-                .pages
-                .add(_generateCounterPage());
-            FlowHandler.instance().routerDelegate.triggerNotifyListeners();
-          },
-        );
-      },
+      child: CounterScreen(
+        key: GlobalKey<NavigatorState>(),
+        onExtraTap: () {
+          FlowHandler.instance()
+              .routerDelegate
+              .pages
+              .add(_generateCounterPage());
+          FlowHandler.instance().routerDelegate.triggerNotifyListeners();
+        },
+      ),
     );
   }
 
   FlowPage _generateErrorPage() {
     return FlowPage(
-      key: ValueKey('/error'),
+      key: UniqueKey(),
       name: '/error',
       designType: FlowDesignType.Material,
       scaffoldSettings: _generateScaffoldSettings(),
-      builder: (_) {
-        print('build error page');
-        return Center(
-          child: Text('404 ERROR!!'),
-        );
-      },
+      child: Center(
+        key: GlobalKey<NavigatorState>(),
+        child: Text('404 ERROR!!'),
+      ),
     );
   }
 

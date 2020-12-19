@@ -223,10 +223,8 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
   Widget build(BuildContext context) {
     Widget generateScaffold() {
       FlowPage topPage = pages.length > 0 ? pages.last : null;
-
       if (topPage != null) {
         return Scaffold(
-          key: navigatorKey,
           body: Navigator(
             key: navigatorKey,
             pages: pages,
@@ -276,23 +274,22 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
           "[Flow App State] Page stack is empty! Make sure initial pages are not empty or that you're not emptying the page stack.");
     }
 
-    LocalKey rootFlowKey = ValueKey('root_flow');
-    Page<dynamic> rootFlow;
-
-    if (designType == FlowDesignType.Material) {
-      rootFlow = MaterialPage(
-        key: rootFlowKey,
-        child: generateScaffold(),
-      );
-    } else if (designType == FlowDesignType.Cupertino) {
-      rootFlow = CupertinoPage(
-        key: rootFlowKey,
-        child: generateScaffold(),
-      );
-    }
+    LocalKey rootFlowKey = ValueKey('root');
 
     return Navigator(
-      pages: [rootFlow],
+      key: navigatorKey,
+      pages: [
+        if (designType == FlowDesignType.Material)
+          MaterialPage(
+            key: rootFlowKey,
+            child: generateScaffold(),
+          ),
+        if (designType == FlowDesignType.Cupertino)
+          CupertinoPage(
+            key: rootFlowKey,
+            child: generateScaffold(),
+          ),
+      ],
       onPopPage: (Route<dynamic> route, dynamic result) {
         print('[Flow Handler] Navigator pop.');
         return route.didPop(result);
@@ -328,21 +325,22 @@ class FlowPage<T> extends Page<T> {
   FlowPage({
     @required this.designType,
     @required this.scaffoldSettings,
-    @required this.builder,
+    @required this.child,
     LocalKey key,
     String name,
     Object arguments,
-  })  : assert(scaffoldSettings != null),
-        assert(builder != null),
+  })  : assert(designType != null),
+        assert(scaffoldSettings != null),
+        assert(child != null),
         super(
-          key: key,
+          key: key ?? UniqueKey(),
           name: name,
           arguments: arguments,
         );
 
   final FlowDesignType designType;
   final FlowScaffoldSettings scaffoldSettings;
-  final Widget Function(BuildContext) builder;
+  final Widget child;
 
   @override
   Route<T> createRoute(BuildContext context) {
@@ -351,7 +349,7 @@ class FlowPage<T> extends Page<T> {
         key: key,
         name: name,
         arguments: arguments,
-        child: builder(context),
+        child: child,
       ).createRoute(context);
     } else if (designType == FlowDesignType.Cupertino) {
       return CupertinoPage(
@@ -359,7 +357,7 @@ class FlowPage<T> extends Page<T> {
         title: name,
         name: name,
         arguments: arguments,
-        child: builder(context),
+        child: child,
       ).createRoute(context);
     }
 
