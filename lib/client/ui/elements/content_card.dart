@@ -15,28 +15,38 @@ class ContentCard extends StatelessWidget {
     return GestureDetector(
       child: Card(
         margin: EdgeInsets.symmetric(horizontal: 8.0),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Stack(
-            children: [
-              Container(
-                width: double.infinity,
-                height: 220,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(url, scale: 1),
-                    fit: BoxFit.cover,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Stack(
+          children: [
+            Container(
+              width: double.infinity,
+              height: 220,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(
+                    url,
+                    scale: 1,
                   ),
-                ),
-                foregroundDecoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.transparent, Colors.black],
-                    begin: Alignment.center,
-                    end: Alignment.bottomCenter,
-                  ),
+                  fit: BoxFit.cover,
                 ),
               ),
-              Row(
+              foregroundDecoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.transparent,
+                    Colors.black,
+                  ],
+                  begin: Alignment.center,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -65,7 +75,7 @@ class ContentCard extends StatelessWidget {
                               CircleAvatar(
                                 radius: 8,
                                 backgroundImage: NetworkImage(
-                                  'https://yt3.ggpht.com/ytc/AAUvwnimjdERaJDGopfH8UaB0r9tr_p8uyuEWWyYVkAd5Q=s900-c-k-c0x00ffffff-no-rj',
+                                  'https://yt3.ggpht.com/ytc/AAUvwnjdAl5rn3IjWzl55_0-skvKced7znPZRuPC5xLB=s900-c-k-c0x00ffffff-no-rj',
                                   scale: 1,
                                 ),
                               ),
@@ -73,7 +83,7 @@ class ContentCard extends StatelessWidget {
                                 width: 4,
                               ),
                               Text(
-                                'Korone Ch. 戌神ころね',
+                                'Suisei Channel',
                                 style: TextStyle(
                                   fontSize: 11,
                                   color: Colors.white,
@@ -113,8 +123,8 @@ class ContentCard extends StatelessWidget {
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         color: Colors.black,
       ),

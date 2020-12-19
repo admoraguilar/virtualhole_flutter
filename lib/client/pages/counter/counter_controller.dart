@@ -1,4 +1,4 @@
-import 'package:virtualhole_flutter/common/common.dart';
+import 'package:virtualhole_flutter/midnight_flutter/midnight_flutter.dart';
 import 'counter_viewmodel.dart';
 
 class CounterController extends ViewModelController {
