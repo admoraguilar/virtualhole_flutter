@@ -5,13 +5,13 @@ import 'package:virtualhole_flutter/client/pages/pages.dart';
 class RootFlowPageHelper {
   static List<FlowPage> generateInitialPages() {
     return [
-      DiscoverFlowPage(),
+      HomeFlowPage(),
     ];
   }
 
   static List<FlowPage> generateRootPages() {
     return [
-      DiscoverFlowPage(),
+      HomeFlowPage(),
       CounterFlowPage(),
       ErrorFlowPage(),
       SupportFlowPage(),

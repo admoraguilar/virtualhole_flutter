@@ -4,15 +4,15 @@ import 'package:virtualhole_flutter/client/configs/configs.dart';
 import 'package:virtualhole_flutter/client/ui/ui.dart';
 import 'package:virtualhole_flutter/client/pages/pages.dart';
 
-class DiscoverFlowPage<T> extends FlowPage<T> {
-  DiscoverFlowPage()
+class HomeFlowPage<T> extends FlowPage<T> {
+  HomeFlowPage()
       : super(
           key: UniqueKey(),
-          name: '/discover',
+          name: '/home',
           designType: FlowDesignType.Material,
           child: RootScaffold(
             title: '${AppConfig.appName}',
-            body: DiscoverPage(
+            body: HomePage(
               key: GlobalKey<NavigatorState>(),
             ),
             pageBuilder: () => RootFlowPageHelper.generateRootPages(),

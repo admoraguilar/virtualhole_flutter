@@ -43,7 +43,7 @@ class YouTubeVideo extends Content {
   final int dislikesCount;
 
   factory YouTubeVideo.fromJson(Map<String, dynamic> json) {
-    Content content = Content.fromJson(json);
+    Content content = Content.fromJsonDirect(json);
 
     return YouTubeVideo(
       socialType: content.socialType,

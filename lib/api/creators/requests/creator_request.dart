@@ -9,7 +9,6 @@ class CreatorRequest extends PagedRequest {
     int maxPages,
     this.search,
   }) : super(
-          timestamp: timestamp,
           locale: locale,
           page: page,
           pageSize: pageSize,
@@ -25,5 +24,23 @@ class CreatorRequest extends PagedRequest {
       'search': search,
     });
     return superMap;
+  }
+
+  CreatorRequest copyWith({
+    DateTime timestamp,
+    String locale,
+    int page,
+    int pageSize,
+    int maxPages,
+    String search,
+  }) {
+    return CreatorRequest(
+      timestamp: timestamp ?? this.timestamp,
+      locale: locale ?? this.locale,
+      page: page ?? this.page,
+      pageSize: pageSize ?? this.pageSize,
+      maxPages: maxPages ?? this.maxPages,
+      search: search ?? this.search,
+    );
   }
 }

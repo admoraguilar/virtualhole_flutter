@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContentCard extends StatelessWidget {
   const ContentCard({
     Key key,
+    @required this.title,
+    @required this.creatorName,
+    @required this.creatorAvatarUrl,
+    @required this.creationDateDisplay,
+    @required this.thumbnailUrl,
     @required this.url,
   }) : super(
           key: key,
         );
 
+  final String title;
+  final String creatorName;
+  final String creatorAvatarUrl;
+  final String creationDateDisplay;
+  final String thumbnailUrl;
   final String url;
 
   @override
@@ -27,7 +38,7 @@ class ContentCard extends StatelessWidget {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
-                    url,
+                    thumbnailUrl,
                     scale: 1,
                   ),
                   fit: BoxFit.cover,
@@ -60,7 +71,7 @@ class ContentCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '【ころね視点】 日本語と英語で爆弾解除に挑戦する2人【Calliope Mori COLLAB】',
+                            title,
                             style: TextStyle(
                               fontSize: 11,
                               color: Colors.white,
@@ -75,7 +86,7 @@ class ContentCard extends StatelessWidget {
                               CircleAvatar(
                                 radius: 8,
                                 backgroundImage: NetworkImage(
-                                  'https://yt3.ggpht.com/ytc/AAUvwnjdAl5rn3IjWzl55_0-skvKced7znPZRuPC5xLB=s900-c-k-c0x00ffffff-no-rj',
+                                  creatorAvatarUrl,
                                   scale: 1,
                                 ),
                               ),
@@ -83,7 +94,7 @@ class ContentCard extends StatelessWidget {
                                 width: 4,
                               ),
                               Text(
-                                'Suisei Channel',
+                                creatorName,
                                 style: TextStyle(
                                   fontSize: 11,
                                   color: Colors.white,
@@ -95,7 +106,7 @@ class ContentCard extends StatelessWidget {
                             height: 3.0,
                           ),
                           Text(
-                            'Streamed live on Nov 27, 2020',
+                            creationDateDisplay,
                             style: TextStyle(
                               fontSize: 11,
                               color: Colors.white,
@@ -128,7 +139,7 @@ class ContentCard extends StatelessWidget {
         ),
         color: Colors.black,
       ),
-      onTap: () => print('tap content'),
+      onTap: () => launch(url),
     );
   }
 }

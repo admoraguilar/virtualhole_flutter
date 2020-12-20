@@ -41,6 +41,11 @@ class Content implements Equatable {
       }
     }
 
+    throw UnimplementedError(
+        '[Content] Unimplmented content type: ${json[socialTypeKey]} : ${json[contentTypeKey]}');
+  }
+
+  factory Content.fromJsonDirect(Map<String, dynamic> json) {
     return Content(
       socialType: json['socialType'],
       contentType: json['contentType'],

@@ -1,14 +1,15 @@
 import 'package:virtualhole_flutter/api/api.dart';
 
-class PagedRequest extends APIRequest {
+abstract class PagedRequest extends APIRequest {
   const PagedRequest({
-    DateTime timestamp,
     String locale,
-    this.pageSize,
-    this.maxPages,
-    this.page,
-  }) : super(
-          timestamp: timestamp,
+    int page,
+    int pageSize,
+    int maxPages,
+  })  : this.page = page ?? 1,
+        this.pageSize = pageSize ?? 20,
+        this.maxPages = maxPages ?? 100,
+        super(
           locale: locale,
         );
 

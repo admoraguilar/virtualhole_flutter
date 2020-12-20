@@ -6,7 +6,6 @@ class ResourceRequest extends APIRequest {
     String locale,
     this.path,
   }) : super(
-          timestamp: timestamp,
           locale: locale,
         );
 
@@ -19,5 +18,17 @@ class ResourceRequest extends APIRequest {
       'path': path,
     });
     return superMap;
+  }
+
+  ResourceRequest copyWith({
+    DateTime timestamp,
+    String locale,
+    String path,
+  }) {
+    return ResourceRequest(
+      timestamp: timestamp ?? this.timestamp,
+      locale: locale ?? this.locale,
+      path: path ?? this.path,
+    );
   }
 }

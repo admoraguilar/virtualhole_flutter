@@ -18,7 +18,6 @@ class ContentRequest extends PagedRequest {
       this.creatorSocialIds,
       this.creatorSocialUrls})
       : super(
-          timestamp: timestamp,
           locale: locale,
           page: page,
           pageSize: pageSize,
@@ -36,6 +35,13 @@ class ContentRequest extends PagedRequest {
   final List<String> creatorSocialIds;
   final List<String> creatorSocialUrls;
 
+  factory ContentRequest.discover() {
+    return ContentRequest(
+      isContentTypeInclude: true,
+      contentType: [ContentType.video],
+    );
+  }
+
   @override
   Map<String, dynamic> toJson() {
     Map<String, dynamic> superMap = super.toJson();
@@ -52,5 +58,41 @@ class ContentRequest extends PagedRequest {
       'creatorSocialUrls': creatorSocialUrls
     });
     return superMap;
+  }
+
+  ContentRequest copyWith({
+    DateTime timestamp,
+    String locale,
+    int page,
+    int pageSize,
+    int maxPages,
+    bool isSocialTypeInclude,
+    List<String> socialType,
+    bool isContentTypeInclude,
+    List<String> contentType,
+    bool isCreatorsInclude,
+    List<String> creatorIds,
+    bool isCreatorRelated,
+    List<String> creatorNames,
+    List<String> creatorSocialIds,
+    List<String> creatorSocialUrls,
+  }) {
+    return ContentRequest(
+      timestamp: timestamp ?? this.timestamp,
+      locale: locale ?? this.locale,
+      page: page ?? this.page,
+      pageSize: pageSize ?? this.pageSize,
+      maxPages: maxPages ?? this.maxPages,
+      isSocialTypeInclude: isSocialTypeInclude ?? this.isSocialTypeInclude,
+      socialType: socialType ?? this.socialType,
+      isContentTypeInclude: isContentTypeInclude ?? this.isContentTypeInclude,
+      contentType: contentType ?? this.contentType,
+      isCreatorsInclude: isCreatorsInclude ?? this.isCreatorsInclude,
+      creatorIds: creatorIds ?? this.creatorIds,
+      isCreatorRelated: isCreatorRelated ?? this.isCreatorRelated,
+      creatorNames: creatorNames ?? this.creatorNames,
+      creatorSocialIds: creatorSocialIds ?? this.creatorSocialIds,
+      creatorSocialUrls: creatorSocialUrls ?? this.creatorSocialUrls,
+    );
   }
 }

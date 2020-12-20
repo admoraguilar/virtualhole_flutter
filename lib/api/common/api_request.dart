@@ -1,11 +1,11 @@
 abstract class APIRequest {
   const APIRequest({
-    this.timestamp,
-    this.locale,
-  });
+    String locale,
+  }) : this.locale = locale ?? 'en-US';
 
-  final DateTime timestamp;
   final String locale;
+
+  DateTime get timestamp => DateTime.now().toUtc();
 
   Map<String, dynamic> toJson() {
     return {
@@ -18,7 +18,13 @@ abstract class APIRequest {
     Map<String, String> result = {};
     toJson().forEach((key, value) {
       if (value != null) {
-        result.addAll({key: value.toJson()});
+        if (value is List) {
+          value.forEach((element) {
+            result.addAll({key: element.toString()});
+          });
+        } else {
+          result.addAll({key: value.toString()});
+        }
       }
     });
     return result;
