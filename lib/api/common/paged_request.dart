@@ -1,4 +1,4 @@
-import 'package:virtualhole_flutter/api/common/api_request.dart';
+import 'package:virtualhole_flutter/api/api.dart';
 
 class PagedRequest extends APIRequest {
   const PagedRequest({
@@ -16,6 +16,7 @@ class PagedRequest extends APIRequest {
   final int pageSize;
   final int maxPages;
 
+  @override
   Map<String, dynamic> toJson() {
     Map<String, dynamic> map = super.toJson();
     map.addAll({

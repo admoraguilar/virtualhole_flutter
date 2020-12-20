@@ -1,4 +1,4 @@
-import 'package:virtualhole_flutter/api/contents/types/youtube_video.dart';
+import 'package:virtualhole_flutter/api/api.dart';
 
 class YouTubeBroadcast extends YouTubeVideo {
   static List<YouTubeBroadcast> fromJsonDecode(dynamic jsonDecode) {

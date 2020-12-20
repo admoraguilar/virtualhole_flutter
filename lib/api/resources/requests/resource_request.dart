@@ -1,4 +1,4 @@
-import 'package:virtualhole_flutter/api/common/api_request.dart';
+import 'package:virtualhole_flutter/api/api.dart';
 
 class ResourceRequest extends APIRequest {
   const ResourceRequest({

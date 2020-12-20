@@ -1,11 +1,5 @@
-import 'package:flutter/cupertino.dart';
-import 'contents/contents_client.dart';
-import 'creators/creator_client.dart';
-import 'resources/resources_client.dart';
-
-export 'contents/contents_client.dart';
-export 'creators/creator_client.dart';
-export 'resources/resources_client.dart';
+import 'package:flutter/foundation.dart';
+import 'package:virtualhole_flutter/api/api.dart';
 
 class VirtualHoleApiWrapperClient {
   VirtualHoleApiWrapperClient({

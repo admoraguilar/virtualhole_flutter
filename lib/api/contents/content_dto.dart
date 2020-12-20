@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:virtualhole_flutter/api/contents/content.dart';
+import 'package:virtualhole_flutter/api/api.dart';
 
 class ContentDTO implements Equatable {
   static List<ContentDTO> fromJsonDecode(dynamic jsonDecode) {

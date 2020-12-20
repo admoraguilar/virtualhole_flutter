@@ -1,6 +1,6 @@
 import 'dart:core';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:virtualhole_flutter/api/api.dart';
 
 abstract class APIClient {
   APIClient({this.domain}) : assert(domain.isNotEmpty);
@@ -10,34 +10,59 @@ abstract class APIClient {
   String get version;
   String get rootPath;
 
-  Future<dynamic> getAsync<T>(String url) async {
-    http.Response res = await http.get(url);
-    return json.decode(res.body);
+  Future<APIResponse<T>> getAsync<T>(
+      Uri uri, T Function(dynamic) decoder) async {
+    http.Response res = await http.get(uri);
+    return APIResponse(
+      body: decoder(res.body),
+      error: _createError(res),
+    );
   }
 
-  Future<dynamic> postAsync(String url, dynamic body) async {
-    http.Response res = await http.post(url,
-        headers: <String, String>{'Content-Type': 'application/json'},
-        body: body);
-    return json.decode(res.body);
+  Future<APIResponse<String>> postAsync(dynamic uri, dynamic body) async {
+    http.Response res = await http.post(
+      uri,
+      headers: <String, String>{'Content-Type': 'application/json'},
+      body: body,
+    );
+    return APIResponse(
+      body: res.body,
+      error: _createError(res),
+    );
   }
 
-  String createUri(String slug, {String subPath}) {
-    String fullPath = '$domain';
+  Uri createUri({
+    String subPath,
+    String slug,
+    Map<String, dynamic> queryParameters,
+  }) {
+    String path = '';
 
     if (version.isNotEmpty) {
-      fullPath += '/$version';
+      path += '/$version';
     }
 
     if (rootPath.isNotEmpty) {
-      fullPath += '/$rootPath';
+      path += '/$rootPath';
     }
 
     if (subPath != null && subPath.isNotEmpty) {
-      fullPath += '/$subPath';
+      path += '/$subPath';
     }
 
-    fullPath += '/$slug';
-    return fullPath;
+    if (slug != null && subPath.isNotEmpty) {
+      path += '/$slug';
+    }
+
+    return Uri.https(domain, path, queryParameters);
+  }
+
+  APIError _createError(http.Response res) {
+    return res.statusCode >= 400
+        ? APIError(
+            statusCode: res.statusCode,
+            reasonPhrase: res.reasonPhrase,
+          )
+        : null;
   }
 }

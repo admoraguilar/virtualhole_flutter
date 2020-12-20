@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:virtualhole_flutter/api/common/api_response.dart';
 import 'package:virtualhole_flutter/midnight_flutter/midnight_flutter.dart';
-import 'package:virtualhole_flutter/api/virtualhole_api_wrapper.dart';
+import 'package:virtualhole_flutter/api/api.dart';
 import 'package:virtualhole_flutter/client/ui/ui.dart';
 import 'package:virtualhole_flutter/client/pages/support/support_list_viewmodel.dart';
 
@@ -15,10 +16,10 @@ class SupportPage extends StatelessWidget {
 
     return FutureBuilder(
         future: supportListViewModel.resourcesClient.getSupportListAsync(),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<SupportInfo>> snapshot) {
+        builder: (BuildContext context,
+            AsyncSnapshot<APIResponse<List<SupportInfo>>> snapshot) {
           if (snapshot.hasData) {
-            List<SupportInfo> supportList = snapshot.data;
+            List<SupportInfo> supportList = snapshot.data.body;
             return ListView.builder(
               itemBuilder: (BuildContext context, int index) {
                 SupportInfo supportInfo = supportList[index];
@@ -36,7 +37,8 @@ class SupportPage extends StatelessWidget {
                         header: supportInfo.header,
                         content: supportInfo.content,
                         imageUrl: supportListViewModel.resourcesClient
-                            .buildObjectUrl(supportInfo.imagePath),
+                            .buildObjectUri(supportInfo.imagePath)
+                            .toString(),
                         onTap: () => launch(supportInfo.url),
                       ),
                     ],

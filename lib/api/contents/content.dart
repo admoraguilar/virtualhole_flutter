@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:virtualhole_flutter/api/contents/types/youtube_broadcast.dart';
-import 'package:virtualhole_flutter/api/contents/types/youtube_video.dart';
+import 'package:virtualhole_flutter/api/api.dart';
 
 class Content implements Equatable {
   static List<Content> fromJsonDecode(dynamic jsonDecode) {

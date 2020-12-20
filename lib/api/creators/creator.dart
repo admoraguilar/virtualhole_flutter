@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:virtualhole_flutter/api/creators/creator_social.dart';
+import 'package:virtualhole_flutter/api/api.dart';
 
 class Creator implements Equatable {
   static List<Creator> fromJsonDecode(dynamic jsonDecode) {

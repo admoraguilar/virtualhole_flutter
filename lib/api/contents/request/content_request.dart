@@ -1,4 +1,4 @@
-import 'package:virtualhole_flutter/api/common/paged_request.dart';
+import 'package:virtualhole_flutter/api/api.dart';
 
 class ContentRequest extends PagedRequest {
   const ContentRequest(

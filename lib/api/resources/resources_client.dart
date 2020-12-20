@@ -1,7 +1,4 @@
-import 'package:virtualhole_flutter/api/common/api_client.dart';
-import 'support_info.dart';
-
-export 'support_info.dart';
+import 'package:virtualhole_flutter/api/api.dart';
 
 class ResourcesClient extends APIClient {
   ResourcesClient({String domain})
@@ -14,13 +11,12 @@ class ResourcesClient extends APIClient {
   @override
   String get rootPath => "resources";
 
-  Future<List<SupportInfo>> getSupportListAsync() async {
-    String query = '?path=dynamic/support-list.json';
-    return SupportInfo.fromJsonDecode(await getAsync(createUri(query)));
+  Future<APIResponse<List<SupportInfo>>> getSupportListAsync() async {
+    return await getAsync(buildObjectUri('dynamic/support-list.json'),
+        SupportInfo.fromJsonDecode);
   }
 
-  String buildObjectUrl(String path) {
-    String query = '?path=$path';
-    return createUri(query);
+  Uri buildObjectUri(String path) {
+    return createUri(queryParameters: {'path': path});
   }
 }

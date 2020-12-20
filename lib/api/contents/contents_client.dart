@@ -1,7 +1,4 @@
-import 'package:virtualhole_flutter/api/common/api_client.dart';
-import 'package:virtualhole_flutter/api/contents/content.dart';
-import 'package:virtualhole_flutter/api/contents/request/content_request.dart';
-export 'content.dart';
+import 'package:virtualhole_flutter/api/api.dart';
 
 class ContentsClient extends APIClient {
   ContentsClient({String domain})
@@ -14,8 +11,8 @@ class ContentsClient extends APIClient {
   @override
   String get rootPath => 'contents';
 
-  Future<List<Content>> get(ContentRequest query) async {
-    String path = '';
-    return Content.fromJsonDecode(await getAsync(createUri(path)));
+  Future<APIResponse<List<ContentDTO>>> get(ContentRequest request) async {
+    return await getAsync(createUri(queryParameters: request.toJson()),
+        ContentDTO.fromJsonDecode);
   }
 }
