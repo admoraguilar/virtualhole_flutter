@@ -12,7 +12,7 @@ class CreatorsClient extends APIClient {
   String get rootPath => 'creators';
 
   Future<APIResponse<List<Creator>>> get(CreatorRequest request) async {
-    return await getAsync(
-        createUri(queryParameters: request.toJson()), Creator.fromJsonDecode);
+    return await getAsync(createUri(queryParameters: request.toQueryMap()),
+        Creator.fromJsonDecode);
   }
 }

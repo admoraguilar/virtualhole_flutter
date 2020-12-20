@@ -12,7 +12,7 @@ class ContentsClient extends APIClient {
   String get rootPath => 'contents';
 
   Future<APIResponse<List<ContentDTO>>> get(ContentRequest request) async {
-    return await getAsync(createUri(queryParameters: request.toJson()),
+    return await getAsync(createUri(queryParameters: request.toQueryMap()),
         ContentDTO.fromJsonDecode);
   }
 }

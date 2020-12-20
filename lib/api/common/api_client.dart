@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:virtualhole_flutter/api/api.dart';
 
@@ -12,14 +13,16 @@ abstract class APIClient {
 
   Future<APIResponse<T>> getAsync<T>(
       Uri uri, T Function(dynamic) decoder) async {
+    print('[API Client] Sending GET: ${uri.toString()}');
     http.Response res = await http.get(uri);
     return APIResponse(
-      body: decoder(res.body),
+      body: decoder(jsonDecode(res.body)),
       error: _createError(res),
     );
   }
 
   Future<APIResponse<String>> postAsync(dynamic uri, dynamic body) async {
+    print('[API Client] Sending POST: ${uri.toString()}');
     http.Response res = await http.post(
       uri,
       headers: <String, String>{'Content-Type': 'application/json'},
@@ -34,7 +37,7 @@ abstract class APIClient {
   Uri createUri({
     String subPath,
     String slug,
-    Map<String, dynamic> queryParameters,
+    Map<String, String> queryParameters,
   }) {
     String path = '';
 

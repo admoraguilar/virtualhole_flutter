@@ -18,6 +18,9 @@ class SupportPage extends StatelessWidget {
         future: supportListViewModel.resourcesClient.getSupportListAsync(),
         builder: (BuildContext context,
             AsyncSnapshot<APIResponse<List<SupportInfo>>> snapshot) {
+          if (snapshot.hasError) {
+            throw snapshot.error;
+          }
           if (snapshot.hasData) {
             List<SupportInfo> supportList = snapshot.data.body;
             return ListView.builder(
