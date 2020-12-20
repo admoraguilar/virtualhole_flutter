@@ -11,10 +11,9 @@ class SupportFlowPage<T> extends FlowPage<T> {
           name: '/support',
           designType: FlowDesignType.Material,
           child: RootScaffold(
+            key: GlobalKey<NavigatorState>(),
             title: '${AppConfig.appName}',
-            body: SupportPage(
-              key: GlobalKey<NavigatorState>(),
-            ),
+            body: SupportPage(),
             pageBuilder: () => RootFlowPageHelper.generateRootPages(),
             bottomNavigationBarItems:
                 RootFlowPageHelper.generateBottomNavigationBarItems(),

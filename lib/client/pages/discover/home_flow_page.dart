@@ -11,10 +11,9 @@ class HomeFlowPage<T> extends FlowPage<T> {
           name: '/home',
           designType: FlowDesignType.Material,
           child: RootScaffold(
+            key: GlobalKey<NavigatorState>(),
             title: '${AppConfig.appName}',
-            body: HomePage(
-              key: GlobalKey<NavigatorState>(),
-            ),
+            body: HomePage(),
             pageBuilder: () => RootFlowPageHelper.generateRootPages(),
             bottomNavigationBarItems:
                 RootFlowPageHelper.generateBottomNavigationBarItems(),

@@ -11,9 +11,9 @@ class CounterFlowPage<T> extends FlowPage<T> {
           name: '/counter',
           designType: FlowDesignType.Material,
           child: RootScaffold(
+            key: GlobalKey<NavigatorState>(),
             title: '${AppConfig.appName}',
             body: CounterScreen(
-              key: GlobalKey<NavigatorState>(),
               onExtraTap: () {
                 FlowHandler.get().routerDelegate.setDirty(
                   () {
