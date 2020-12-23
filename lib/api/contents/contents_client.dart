@@ -14,39 +14,43 @@ class ContentsClient extends APIClient {
   Future<APIResponse<List<ContentDTO>>> getDiscover(
       ContentRequest request) async {
     return await getAsync(
-        createUri(
-          slug: 'discover',
-          queryParameters: request.toQueryMap(),
-        ),
-        ContentDTO.fromJsonDecode);
+      createUri(
+        slug: 'discover',
+        queryParameters: request.toQueryMap(),
+      ),
+      ContentDTO.fromJsonDecode,
+    );
   }
 
   Future<APIResponse<List<ContentDTO>>> getCommunity(
       ContentRequest request) async {
     return await getAsync(
-        createUri(
-          slug: 'community',
-          queryParameters: request.toQueryMap(),
-        ),
-        ContentDTO.fromJsonDecode);
+      createUri(
+        slug: 'community',
+        queryParameters: request.toQueryMap(),
+      ),
+      ContentDTO.fromJsonDecode,
+    );
   }
 
   Future<APIResponse<List<ContentDTO>>> getLive(ContentRequest request) async {
     return await getAsync(
-        createUri(
-          slug: 'live',
-          queryParameters: request.toQueryMap(),
-        ),
-        ContentDTO.fromJsonDecode);
+      createUri(
+        slug: 'live',
+        queryParameters: request.toQueryMap(),
+      ),
+      ContentDTO.fromJsonDecode,
+    );
   }
 
   Future<APIResponse<List<ContentDTO>>> getSchedule(
       ContentRequest request) async {
     return await getAsync(
-        createUri(
-          slug: 'scheduled',
-          queryParameters: request.toQueryMap(),
-        ),
-        ContentDTO.fromJsonDecode);
+      createUri(
+        slug: 'scheduled',
+        queryParameters: request.toQueryMap(),
+      ),
+      ContentDTO.fromJsonDecode,
+    );
   }
 }

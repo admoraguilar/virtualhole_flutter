@@ -12,8 +12,10 @@ class ResourcesClient extends APIClient {
   String get rootPath => "resources";
 
   Future<APIResponse<List<SupportInfo>>> getSupportListAsync() async {
-    return await getAsync(buildObjectUri('dynamic/support-list.json'),
-        SupportInfo.fromJsonDecode);
+    return await getAsync(
+      buildObjectUri('dynamic/support-list.json'),
+      SupportInfo.fromJsonDecode,
+    );
   }
 
   Uri buildObjectUri(String path) {

@@ -49,7 +49,7 @@ class Content implements Equatable {
     return Content(
       socialType: json['socialType'],
       contentType: json['contentType'],
-      creator: json['creator'],
+      creator: CreatorSimple.fromJson(json['creator']),
       id: json['id'],
       title: json['title'],
       url: json['url'],
