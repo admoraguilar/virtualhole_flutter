@@ -53,7 +53,7 @@ abstract class APIClient {
       path += '/$subPath';
     }
 
-    if (slug != null && subPath.isNotEmpty) {
+    if (slug != null && slug.isNotEmpty) {
       path += '/$slug';
     }
 
