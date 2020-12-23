@@ -1,23 +1,28 @@
 import 'package:virtualhole_flutter/api/api.dart';
 
 class ContentRequest extends PagedRequest {
-  const ContentRequest(
-      {DateTime timestamp,
-      String locale,
-      int page,
-      int pageSize,
-      int maxPages,
-      this.isSocialTypeInclude,
-      this.socialType,
-      this.isContentTypeInclude,
-      this.contentType,
-      this.isCreatorsInclude,
-      this.creatorIds,
-      this.isCreatorRelated,
-      this.creatorNames,
-      this.creatorSocialIds,
-      this.creatorSocialUrls})
-      : super(
+  const ContentRequest({
+    DateTime timestamp,
+    String locale,
+    int page,
+    int pageSize,
+    int maxPages,
+    this.isSocialTypeInclude,
+    this.socialType,
+    this.isContentTypeInclude,
+    this.contentType,
+    this.isCreatorsInclude,
+    this.creatorIds,
+    this.isCreatorRelated,
+    this.creatorNames,
+    this.creatorSocialIds,
+    this.creatorSocialUrls,
+    this.isCheckCreatorAffiliations,
+    this.isAffiliationsAll,
+    this.isAffiliationsInclude,
+    this.creatorAffiliations,
+    this.isSortAscending,
+  }) : super(
           locale: locale,
           page: page,
           pageSize: pageSize,
@@ -34,13 +39,11 @@ class ContentRequest extends PagedRequest {
   final List<String> creatorNames;
   final List<String> creatorSocialIds;
   final List<String> creatorSocialUrls;
-
-  factory ContentRequest.discover() {
-    return ContentRequest(
-      isContentTypeInclude: true,
-      contentType: [ContentType.video],
-    );
-  }
+  final bool isCheckCreatorAffiliations;
+  final bool isAffiliationsAll;
+  final bool isAffiliationsInclude;
+  final List<String> creatorAffiliations;
+  final bool isSortAscending;
 
   @override
   Map<String, dynamic> toJson() {
@@ -55,7 +58,12 @@ class ContentRequest extends PagedRequest {
       'isCreatorRelated': isCreatorRelated,
       'creatorNames': creatorNames,
       'creatorSocialIds': creatorSocialIds,
-      'creatorSocialUrls': creatorSocialUrls
+      'creatorSocialUrls': creatorSocialUrls,
+      'isCheckCreatorAffiliations': isCheckCreatorAffiliations,
+      'isAffiliationsAll': isAffiliationsAll,
+      'isAffiliationsInclude': isAffiliationsInclude,
+      'creatorAffiliations': creatorAffiliations,
+      'isSortAscending': isSortAscending,
     });
     return superMap;
   }
@@ -76,6 +84,11 @@ class ContentRequest extends PagedRequest {
     List<String> creatorNames,
     List<String> creatorSocialIds,
     List<String> creatorSocialUrls,
+    bool isCheckCreatorAffiliations,
+    bool isAffiliationsAll,
+    bool isAffiliationsInclude,
+    List<String> creatorAffiliations,
+    bool isSortAscending,
   }) {
     return ContentRequest(
       timestamp: timestamp ?? this.timestamp,
@@ -93,6 +106,13 @@ class ContentRequest extends PagedRequest {
       creatorNames: creatorNames ?? this.creatorNames,
       creatorSocialIds: creatorSocialIds ?? this.creatorSocialIds,
       creatorSocialUrls: creatorSocialUrls ?? this.creatorSocialUrls,
+      isCheckCreatorAffiliations:
+          isCheckCreatorAffiliations ?? this.isCheckCreatorAffiliations,
+      isAffiliationsAll: isAffiliationsAll ?? this.isAffiliationsAll,
+      isAffiliationsInclude:
+          isAffiliationsInclude ?? this.isAffiliationsInclude,
+      creatorAffiliations: creatorAffiliations ?? this.creatorAffiliations,
+      isSortAscending: isSortAscending ?? this.isSortAscending,
     );
   }
 }

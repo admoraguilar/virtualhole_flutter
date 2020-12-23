@@ -69,8 +69,8 @@ class _ContentFeedState extends State<ContentFeed> {
                 ContentDTO contentDTO = contentDTOs[index];
                 return ContentCard(
                   title: contentDTO.content.title,
-                  creatorName: contentDTO.creatorSocialName,
-                  creatorAvatarUrl: contentDTO.creatorAvatarUrl,
+                  creatorName: contentDTO.content.creator.name,
+                  creatorAvatarUrl: contentDTO.content.creator.avatarUrl,
                   creationDateDisplay: contentDTO.creationDateDisplay,
                   thumbnailUrl: _getContentThumbnail(contentDTO),
                   url: contentDTO.content.url,

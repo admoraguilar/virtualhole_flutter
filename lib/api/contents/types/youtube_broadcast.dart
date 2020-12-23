@@ -13,7 +13,7 @@ class YouTubeBroadcast extends YouTubeVideo {
   const YouTubeBroadcast({
     String socialType,
     String contentType,
-    String creatorId,
+    CreatorSimple creator,
     String id,
     String title,
     String url,
@@ -31,7 +31,7 @@ class YouTubeBroadcast extends YouTubeVideo {
   }) : super(
           socialType: socialType,
           contentType: contentType,
-          creatorId: creatorId,
+          creator: creator,
           id: id,
           title: title,
           url: url,
@@ -55,7 +55,7 @@ class YouTubeBroadcast extends YouTubeVideo {
     return YouTubeBroadcast(
       socialType: youtubeVideo.socialType,
       contentType: youtubeVideo.contentType,
-      creatorId: youtubeVideo.creatorId,
+      creator: youtubeVideo.creator,
       id: youtubeVideo.id,
       title: youtubeVideo.title,
       url: youtubeVideo.url,
@@ -77,7 +77,7 @@ class YouTubeBroadcast extends YouTubeVideo {
   List<Object> get props => [
         socialType,
         contentType,
-        creatorId,
+        creator,
         id,
         title,
         url,

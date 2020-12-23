@@ -13,11 +13,11 @@ class HomePage extends StatelessWidget {
         VirtualHoleApiWrapperClient.managed(domain: AppConfig.virtualHoleApi);
 
     return ContentFeed(
-      builder: vHoleApi.contents.get,
+      builder: vHoleApi.contents.getDiscover,
       tabs: [
         ContentFeedTab(
           name: 'Discover',
-          request: ContentRequest.discover(),
+          request: ContentRequest(),
         )
       ],
     );

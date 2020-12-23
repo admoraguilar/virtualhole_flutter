@@ -12,7 +12,7 @@ class Content implements Equatable {
   const Content({
     this.socialType,
     this.contentType,
-    this.creatorId,
+    this.creator,
     this.id,
     this.title,
     this.url,
@@ -22,7 +22,7 @@ class Content implements Equatable {
 
   final String socialType;
   final String contentType;
-  final String creatorId;
+  final CreatorSimple creator;
   final String id;
   final String title;
   final String url;
@@ -49,7 +49,7 @@ class Content implements Equatable {
     return Content(
       socialType: json['socialType'],
       contentType: json['contentType'],
-      creatorId: json['creatorId'],
+      creator: json['creator'],
       id: json['id'],
       title: json['title'],
       url: json['url'],
@@ -62,7 +62,7 @@ class Content implements Equatable {
   List<Object> get props => [
         socialType,
         contentType,
-        creatorId,
+        creator,
         id,
         title,
         url,

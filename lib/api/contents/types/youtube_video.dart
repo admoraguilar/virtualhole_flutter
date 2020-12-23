@@ -12,7 +12,7 @@ class YouTubeVideo extends Content {
   const YouTubeVideo({
     String socialType,
     String contentType,
-    String creatorId,
+    CreatorSimple creator,
     String id,
     String title,
     String url,
@@ -27,7 +27,7 @@ class YouTubeVideo extends Content {
   }) : super(
           socialType: socialType,
           contentType: contentType,
-          creatorId: creatorId,
+          creator: creator,
           id: id,
           title: title,
           url: url,
@@ -48,7 +48,7 @@ class YouTubeVideo extends Content {
     return YouTubeVideo(
       socialType: content.socialType,
       contentType: content.contentType,
-      creatorId: content.creatorId,
+      creator: content.creator,
       id: content.id,
       title: content.title,
       url: content.url,
@@ -67,7 +67,7 @@ class YouTubeVideo extends Content {
   List<Object> get props => [
         socialType,
         contentType,
-        creatorId,
+        creator,
         id,
         title,
         url,

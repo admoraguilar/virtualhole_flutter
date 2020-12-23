@@ -14,9 +14,11 @@ export 'contents/content.dart';
 export 'contents/contents_client.dart';
 
 export 'creators/requests/creator_request.dart';
-export 'creators/creator_client.dart';
-export 'creators/creator_social.dart';
+export 'creators/creators_client.dart';
+export 'creators/creator_social/creator_social.dart';
+export 'creators/creator_social/creator_social_simple.dart';
 export 'creators/creator.dart';
+export 'creators/creator_simple.dart';
 
 export 'resources/requests/resource_request.dart';
 export 'resources/resources_client.dart';
