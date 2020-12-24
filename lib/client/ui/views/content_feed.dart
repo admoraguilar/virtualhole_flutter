@@ -183,6 +183,8 @@ class _ContentFeedState extends State<ContentFeed> {
 
         print('Is Loading: $_isLoading');
 
+        _contentDTOs
+            .removeWhere((ContentDTO contentDTO) => !contentDTO.isAvailable);
         return _buildContainer(_contentDTOs);
       },
     );
