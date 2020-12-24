@@ -69,7 +69,7 @@ class YouTubeBroadcast extends YouTubeVideo {
       dislikesCount: youtubeVideo.dislikesCount,
       isLive: json['isLive'],
       viewerCount: json['viewerCount'],
-      scheduleDate: json['scheduleDate'],
+      scheduleDate: DateTime.parse(json['scheduleDate']),
     );
   }
 

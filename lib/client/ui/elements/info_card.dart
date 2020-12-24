@@ -30,7 +30,14 @@ class InfoCard extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 1,
-                  child: Image.network(imageUrl),
+                  child: Image.network(
+                    imageUrl,
+                    errorBuilder: (BuildContext context, Object object,
+                        StackTrace stackTrace) {
+                      print('error image load');
+                      return Text('404 ERROR');
+                    },
+                  ),
                 ),
                 SizedBox(
                   width: 8.0,

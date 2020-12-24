@@ -14,7 +14,7 @@ abstract class APIClient {
   Future<APIResponse<T>> getAsync<T>(
       Uri uri, T Function(dynamic) decoder) async {
     print('[API Client] Sending GET: ${uri.toString()}');
-    http.Response res = await http.get(uri);
+    http.Response res = await http.get(uri).timeout(Duration(seconds: 30));
     return APIResponse(
       body: decoder(jsonDecode(res.body)),
       error: _createError(res),
@@ -27,7 +27,7 @@ abstract class APIClient {
       uri,
       headers: <String, String>{'Content-Type': 'application/json'},
       body: body,
-    );
+    ).timeout(Duration(seconds: 30));
     return APIResponse(
       body: res.body,
       error: _createError(res),

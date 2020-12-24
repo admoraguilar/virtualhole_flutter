@@ -7,13 +7,10 @@ import 'package:virtualhole_flutter/client/ui/ui.dart';
 class ContentFeed extends StatefulWidget {
   ContentFeed({
     Key key,
-    @required this.builder,
     @required this.tabs,
-  })  : assert(builder != null),
-        assert(tabs != null && tabs.length > 0),
+  })  : assert(tabs != null && tabs.length > 0),
         super(key: key);
 
-  final Future<APIResponse<List<ContentDTO>>> Function(ContentRequest) builder;
   final List<ContentFeedTab> tabs;
 
   @override
@@ -48,12 +45,12 @@ class _ContentFeedState extends State<ContentFeed> {
               page: _currentTab.request.page + 1,
             ),
           );
-          _future = widget.builder(_currentTab.request);
+          _future = _currentTab.builder(_currentTab.request);
         });
       }
     });
 
-    _future = widget.builder(_currentTab.request);
+    _future = _currentTab.builder(_currentTab.request);
   }
 
   Widget _buildContainer(List<ContentDTO> contentDTOs) {
@@ -106,6 +103,9 @@ class _ContentFeedState extends State<ContentFeed> {
                     onTap: () {
                       setState(() {
                         _currentTab = tab;
+                        _scrollController.position.jumpTo(0);
+                        _contentDTOs.clear();
+                        _future = _currentTab.builder(_currentTab.request);
                       });
                     },
                     label: '${tab.name}',
@@ -192,18 +192,22 @@ class _ContentFeedState extends State<ContentFeed> {
 class ContentFeedTab {
   ContentFeedTab({
     @required this.name,
+    @required this.builder,
     @required this.request,
   });
 
   final String name;
+  final Future<APIResponse<List<ContentDTO>>> Function(ContentRequest) builder;
   final ContentRequest request;
 
   ContentFeedTab copyWith({
     String name,
+    Future<APIResponse<List<ContentDTO>>> Function(ContentRequest) builder,
     ContentRequest request,
   }) {
     return ContentFeedTab(
       name: name ?? this.name,
+      builder: builder ?? this.builder,
       request: request ?? this.request,
     );
   }
