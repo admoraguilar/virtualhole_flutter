@@ -28,11 +28,13 @@ class HomeFlowPage<T> extends FlowPage<T> {
             RootFlowPageHelper.generateBottomNavigationBarItems(),
         bottomNavigationBarIndex: 0,
         onBottomNavigateSamePage: () {
-          scrollController.animateTo(
-            0,
-            duration: Duration(milliseconds: 500),
-            curve: Curves.easeOutCirc,
-          );
+          if (scrollController.hasClients) {
+            scrollController.animateTo(
+              0,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.easeOutCirc,
+            );
+          }
         },
       ),
     );

@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -74,12 +75,11 @@ class _ContentFeedState extends State<ContentFeed> {
           _contentDTOs.removeWhere(
             (ContentDTO contentDTO) => !contentDTO.isAvailable,
           );
-
           _isLoading = false;
         }
 
         return Stack(
-          fit: StackFit.expand,
+          fit: StackFit.loose,
           children: [
             _buildFeed(_contentDTOs),
             if (widget.tabs.length > 1) _buildFAB(),
@@ -108,7 +108,7 @@ class _ContentFeedState extends State<ContentFeed> {
             );
           } else {
             return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: _buildLoadingIndicator(),
             );
           }
@@ -165,8 +165,18 @@ class _ContentFeedState extends State<ContentFeed> {
   }
 
   Widget _buildLoadingIndicator() {
-    return Center(
-      child: CircularProgressIndicator(),
+    List<String> spinners = [
+      'assets/images/icons/spinners/coco-512.png',
+      'assets/images/icons/spinners/fubuki-512.png',
+      'assets/images/icons/spinners/haachama-zoom-512.png',
+      'assets/images/icons/spinners/matsuri-512.png',
+      'assets/images/icons/spinners/miko-512.png',
+      'assets/images/icons/spinners/watame-512.png',
+    ];
+
+    Random random = Random();
+    return RotatingImage(
+      image: Image.asset(spinners[random.nextInt(spinners.length)]).image,
     );
   }
 
