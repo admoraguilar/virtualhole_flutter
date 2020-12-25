@@ -50,6 +50,10 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/images/
+    - assets/images/icons/
+    - assets/images/icons/indicators/
+    - assets/images/icons/social-media/
+    - assets/images/icons/spinners/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
