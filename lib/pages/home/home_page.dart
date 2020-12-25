@@ -8,6 +8,14 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void _onError(APIError error) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${error.statusCode}: ${error.reasonPhrase}'),
+        ),
+      );
+    }
+
     VirtualHoleApiClient vHoleApi =
         VirtualHoleApiClient.managed(domain: AppConfig.virtualHoleApi);
 
@@ -15,25 +23,34 @@ class HomePage extends StatelessWidget {
       tabs: [
         ContentFeedTab(
           name: 'Discover',
-          builder: vHoleApi.contents.getDiscover,
-          request: ContentRequest(),
+          builder: (int page) => APIResponseProvider(
+            vHoleApi.contents.getDiscover(ContentRequest(page: page)),
+            onError: _onError,
+          ).getResult(),
         ),
         ContentFeedTab(
           name: 'Community',
-          builder: vHoleApi.contents.getCommunity,
-          request: ContentRequest(),
+          builder: (int page) => APIResponseProvider(
+            vHoleApi.contents.getCommunity(ContentRequest(page: page)),
+            onError: _onError,
+          ).getResult(),
         ),
         ContentFeedTab(
           name: 'Live',
-          builder: vHoleApi.contents.getLive,
-          request: ContentRequest(),
+          builder: (int page) => APIResponseProvider(
+            vHoleApi.contents.getLive(ContentRequest(page: page)),
+            onError: _onError,
+          ).getResult(),
         ),
         ContentFeedTab(
           name: 'Scheduled',
-          builder: vHoleApi.contents.getSchedule,
-          request: ContentRequest(),
+          builder: (int page) => APIResponseProvider(
+            vHoleApi.contents.getSchedule(ContentRequest(page: page)),
+            onError: _onError,
+          ).getResult(),
         ),
       ],
+      initialTabIndex: 0,
     );
   }
 }

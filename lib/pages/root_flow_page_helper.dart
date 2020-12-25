@@ -5,7 +5,7 @@ import 'pages.dart';
 class RootFlowPageHelper {
   static List<FlowPage> generateInitialPages() {
     return [
-      CreatorFlowPage(),
+      HomeFlowPage(),
     ];
   }
 

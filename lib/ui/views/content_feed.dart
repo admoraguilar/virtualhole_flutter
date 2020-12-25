@@ -1,120 +1,170 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:midnight_flutter/midnight_flutter.dart';
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
 import '../../ui/ui.dart';
 
 class ContentFeed extends StatefulWidget {
   ContentFeed({
     Key key,
+    this.scrollDirection = Axis.vertical,
     @required this.tabs,
-  })  : assert(tabs != null && tabs.length > 0),
+    this.initialTabIndex = 0,
+  })  : assert(scrollDirection != null),
+        assert(tabs != null && tabs.length > 0),
+        assert(initialTabIndex != null &&
+            initialTabIndex >= 0 &&
+            initialTabIndex < tabs.length),
         super(key: key);
 
+  final Axis scrollDirection;
   final List<ContentFeedTab> tabs;
+  final int initialTabIndex;
 
   @override
   _ContentFeedState createState() => _ContentFeedState();
 }
 
 class _ContentFeedState extends State<ContentFeed> {
-  List<ContentDTO> _contentDTOs = [];
+  ScrollController _scrollController = ScrollController();
   ContentFeedTab _currentTab;
-  ScrollController _scrollController;
+  List<ContentDTO> _contentDTOs = [];
   bool _isLoading = false;
-
-  Future<APIResponse<List<ContentDTO>>> _future;
+  int _page = 1;
+  Future<List<ContentDTO>> _future;
 
   @override
   void initState() {
     super.initState();
-    _currentTab = widget.tabs[0];
-    _scrollController = ScrollController();
+
     _scrollController.addListener(() {
-      ScrollPosition position = _scrollController.position;
-      double range = position.maxScrollExtent - position.minScrollExtent;
-      double current = position.pixels - position.minScrollExtent;
-      double lerp = current / range;
-
-      if (lerp > 0.4 && !_isLoading) {
+      if (_scrollController.position.normalizedScrollExtent > 0.4 &&
+          !_isLoading) {
         _isLoading = true;
-
         setState(() {
-          _currentTab = _currentTab.copyWith(
-            request: _currentTab.request.copyWith(
-              page: _currentTab.request.page + 1,
-            ),
-          );
-          _future = _currentTab.builder(_currentTab.request);
+          _future = _currentTab.builder(++_page);
         });
       }
     });
 
-    _future = _currentTab.builder(_currentTab.request);
+    _setCurrentTab(widget.tabs[widget.initialTabIndex]);
   }
 
-  Widget _buildContainer(List<ContentDTO> contentDTOs) {
+  @override
+  Widget build(BuildContext context) {
+    _isLoading = true;
+
+    return FutureBuilder(
+      future: _future,
+      builder:
+          (BuildContext context, AsyncSnapshot<List<ContentDTO>> snapshot) {
+        MLog.log(snapshot.connectionState);
+
+        if (snapshot.hasError) {
+          throw snapshot.error;
+        }
+
+        if (snapshot.hasData &&
+            snapshot.connectionState == ConnectionState.done) {
+          _contentDTOs.addAll(snapshot.data);
+          _contentDTOs.removeWhere(
+            (ContentDTO contentDTO) => !contentDTO.isAvailable,
+          );
+
+          _isLoading = false;
+        }
+
+        return Stack(
+          fit: StackFit.expand,
+          children: [
+            if (_isLoading) _buildLoadingIndicator(),
+            if (!_isLoading) _buildFeed(_contentDTOs),
+            _buildFAB(),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildLoadingIndicator() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  Widget _buildFeed(List<ContentDTO> contentDTOs) {
+    if (_contentDTOs.length > 0) {
+      return ListView.separated(
+        controller: _scrollController,
+        physics: BouncingScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) {
+          if (index < contentDTOs.length) {
+            ContentDTO contentDTO = contentDTOs[index];
+            return ContentCard(
+              title: contentDTO.content.title,
+              creatorName: contentDTO.content.creator.name,
+              creatorAvatarUrl: contentDTO.content.creator.avatarUrl,
+              creationDateDisplay: contentDTO.creationDateDisplay,
+              thumbnailUrl: _getContentThumbnail(contentDTO),
+              url: contentDTO.content.url,
+            );
+          } else {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return SizedBox(
+            height: 8.0,
+          );
+        },
+        itemCount: contentDTOs.length + 1,
+      );
+    } else if (_contentDTOs.length <= 0) {
+      return Container(
+        alignment: Alignment.center,
+        width: double.infinity,
+        height: double.infinity,
+        child: Text(
+          'None to show at the moment \n' + 'TWT',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 24,
+          ),
+        ),
+      );
+    }
+
+    throw Exception('[${(ContentFeed).toString()}] Unsupported operation.');
+  }
+
+  Widget _buildFAB() {
     return Container(
-      child: Stack(
-        fit: StackFit.expand,
+      alignment: Alignment.bottomRight,
+      child: SpeedDial(
+        child: Icon(Icons.ac_unit),
+        animationSpeed: 150 * 1,
+        overlayOpacity: .3,
+        overlayColor: Theme.of(context).backgroundColor,
+        marginBottom: 30,
+        marginRight: 30,
+        curve: Curves.easeOutExpo,
         children: [
-          ListView.separated(
-            controller: _scrollController,
-            physics: BouncingScrollPhysics(),
-            itemBuilder: (BuildContext context, int index) {
-              if (index < contentDTOs.length) {
-                ContentDTO contentDTO = contentDTOs[index];
-                return ContentCard(
-                  title: contentDTO.content.title,
-                  creatorName: contentDTO.content.creator.name,
-                  creatorAvatarUrl: contentDTO.content.creator.avatarUrl,
-                  creationDateDisplay: contentDTO.creationDateDisplay,
-                  thumbnailUrl: _getContentThumbnail(contentDTO),
-                  url: contentDTO.content.url,
-                );
-              } else {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return SizedBox(
-                height: 8.0,
-              );
-            },
-            itemCount: contentDTOs.length + 1,
-          ),
-          Container(
-            alignment: Alignment.bottomRight,
-            child: SpeedDial(
-              child: Icon(Icons.ac_unit),
-              animationSpeed: 150 * 1,
-              overlayOpacity: .3,
-              overlayColor: Theme.of(context).backgroundColor,
-              marginBottom: 30,
-              marginRight: 30,
-              curve: Curves.easeOutExpo,
-              children: [
-                for (ContentFeedTab tab in widget.tabs)
-                  SpeedDialChild(
-                    child: Icon(Icons.tab, color: Colors.white),
-                    backgroundColor: Theme.of(context).accentColor,
-                    onTap: () {
-                      setState(() {
-                        _currentTab = tab;
-                        _scrollController.position.jumpTo(0);
-                        _contentDTOs.clear();
-                        _future = _currentTab.builder(_currentTab.request);
-                      });
-                    },
-                    label: '${tab.name}',
-                    labelStyle: TextStyle(fontWeight: FontWeight.w500),
-                    labelBackgroundColor: Theme.of(context).accentColor,
-                  )
-              ],
-            ),
-          ),
+          for (ContentFeedTab tab in widget.tabs)
+            SpeedDialChild(
+              child: Icon(Icons.tab, color: Colors.white),
+              backgroundColor: Theme.of(context).accentColor,
+              onTap: () => setState(() => _setCurrentTab(tab)),
+              label: '${tab.name}',
+              labelStyle: TextStyle(fontWeight: FontWeight.w500),
+              labelBackgroundColor: Theme.of(context).accentColor,
+            )
         ],
       ),
     );
@@ -132,85 +182,37 @@ class _ContentFeedState extends State<ContentFeed> {
     return '';
   }
 
-  @override
-  Widget build(BuildContext context) {
-    print('feed build');
-    _isLoading = true;
+  void _setCurrentTab(ContentFeedTab tab) {
+    assert(tab != null);
 
-    return FutureBuilder(
-      future: _future,
-      builder: (BuildContext context,
-          AsyncSnapshot<APIResponse<List<ContentDTO>>> snapshot) {
-        print(snapshot.connectionState);
+    if (_currentTab != null && _scrollController.hasClients) {
+      _scrollController.position.jumpTo(0);
+    }
 
-        if (snapshot.hasError) {
-          throw snapshot.error;
-        }
-
-        if (_contentDTOs.length <= 0) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        }
-
-        if (snapshot.hasError) {
-          throw snapshot.error;
-        }
-
-        if (snapshot.hasData) {
-          APIResponse<List<ContentDTO>> response = snapshot.data;
-          if (response.error != null && _contentDTOs.length <= 0) {
-            return Center(
-              child: Text(
-                  '${response.error.statusCode}: ${response.error.reasonPhrase}'),
-            );
-          } else if (response.error != null) {
-            Scaffold.of(context).showSnackBar(
-              SnackBar(
-                content: Text(snapshot.error),
-              ),
-            );
-          }
-        }
-
-        if (snapshot.hasData &&
-            snapshot.connectionState != ConnectionState.waiting) {
-          _contentDTOs.addAll(snapshot.data.body);
-          _isLoading = false;
-        }
-
-        print('Is Loading: $_isLoading');
-
-        _contentDTOs
-            .removeWhere((ContentDTO contentDTO) => !contentDTO.isAvailable);
-        return _buildContainer(_contentDTOs);
-      },
-    );
+    _currentTab = tab;
+    _contentDTOs.clear();
+    _page = 1;
+    _isLoading = false;
+    _future = _currentTab.builder(_page);
   }
 }
 
 class ContentFeedTab {
-  ContentFeedTab({
+  const ContentFeedTab({
     @required this.name,
     @required this.builder,
-    @required this.request,
   });
 
   final String name;
-  final Future<APIResponse<List<ContentDTO>>> Function(ContentRequest) builder;
-  final ContentRequest request;
+  final Future<List<ContentDTO>> Function(int page) builder;
 
   ContentFeedTab copyWith({
     String name,
-    Future<APIResponse<List<ContentDTO>>> Function(ContentRequest) builder,
-    ContentRequest request,
+    Future<List<ContentDTO>> Function(int page) builder,
   }) {
     return ContentFeedTab(
       name: name ?? this.name,
       builder: builder ?? this.builder,
-      request: request ?? this.request,
     );
   }
 }
