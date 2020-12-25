@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:virtualhole_flutter/midnight_flutter/midnight_flutter.dart';
 
 class CreatorPage extends StatelessWidget {
   const CreatorPage({Key key}) : super(key: key);
@@ -66,7 +67,7 @@ class CreatorPage extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              print('press');
+              MLog.log('press');
             },
           ),
           ButtonBar(
@@ -84,7 +85,7 @@ class CreatorPage extends StatelessWidget {
                     shape: CircleBorder(),
                   ),
                   onPressed: () {
-                    print('press');
+                    MLog.log('press');
                   },
                 )
             ],
