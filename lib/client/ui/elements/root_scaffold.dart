@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:virtualhole_flutter/midnight_flutter/midnight_flutter.dart';
 
 class RootScaffold extends StatelessWidget {
-  static int _bottomNavigationBarIndex;
+  static int _bottomNavigationBarIndex = 0;
 
   const RootScaffold({
     Key key,

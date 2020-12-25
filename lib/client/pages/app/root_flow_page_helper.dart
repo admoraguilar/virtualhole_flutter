@@ -5,7 +5,7 @@ import 'package:virtualhole_flutter/client/pages/pages.dart';
 class RootFlowPageHelper {
   static List<FlowPage> generateInitialPages() {
     return [
-      HomeFlowPage(),
+      CreatorFlowPage(),
     ];
   }
 

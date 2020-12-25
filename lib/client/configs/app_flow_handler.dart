@@ -5,17 +5,6 @@ import 'app_config.dart';
 
 class AppFlowHandler {
   void runFlow() {
-    // runApp(
-    //   Image.network(
-    //     'https://i.ytimg.com/vi/dtTD8SOzVU4/mqdefault.jpg',
-    //     errorBuilder:
-    //         (BuildContext context, Object object, StackTrace stackTrace) {
-    //       print('error image load');
-    //       return Text('404 ERROR');
-    //     },
-    //   ),
-    // );
-
     runApp(
       FlowHandler(
         designType: FlowDesignType.Material,
