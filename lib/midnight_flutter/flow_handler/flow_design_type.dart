@@ -1,4 +1,0 @@
-enum FlowDesignType {
-  Material,
-  Cupertino,
-}
