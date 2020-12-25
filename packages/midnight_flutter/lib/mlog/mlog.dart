@@ -3,18 +3,19 @@ import 'package:flutter/cupertino.dart';
 
 class MLog {
   static void log(
-    String message, {
-    String prepend,
+    Object message, {
+    Object prepend,
     bool isSupressed = true,
   }) {
     if (!kDebugMode && !isSupressed) {
       return;
     }
 
-    if (prepend != null && prepend.isNotEmpty) {
-      debugPrint('[${DateTime.now()}] [$prepend] $message');
+    if (prepend != null) {
+      debugPrint(
+          '[${DateTime.now()}] [${prepend.toString()}] ${message.toString()}');
     } else {
-      debugPrint('[${DateTime.now()}] $message');
+      debugPrint('[${DateTime.now()}] ${message.toString()}');
     }
   }
 }

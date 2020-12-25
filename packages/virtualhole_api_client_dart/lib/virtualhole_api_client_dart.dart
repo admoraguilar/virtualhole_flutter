@@ -22,4 +22,5 @@ export 'creators/creator_simple.dart';
 export 'resources/requests/resource_request.dart';
 export 'resources/resources_client.dart';
 export 'resources/support_info.dart';
+export 'utilities/api_response_provider.dart';
 export 'virtualhole_api_client.dart';
