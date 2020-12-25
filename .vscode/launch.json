@@ -7,7 +7,7 @@
         {
             "name": "virtualhole_flutter",
             "request": "launch",
-            "program": "lib/client/main.dart",
+            "program": "lib/main.dart",
             "type": "dart"
         }
     ]
