@@ -10,6 +10,7 @@ class ContentFeed extends StatefulWidget {
   ContentFeed({
     Key key,
     this.scrollDirection = Axis.vertical,
+    ScrollController scrollController,
     @required this.tabs,
     this.initialTabIndex = 0,
   })  : assert(scrollDirection != null),
@@ -17,9 +18,11 @@ class ContentFeed extends StatefulWidget {
         assert(initialTabIndex != null &&
             initialTabIndex >= 0 &&
             initialTabIndex < tabs.length),
+        scrollController = scrollController ?? ScrollController(),
         super(key: key);
 
   final Axis scrollDirection;
+  final ScrollController scrollController;
   final List<ContentFeedTab> tabs;
   final int initialTabIndex;
 
@@ -28,7 +31,6 @@ class ContentFeed extends StatefulWidget {
 }
 
 class _ContentFeedState extends State<ContentFeed> {
-  ScrollController _scrollController = ScrollController();
   ContentFeedTab _currentTab;
   List<ContentDTO> _contentDTOs = [];
   bool _isLoading = false;
@@ -39,8 +41,8 @@ class _ContentFeedState extends State<ContentFeed> {
   void initState() {
     super.initState();
 
-    _scrollController.addListener(() {
-      if (_scrollController.position.normalizedScrollExtent > 0.4 &&
+    widget.scrollController.addListener(() {
+      if (widget.scrollController.position.normalizedScrollExtent > 0.4 &&
           !_isLoading) {
         _isLoading = true;
         setState(() {
@@ -79,25 +81,19 @@ class _ContentFeedState extends State<ContentFeed> {
         return Stack(
           fit: StackFit.expand,
           children: [
-            if (_isLoading) _buildLoadingIndicator(),
-            if (!_isLoading) _buildFeed(_contentDTOs),
-            _buildFAB(),
+            _buildFeed(_contentDTOs),
+            if (widget.tabs.length > 1) _buildFAB(),
           ],
         );
       },
     );
   }
 
-  Widget _buildLoadingIndicator() {
-    return Center(
-      child: CircularProgressIndicator(),
-    );
-  }
-
   Widget _buildFeed(List<ContentDTO> contentDTOs) {
     if (_contentDTOs.length > 0) {
       return ListView.separated(
-        controller: _scrollController,
+        scrollDirection: widget.scrollDirection,
+        controller: widget.scrollController,
         physics: BouncingScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
           if (index < contentDTOs.length) {
@@ -113,9 +109,7 @@ class _ContentFeedState extends State<ContentFeed> {
           } else {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
+              child: _buildLoadingIndicator(),
             );
           }
         },
@@ -126,7 +120,7 @@ class _ContentFeedState extends State<ContentFeed> {
         },
         itemCount: contentDTOs.length + 1,
       );
-    } else if (_contentDTOs.length <= 0) {
+    } else if (_contentDTOs.length <= 0 && !_isLoading) {
       return Container(
         alignment: Alignment.center,
         width: double.infinity,
@@ -139,9 +133,9 @@ class _ContentFeedState extends State<ContentFeed> {
           ),
         ),
       );
+    } else {
+      return _buildLoadingIndicator();
     }
-
-    throw Exception('[${(ContentFeed).toString()}] Unsupported operation.');
   }
 
   Widget _buildFAB() {
@@ -170,6 +164,12 @@ class _ContentFeedState extends State<ContentFeed> {
     );
   }
 
+  Widget _buildLoadingIndicator() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
   String _getContentThumbnail(ContentDTO contentDTO) {
     Content content = contentDTO.content;
     if (content.socialType == SocialType.youtube) {
@@ -185,8 +185,8 @@ class _ContentFeedState extends State<ContentFeed> {
   void _setCurrentTab(ContentFeedTab tab) {
     assert(tab != null);
 
-    if (_currentTab != null && _scrollController.hasClients) {
-      _scrollController.position.jumpTo(0);
+    if (_currentTab != null && widget.scrollController.hasClients) {
+      widget.scrollController.position.jumpTo(0);
     }
 
     _currentTab = tab;

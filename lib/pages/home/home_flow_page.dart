@@ -5,19 +5,36 @@ import '../../ui/ui.dart';
 import '../../pages/pages.dart';
 
 class HomeFlowPage<T> extends FlowPage<T> {
-  HomeFlowPage()
-      : super(
+  HomeFlowPage._(
+    Widget child,
+  ) : super(
           key: UniqueKey(),
           name: '/home',
           designType: FlowDesignType.Material,
-          child: RootScaffold(
-            key: GlobalKey<NavigatorState>(),
-            title: '${AppConfig.appName}',
-            body: HomePage(),
-            pageBuilder: () => RootFlowPageHelper.generateRootPages(),
-            bottomNavigationBarItems:
-                RootFlowPageHelper.generateBottomNavigationBarItems(),
-            bottomNavigationBarIndex: 0,
-          ),
+          child: child,
         );
+
+  factory HomeFlowPage({ScrollController scrollController}) {
+    scrollController ??= ScrollController();
+
+    return HomeFlowPage._(
+      RootScaffold(
+        key: GlobalKey<NavigatorState>(),
+        body: HomePage(
+          scrollController: scrollController,
+        ),
+        pageBuilder: RootFlowPageHelper.generateRootPages,
+        bottomNavigationBarItems:
+            RootFlowPageHelper.generateBottomNavigationBarItems(),
+        bottomNavigationBarIndex: 0,
+        onBottomNavigateSamePage: () {
+          scrollController.animateTo(
+            0,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeOutCirc,
+          );
+        },
+      ),
+    );
+  }
 }
