@@ -12,7 +12,7 @@ class CounterFlowPage<T> extends FlowPage<T> {
           designType: FlowDesignType.Material,
           child: RootScaffold(
             key: GlobalKey<NavigatorState>(),
-            title: '${AppConfig.appName}',
+            title: Text('${AppConfig.appName}'),
             body: CounterScreen(
               onExtraTap: () {
                 FlowHandler.get().routerDelegate.setDirty(
@@ -24,7 +24,7 @@ class CounterFlowPage<T> extends FlowPage<T> {
                 );
               },
             ),
-            pageBuilder: () => RootFlowPageHelper.generateRootPages(),
+            pageBuilder: RootFlowPageHelper.generateRootPages,
             bottomNavigationBarItems:
                 RootFlowPageHelper.generateBottomNavigationBarItems(),
             bottomNavigationBarIndex: 1,

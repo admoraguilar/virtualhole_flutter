@@ -1,40 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
+import 'package:virtualhole_flutter/configs/app_flow_page.dart';
 
 class RootScaffold extends StatelessWidget {
   static int _bottomNavigationBarIndex = 0;
 
   const RootScaffold({
     Key key,
-    this.bottomNavigationBarIndex,
-    @required this.title,
+    this.title,
     @required this.body,
     @required this.pageBuilder,
     @required this.bottomNavigationBarItems,
+    this.bottomNavigationBarIndex = 0,
+    this.onBottomNavigateSamePage,
   })  : assert(body != null),
         assert(pageBuilder != null),
         assert(bottomNavigationBarItems != null),
+        assert(bottomNavigationBarIndex != null &&
+            bottomNavigationBarIndex < bottomNavigationBarItems.length),
         super(key: key);
 
-  final String title;
+  final Widget title;
   final Widget body;
-  final List<FlowPage> Function() pageBuilder;
+  final FlowPage Function(int index) pageBuilder;
+  final Function() onBottomNavigateSamePage;
   final List<BottomNavigationBarItem> bottomNavigationBarItems;
   final int bottomNavigationBarIndex;
 
   @override
   Widget build(BuildContext context) {
-    if (bottomNavigationBarIndex != null) {
-      _bottomNavigationBarIndex =
-          bottomNavigationBarIndex >= bottomNavigationBarItems.length
-              ? 0
-              : bottomNavigationBarIndex;
-    }
+    _bottomNavigationBarIndex =
+        bottomNavigationBarIndex >= bottomNavigationBarItems.length
+            ? 0
+            : bottomNavigationBarIndex;
 
     return Scaffold(
       body: body,
       appBar: AppBar(
-        // title: Text('$title'),
+        title: title,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
@@ -51,12 +54,23 @@ class RootScaffold extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         items: bottomNavigationBarItems,
         onTap: (int index) {
-          List<FlowPage> pages = pageBuilder();
-          assert(pages.length == bottomNavigationBarItems.length);
+          FlowPage page = pageBuilder(index);
+          FlowPage currentPage = FlowHandler.get().routerDelegate.pages.last;
 
-          FlowHandler.get().routerDelegate.setDirty(() {
-            FlowHandler.get().routerDelegate.pages.add(pages[index]);
-          });
+          if (currentPage.runtimeType == page.runtimeType) {
+            MLog.log(
+              'Navigating to same page',
+              prepend: (RootScaffold),
+            );
+            onBottomNavigateSamePage?.call();
+            return;
+          }
+
+          if (page != null) {
+            FlowHandler.get().routerDelegate.setDirty(() {
+              FlowHandler.get().routerDelegate.pages.add(page);
+            });
+          }
         },
         currentIndex: _bottomNavigationBarIndex,
       ),

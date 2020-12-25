@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
-import 'pages.dart';
+import '../pages/pages.dart';
 
 class RootFlowPageHelper {
   static List<FlowPage> generateInitialPages() {
@@ -9,20 +9,24 @@ class RootFlowPageHelper {
     ];
   }
 
-  static List<FlowPage> generateRootPages() {
-    return [
-      HomeFlowPage(),
-      CounterFlowPage(),
-      ErrorFlowPage(),
-      SupportFlowPage(),
-    ];
+  static FlowPage generateRootPages(int index) {
+    if (index == 0)
+      return HomeFlowPage();
+    else if (index == 1)
+      return CounterFlowPage();
+    else if (index == 2)
+      return ErrorFlowPage();
+    else if (index == 3)
+      return SupportFlowPage();
+    else
+      return ErrorFlowPage();
   }
 
   static List<BottomNavigationBarItem> generateBottomNavigationBarItems() {
     return [
       BottomNavigationBarItem(
         icon: Icon(Icons.explore),
-        label: 'Discover',
+        label: 'Explore',
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.list),

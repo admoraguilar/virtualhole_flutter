@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
-import '../pages/pages.dart';
-import 'app_config.dart';
+import '../configs/configs.dart';
 
 class AppFlowHandler {
   void runFlow() {
