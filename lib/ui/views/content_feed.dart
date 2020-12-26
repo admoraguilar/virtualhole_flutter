@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -165,19 +164,7 @@ class _ContentFeedState extends State<ContentFeed> {
   }
 
   Widget _buildLoadingIndicator() {
-    List<String> spinners = [
-      'assets/images/icons/spinners/coco-512.png',
-      'assets/images/icons/spinners/fubuki-512.png',
-      'assets/images/icons/spinners/haachama-zoom-512.png',
-      'assets/images/icons/spinners/matsuri-512.png',
-      'assets/images/icons/spinners/miko-512.png',
-      'assets/images/icons/spinners/watame-512.png',
-    ];
-
-    Random random = Random();
-    return RotatingImage(
-      image: Image.asset(spinners[random.nextInt(spinners.length)]).image,
-    );
+    return HololiveRotatingImage();
   }
 
   String _getContentThumbnail(ContentDTO contentDTO) {

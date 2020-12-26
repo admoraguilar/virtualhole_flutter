@@ -1,4 +1,28 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
+
+class HololiveRotatingImage extends StatelessWidget {
+  static final List<String> _spinners = [
+    'assets/images/icons/spinners/coco-512.png',
+    'assets/images/icons/spinners/fubuki-512.png',
+    'assets/images/icons/spinners/haachama-zoom-512.png',
+    'assets/images/icons/spinners/matsuri-512.png',
+    'assets/images/icons/spinners/miko-512.png',
+    'assets/images/icons/spinners/watame-512.png',
+  ];
+
+  static final Random _random = Random();
+
+  const HololiveRotatingImage({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    int index = _random.nextInt(_spinners.length);
+    return RotatingImage(
+      image: Image.asset(_spinners[index]).image,
+    );
+  }
+}
 
 class RotatingImage extends StatefulWidget {
   static const double kImageWidth = 100;
