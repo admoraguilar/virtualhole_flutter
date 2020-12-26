@@ -9,7 +9,10 @@ class CounterPage extends StatefulWidget {
     this.pageBuilder,
     this.bottomNavigationBarItems,
     this.onExtraTap,
-  }) : super(key: key);
+  })  : assert(title != null),
+        assert(pageBuilder != null),
+        assert(bottomNavigationBarItems != null),
+        super(key: key);
 
   final Widget title;
   final FlowPage Function(int index) pageBuilder;

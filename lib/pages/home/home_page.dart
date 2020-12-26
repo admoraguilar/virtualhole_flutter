@@ -7,10 +7,14 @@ class HomePage<T> extends StatelessWidget {
     Key key,
     ScrollController scrollController,
     @required this.contentFeedTabs,
-    this.contentFeedInitialTabIndex,
+    this.contentFeedInitialTabIndex = 0,
     @required this.pageBuilder,
     @required this.bottomNavigationBarItems,
-  })  : scrollController = scrollController ?? ScrollController(),
+  })  : assert(contentFeedTabs != null),
+        assert(contentFeedInitialTabIndex != null),
+        assert(pageBuilder != null),
+        assert(bottomNavigationBarItems != null),
+        scrollController = scrollController ?? ScrollController(),
         super(key: key);
 
   final ScrollController scrollController;

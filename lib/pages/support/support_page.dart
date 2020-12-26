@@ -10,7 +10,9 @@ class SupportPage extends StatelessWidget {
     Key key,
     this.pageBuilder,
     this.bottomNavigationBarItems,
-  }) : super(key: key);
+  })  : assert(pageBuilder != null),
+        assert(bottomNavigationBarItems != null),
+        super(key: key);
 
   final FlowPage Function(int index) pageBuilder;
   final List<BottomNavigationBarItem> bottomNavigationBarItems;

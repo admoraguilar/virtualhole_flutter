@@ -8,7 +8,7 @@ class FlowHandler extends StatelessWidget {
 
   static FlowHandler get() {
     if (_flowHandler == null) {
-      throw Exception('[Flow Handler] No current instance of FlowHandler');
+      throw Exception('${(FlowHandler)}] No current instance of FlowHandler.');
     }
     return _flowHandler;
   }
@@ -32,7 +32,7 @@ class FlowHandler extends StatelessWidget {
         super(key: key) {
     if (_flowHandler != null) {
       throw Exception(
-          '[${(FlowHandler).toString()}] There could only be one Flow Handler in the entire widget tree.');
+          '[${(FlowHandler)}] There could only be one Flow Handler in the entire widget tree.');
     }
     _flowHandler = this;
   }
@@ -95,8 +95,7 @@ class FlowHandler extends StatelessWidget {
       );
     }
 
-    throw Exception(
-        '[${(FlowHandler).toString()}] Unsupported flow design type.');
+    throw Exception('[${(FlowHandler)}] Unsupported flow design type.');
   }
 }
 
@@ -200,7 +199,7 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
   Future<bool> popRoute() {
     MLog.log(
       'Back button dispatcher pop.',
-      prepend: (FlowHandler).toString(),
+      prepend: (FlowHandler),
     );
 
     if (onDeviceBackButtonPressed != null) {
@@ -213,7 +212,7 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
         notifyListeners();
         MLog.log(
           'Page count: ${pages.length}',
-          prepend: (FlowHandler).toString(),
+          prepend: (FlowHandler),
         );
         return SynchronousFuture<bool>(true);
       }
@@ -243,7 +242,7 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
       onPopPage: (Route<dynamic> route, dynamic result) {
         MLog.log(
           'Navigator pop.',
-          prepend: (FlowHandler).toString(),
+          prepend: (FlowHandler),
         );
         return route.didPop(result);
       },
@@ -259,7 +258,7 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
         onPopPage: (Route<dynamic> route, dynamic result) {
           MLog.log(
             'Navigator pop.',
-            prepend: (FlowHandler).toString(),
+            prepend: (FlowHandler),
           );
 
           bool didPop = route.didPop(result);
@@ -272,7 +271,7 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
     }
 
     throw Exception(
-        "[${(FlowHandler).toString()}] Page stack is empty! Make sure initial pages are not empty or that you're not emptying the page stack.");
+        "[${(FlowHandler)}] Page stack is empty! Make sure initial pages are not empty or that you're not emptying the page stack.");
   }
 }
 
@@ -313,8 +312,7 @@ class FlowPage<T> extends Page<T> {
       ).createRoute(context);
     }
 
-    throw Exception(
-        '[${(FlowHandler).toString()}] Unsupported flow design type.');
+    throw Exception('[${(FlowHandler)}] Unsupported flow design type.');
   }
 }
 
