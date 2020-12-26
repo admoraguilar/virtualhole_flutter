@@ -11,9 +11,12 @@ class ContentFeed extends StatefulWidget {
     Key key,
     this.scrollDirection = Axis.vertical,
     ScrollController scrollController,
+    this.scrollPhysics,
+    this.shouldLoadMoreOnScroll = true,
     @required this.tabs,
     this.initialTabIndex = 0,
   })  : assert(scrollDirection != null),
+        assert(shouldLoadMoreOnScroll != null),
         assert(tabs != null && tabs.length > 0),
         assert(initialTabIndex != null &&
             initialTabIndex >= 0 &&
@@ -23,6 +26,8 @@ class ContentFeed extends StatefulWidget {
 
   final Axis scrollDirection;
   final ScrollController scrollController;
+  final ScrollPhysics scrollPhysics;
+  final bool shouldLoadMoreOnScroll;
   final List<ContentFeedTab> tabs;
   final int initialTabIndex;
 
@@ -41,15 +46,17 @@ class _ContentFeedState extends State<ContentFeed> {
   void initState() {
     super.initState();
 
-    widget.scrollController.addListener(() {
-      if (widget.scrollController.position.normalizedScrollExtent > 0.4 &&
-          !_isLoading) {
-        _isLoading = true;
-        setState(() {
-          _future = _currentTab.builder(++_page);
-        });
-      }
-    });
+    if (widget.shouldLoadMoreOnScroll) {
+      widget.scrollController.addListener(() {
+        if (widget.scrollController.position.normalizedScrollExtent > 0.4 &&
+            !_isLoading) {
+          _isLoading = true;
+          setState(() {
+            _future = _currentTab.builder(++_page);
+          });
+        }
+      });
+    }
 
     _setCurrentTab(widget.tabs[widget.initialTabIndex]);
   }
@@ -83,6 +90,8 @@ class _ContentFeedState extends State<ContentFeed> {
               isLoading: _isLoading,
               scrollDirection: widget.scrollDirection,
               scrollController: widget.scrollController,
+              scrollPhysics: widget.scrollPhysics,
+              shouldLoadMoreOnScroll: widget.shouldLoadMoreOnScroll,
               contentDTOs: _contentDTOs,
             ),
             if (widget.tabs.length > 1)
@@ -117,17 +126,23 @@ class _ContentFeedBuilder extends StatelessWidget {
     Key key,
     @required this.isLoading,
     @required this.scrollDirection,
-    @required this.scrollController,
+    ScrollController scrollController,
+    ScrollPhysics scrollPhysics,
+    this.shouldLoadMoreOnScroll = true,
     @required this.contentDTOs,
   })  : assert(isLoading != null),
         assert(scrollDirection != null),
-        assert(scrollController != null),
+        assert(shouldLoadMoreOnScroll != null),
         assert(contentDTOs != null),
+        scrollController = scrollController ?? ScrollController(),
+        scrollPhysics = scrollPhysics ?? BouncingScrollPhysics(),
         super(key: key);
 
   final bool isLoading;
   final Axis scrollDirection;
   final ScrollController scrollController;
+  final ScrollPhysics scrollPhysics;
+  final bool shouldLoadMoreOnScroll;
   final List<ContentDTO> contentDTOs;
 
   @override
@@ -136,7 +151,7 @@ class _ContentFeedBuilder extends StatelessWidget {
       return ListView.separated(
         scrollDirection: scrollDirection,
         controller: scrollController,
-        physics: BouncingScrollPhysics(),
+        physics: scrollPhysics,
         itemBuilder: (BuildContext context, int index) {
           if (index < contentDTOs.length) {
             ContentDTO contentDTO = contentDTOs[index];
@@ -161,7 +176,9 @@ class _ContentFeedBuilder extends StatelessWidget {
             height: scrollDirection == Axis.horizontal ? 8.0 : 0,
           );
         },
-        itemCount: contentDTOs.length + 1,
+        itemCount: shouldLoadMoreOnScroll
+            ? contentDTOs.length + 1
+            : contentDTOs.length,
       );
     } else if (contentDTOs.length <= 0 && !isLoading) {
       return Center(
@@ -223,8 +240,12 @@ class ContentFeedTab {
   const ContentFeedTab({
     @required this.name,
     @required this.builder,
-  });
+  })  : assert(name != null),
+        assert(builder != null);
 
+  // TODO: What happens when the user actually scrolls 'til the last page?
+  // That'll probably result to an error knowing that the Feed doesn't know any
+  // max, it just adds everytime the user gets to near end.
   final String name;
   final Future<List<ContentDTO>> Function(int page) builder;
 
