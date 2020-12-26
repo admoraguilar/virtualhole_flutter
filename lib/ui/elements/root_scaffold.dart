@@ -54,6 +54,8 @@ class RootScaffold extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         items: bottomNavigationBarItems,
         onTap: (int index) {
+          // TODO: Handle cases where there are same page underneath the
+          // stack
           FlowPage page = pageBuilder(index);
           FlowPage currentPage = FlowHandler.get().routerDelegate.pages.last;
 

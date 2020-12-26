@@ -10,6 +10,8 @@ class ContentCard extends StatelessWidget {
     @required this.creationDateDisplay,
     @required this.thumbnailUrl,
     @required this.url,
+    this.onTapCard,
+    this.onTapMore,
   }) : super(
           key: key,
         );
@@ -21,28 +23,21 @@ class ContentCard extends StatelessWidget {
   final String thumbnailUrl;
   final String url;
 
+  final Function() onTapCard;
+  final Function() onTapMore;
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        clipBehavior: Clip.antiAlias,
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: GestureDetector(
         child: Stack(
+          alignment: Alignment.bottomCenter,
           children: [
             Container(
-              width: double.infinity,
-              height: 220,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(
-                    thumbnailUrl,
-                    scale: 1,
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
               foregroundDecoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -53,92 +48,63 @@ class ContentCard extends StatelessWidget {
                   end: Alignment.bottomCenter,
                 ),
               ),
+              child: Image.network(
+                thumbnailUrl,
+                fit: BoxFit.cover,
+              ),
             ),
-            Padding(
+            Container(
               padding: const EdgeInsets.all(8.0),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    flex: 8,
+                    flex: 7,
                     child: Container(
-                      // width: double.infinity,
-                      height: 220,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             title,
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: Colors.white,
-                            ),
                             overflow: TextOverflow.ellipsis,
                           ),
-                          SizedBox(
-                            height: 3.0,
-                          ),
+                          SizedBox(height: 3.0),
                           Row(
                             children: [
                               CircleAvatar(
-                                radius: 8,
-                                backgroundImage: NetworkImage(
-                                  creatorAvatarUrl,
-                                  scale: 1,
-                                ),
+                                radius: 10,
+                                backgroundImage: NetworkImage(creatorAvatarUrl),
                               ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Text(
-                                creatorName,
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  color: Colors.white,
-                                ),
-                              ),
+                              SizedBox(width: 4),
+                              Text(creatorName),
                             ],
                           ),
-                          SizedBox(
-                            height: 3.0,
-                          ),
-                          Text(
-                            creationDateDisplay,
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: Colors.white,
-                            ),
-                          )
+                          SizedBox(height: 3.0),
+                          Text(creationDateDisplay)
                         ],
                       ),
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: GestureDetector(
-                      child: Container(
-                        // padding: const EdgeInsets.all(8.0),
-                        width: 50.0,
-                        height: 50.0,
-                        child: Icon(
-                          Icons.more_vert,
-                          color: Colors.white,
-                        ),
-                        color: Colors.transparent,
+                  if (onTapMore != null)
+                    Expanded(
+                      flex: 1,
+                      child: IconButton(
+                        icon: Icon(Icons.more_vert),
+                        onPressed: onTapMore,
                       ),
-                      onTap: () => print('tap more vert'),
                     ),
-                  ),
                 ],
               ),
             ),
           ],
         ),
-        color: Colors.black,
+        onTap: () {
+          onTapCard?.call();
+          if (url != null || url.isNotEmpty) {
+            launch(url);
+          }
+        },
       ),
-      onTap: () => launch(url),
     );
   }
 }
