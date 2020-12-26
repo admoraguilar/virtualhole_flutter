@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
-import 'package:virtualhole_flutter/configs/app_flow_page.dart';
 
 class RootScaffold extends StatelessWidget {
   static int _bottomNavigationBarIndex = 0;

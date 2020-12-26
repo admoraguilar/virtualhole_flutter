@@ -78,105 +78,23 @@ class _ContentFeedState extends State<ContentFeed> {
         }
 
         return Stack(
-          fit: StackFit.loose,
           children: [
-            _buildFeed(_contentDTOs),
-            if (widget.tabs.length > 1) _buildFAB(),
+            _ContentFeedBuilder(
+              isLoading: _isLoading,
+              scrollDirection: widget.scrollDirection,
+              scrollController: widget.scrollController,
+              contentDTOs: _contentDTOs,
+            ),
+            if (widget.tabs.length > 1)
+              _ContentFeedSelector(
+                tabs: widget.tabs,
+                onSetTab: (ContentFeedTab tab) =>
+                    setState(() => _setCurrentTab(tab)),
+              ),
           ],
         );
       },
     );
-  }
-
-  Widget _buildFeed(List<ContentDTO> contentDTOs) {
-    if (_contentDTOs.length > 0) {
-      return ListView.separated(
-        scrollDirection: widget.scrollDirection,
-        controller: widget.scrollController,
-        physics: BouncingScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) {
-          if (index < contentDTOs.length) {
-            ContentDTO contentDTO = contentDTOs[index];
-            return ContentCard(
-              title: contentDTO.content.title,
-              creatorName: contentDTO.content.creator.name,
-              creatorAvatarUrl: contentDTO.content.creator.avatarUrl,
-              creationDateDisplay: contentDTO.creationDateDisplay,
-              thumbnailUrl: _getContentThumbnail(contentDTO),
-              url: contentDTO.content.url,
-            );
-          } else {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: _buildLoadingIndicator(),
-            );
-          }
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return SizedBox(
-            height: 8.0,
-          );
-        },
-        itemCount: contentDTOs.length + 1,
-      );
-    } else if (_contentDTOs.length <= 0 && !_isLoading) {
-      return Container(
-        alignment: Alignment.center,
-        width: double.infinity,
-        height: double.infinity,
-        child: Text(
-          'None to show at the moment \n' + 'TWT',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 24,
-          ),
-        ),
-      );
-    } else {
-      return _buildLoadingIndicator();
-    }
-  }
-
-  Widget _buildFAB() {
-    return Container(
-      alignment: Alignment.bottomRight,
-      child: SpeedDial(
-        child: Icon(Icons.ac_unit),
-        animationSpeed: 150 * 1,
-        overlayOpacity: .3,
-        overlayColor: Theme.of(context).backgroundColor,
-        marginBottom: 30,
-        marginRight: 30,
-        curve: Curves.easeOutExpo,
-        children: [
-          for (ContentFeedTab tab in widget.tabs)
-            SpeedDialChild(
-              child: Icon(Icons.tab, color: Colors.white),
-              backgroundColor: Theme.of(context).accentColor,
-              onTap: () => setState(() => _setCurrentTab(tab)),
-              label: '${tab.name}',
-              labelStyle: TextStyle(fontWeight: FontWeight.w500),
-              labelBackgroundColor: Theme.of(context).accentColor,
-            )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLoadingIndicator() {
-    return HololiveRotatingImage();
-  }
-
-  String _getContentThumbnail(ContentDTO contentDTO) {
-    Content content = contentDTO.content;
-    if (content.socialType == SocialType.youtube) {
-      if (content.contentType == ContentType.video) {
-        return (content as YouTubeVideo).thumbnailUrl;
-      } else if (content.contentType == ContentType.broadcast) {
-        return (content as YouTubeBroadcast).thumbnailUrl;
-      }
-    }
-    return '';
   }
 
   void _setCurrentTab(ContentFeedTab tab) {
@@ -191,6 +109,113 @@ class _ContentFeedState extends State<ContentFeed> {
     _page = 1;
     _isLoading = false;
     _future = _currentTab.builder(_page);
+  }
+}
+
+class _ContentFeedBuilder extends StatelessWidget {
+  _ContentFeedBuilder({
+    Key key,
+    @required this.isLoading,
+    @required this.scrollDirection,
+    @required this.scrollController,
+    @required this.contentDTOs,
+  })  : assert(isLoading != null),
+        assert(scrollDirection != null),
+        assert(scrollController != null),
+        assert(contentDTOs != null),
+        super(key: key);
+
+  final bool isLoading;
+  final Axis scrollDirection;
+  final ScrollController scrollController;
+  final List<ContentDTO> contentDTOs;
+
+  @override
+  Widget build(BuildContext context) {
+    if (contentDTOs.length > 0) {
+      return ListView.separated(
+        scrollDirection: scrollDirection,
+        controller: scrollController,
+        physics: BouncingScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) {
+          if (index < contentDTOs.length) {
+            ContentDTO contentDTO = contentDTOs[index];
+            return ContentCard(
+              title: contentDTO.content.title,
+              creatorName: contentDTO.content.creator.name,
+              creatorAvatarUrl: contentDTO.content.creator.avatarUrl,
+              creationDateDisplay: contentDTO.creationDateDisplay,
+              thumbnailUrl: contentDTO.content.thumbnailUrl,
+              url: contentDTO.content.url,
+            );
+          } else {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 32.0),
+              child: HololiveRotatingImage(),
+            );
+          }
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return SizedBox(
+            width: scrollDirection == Axis.vertical ? 8.0 : 0,
+            height: scrollDirection == Axis.horizontal ? 8.0 : 0,
+          );
+        },
+        itemCount: contentDTOs.length + 1,
+      );
+    } else if (contentDTOs.length <= 0 && !isLoading) {
+      return Center(
+        child: Container(
+          child: Text(
+            'None to show at the moment \n' + 'TWT',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 18),
+          ),
+        ),
+      );
+    } else {
+      return HololiveRotatingImage();
+    }
+  }
+}
+
+class _ContentFeedSelector extends StatelessWidget {
+  const _ContentFeedSelector({
+    Key key,
+    @required this.tabs,
+    @required this.onSetTab,
+  })  : assert(tabs != null),
+        assert(onSetTab != null),
+        super(key: key);
+
+  final List<ContentFeedTab> tabs;
+  final Function(ContentFeedTab) onSetTab;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.bottomRight,
+      child: SpeedDial(
+        child: Icon(Icons.ac_unit),
+        animationSpeed: 300,
+        overlayOpacity: .3,
+        overlayColor: Theme.of(context).backgroundColor,
+        marginBottom: 30,
+        marginRight: 30,
+        curve: Curves.easeOutCirc,
+        children: [
+          for (ContentFeedTab tab in tabs)
+            SpeedDialChild(
+              child: Icon(Icons.tab, color: Colors.white),
+              backgroundColor: Theme.of(context).accentColor,
+              onTap: () => onSetTab(tab),
+              label: '${tab.name}',
+              labelStyle: TextStyle(fontWeight: FontWeight.w500),
+              labelBackgroundColor: Theme.of(context).accentColor,
+            )
+        ],
+      ),
+    );
   }
 }
 

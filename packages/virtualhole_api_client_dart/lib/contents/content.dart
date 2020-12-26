@@ -33,16 +33,16 @@ class Content implements Equatable {
     String socialTypeKey = 'socialType';
     String contentTypeKey = 'contentType';
 
-    if (json[socialTypeKey] == 'youtube') {
-      if (json[contentTypeKey] == 'video') {
+    if (json[socialTypeKey] == SocialType.youtube) {
+      if (json[contentTypeKey] == ContentType.video) {
         return YouTubeVideo.fromJson(json);
-      } else if (json[contentTypeKey] == 'broadcast') {
+      } else if (json[contentTypeKey] == ContentType.broadcast) {
         return YouTubeBroadcast.fromJson(json);
       }
     }
 
     throw UnimplementedError(
-        '[Content] Unimplmented content type: ${json[socialTypeKey]} : ${json[contentTypeKey]}');
+        '[${(Content)}] Unimplmented content type: ${json[socialTypeKey]} : ${json[contentTypeKey]}');
   }
 
   factory Content.fromJsonDirect(Map<String, dynamic> json) {

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
+import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
+import '../../configs/configs.dart';
+import '../../ui/ui.dart';
 
 class CreatorPage extends StatelessWidget {
   const CreatorPage({Key key}) : super(key: key);
@@ -95,8 +99,157 @@ class CreatorPage extends StatelessWidget {
     );
   }
 
+  Widget _buildContentFeed(ContentFeedTab tab) {
+    return Column(
+      children: [
+        Text(
+          '${tab.name}',
+          textAlign: TextAlign.left,
+          style: TextStyle(fontSize: 24),
+        ),
+        SizedBox(
+          height: 250,
+          child: ContentFeed(
+            scrollDirection: Axis.horizontal,
+            tabs: [tab],
+          ),
+        ),
+      ],
+    );
+
+    // return Column(
+    //   children: [
+    //     Text(
+    //       '${tab.name}',
+    //       textAlign: TextAlign.left,
+    //       style: TextStyle(fontSize: 24),
+    //     ),
+    //     SizedBox(
+    //       height: 300,
+    //       child: ListView.builder(
+    //         padding: EdgeInsets.zero,
+    //         scrollDirection: Axis.horizontal,
+    //         shrinkWrap: true,
+    //         itemBuilder: (BuildContext context, int index) {
+    //           return Text('Line $index');
+    //         },
+    //         itemCount: 20,
+    //       ),
+    //     ),
+    //   ],
+    // );
+
+    // return Column(
+    //   children: [
+    //     Text(
+    //       '${tab.name}',
+    //       textAlign: TextAlign.left,
+    //       style: TextStyle(fontSize: 24),
+    //     ),
+    //     SizedBox(
+    //       height: 200,
+    //       child: ListView.builder(
+    //         padding: EdgeInsets.zero,
+    //         scrollDirection: Axis.horizontal,
+    //         shrinkWrap: true,
+    //         itemBuilder: (BuildContext context, int index) {
+    //           return SizedBox(
+    //             width: 250,
+    //             child: ContentCard(
+    //               title: 'test title $index',
+    //               creatorName: 'test creator',
+    //               creatorAvatarUrl:
+    //                   'https://yt3.ggpht.com/ytc/AAUvwnitWcmmZK60TDG8y5aUeQfZlmH9YlBNJ4D1ZSFI=s176-c-k-c0x00ffffff-no-rj',
+    //               creationDateDisplay: 'Test date',
+    //               thumbnailUrl: 'http://i.ytimg.com/vi/aU2aBXaLuA4/hq720.jpg',
+    //               url: 'https://www.youtube.com/watch?v=aU2aBXaLuA4',
+    //             ),
+    //           );
+    //         },
+    //         itemCount: 3,
+    //       ),
+    //     ),
+    //   ],
+    // );
+
+    // return Column(
+    //   children: [
+    //     Text(
+    //       '${tab.name}',
+    //       textAlign: TextAlign.left,
+    //       style: TextStyle(fontSize: 24),
+    //     ),
+    //     SizedBox(
+    //       height: 150,
+    //       child: ListView.builder(
+    //         padding: EdgeInsets.zero,
+    //         scrollDirection: Axis.horizontal,
+    //         itemBuilder: (BuildContext context, int index) {
+    //           return SizedBox(
+    //             width: 250,
+    //             child: ContentCard(
+    //               title: 'test title $index',
+    //               creatorName: 'test creator',
+    //               creatorAvatarUrl:
+    //                   'https://yt3.ggpht.com/ytc/AAUvwnitWcmmZK60TDG8y5aUeQfZlmH9YlBNJ4D1ZSFI=s176-c-k-c0x00ffffff-no-rj',
+    //               creationDateDisplay: 'Test date',
+    //               thumbnailUrl: 'http://i.ytimg.com/vi/aU2aBXaLuA4/hq720.jpg',
+    //               url: 'https://www.youtube.com/watch?v=aU2aBXaLuA4',
+    //             ),
+    //           );
+    //         },
+    //         itemCount: 3,
+    //       ),
+    //     ),
+    //   ],
+    // );
+
+    // return Column(
+    //   mainAxisSize: MainAxisSize.min,
+    //   crossAxisAlignment: CrossAxisAlignment.start,
+    //   children: [
+    //     Text(
+    //       '${tab.name}',
+    //       textAlign: TextAlign.left,
+    //       style: TextStyle(
+    //         fontSize: 24,
+    //       ),
+    //     ),
+    //     // Expanded(
+    //     //   child: Container(
+    //     //     height: 300,
+    //     //     child: ContentFeed(
+    //     //       scrollDirection: Axis.horizontal,
+    //     //       tabs: [tab],
+    //     //     ),
+    //     //   ),
+    //     // ),
+    //     ContentCard(
+    //       title: 'test title',
+    //       creatorName: 'test creator',
+    //       creatorAvatarUrl:
+    //           'https://yt3.ggpht.com/ytc/AAUvwnitWcmmZK60TDG8y5aUeQfZlmH9YlBNJ4D1ZSFI=s176-c-k-c0x00ffffff-no-rj',
+    //       creationDateDisplay: 'Test date',
+    //       thumbnailUrl: 'http://i.ytimg.com/vi/aU2aBXaLuA4/hq720.jpg',
+    //       url: 'https://www.youtube.com/watch?v=aU2aBXaLuA4',
+    //     ),
+    //   ],
+    // );
+  }
+
   @override
   Widget build(BuildContext context) {
+    void _onError(APIError error) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${error.statusCode}: ${error.reasonPhrase}'),
+        ),
+      );
+    }
+
+    VirtualHoleApiClient vHoleApi =
+        VirtualHoleApiClient.managed(domain: AppConfig.virtualHoleApi);
+
     return ListView.builder(
       padding: EdgeInsets.zero,
       itemBuilder: (BuildContext buildContext, int index) {
@@ -105,6 +258,61 @@ class CreatorPage extends StatelessWidget {
         } else if (index == 1) {
           return _buildSocialLinks(context);
         }
+
+        // else if (index == 2) {
+        //   return _buildContentFeed(ContentFeedTab(
+        //     name: 'Live',
+        //     builder: (int page) => APIResponseProvider(
+        //       vHoleApi.contents.getLive(ContentRequest(
+        //         page: page,
+        //         pageSize: 5,
+        //       )),
+        //       onError: _onError,
+        //     ).getResult(),
+        //   ));
+        // }
+
+        else if (index == 3) {
+          return _buildContentFeed(ContentFeedTab(
+            name: 'Scheduled',
+            builder: (int page) => APIResponseProvider(
+              vHoleApi.contents.getDiscover(ContentRequest(
+                page: page,
+                pageSize: 5,
+              )),
+              onError: _onError,
+            ).getResult(),
+          ));
+        } else if (index == 4) {
+          return _buildContentFeed(ContentFeedTab(
+            name: 'Scheduled',
+            builder: (int page) => APIResponseProvider(
+              vHoleApi.contents.getSchedule(ContentRequest(
+                page: page,
+                pageSize: 5,
+              )),
+              onError: _onError,
+            ).getResult(),
+          ));
+        }
+
+        // else if (index == 4) {
+        //   return _buildContentFeed(ContentFeedTab(
+        //     name: 'Discover',
+        //     builder: (int page) => APIResponseProvider(
+        //       vHoleApi.contents.getDiscover(ContentRequest(page: page)),
+        //       onError: _onError,
+        //     ).getResult(),
+        //   ));
+        // } else if (index == 5) {
+        //   return _buildContentFeed(ContentFeedTab(
+        //     name: 'Community',
+        //     builder: (int page) => APIResponseProvider(
+        //       vHoleApi.contents.getCommunity(ContentRequest(page: page)),
+        //       onError: _onError,
+        //     ).getResult(),
+        //   ));
+        // }
         return Text('Line $index');
       },
       itemCount: 6,
