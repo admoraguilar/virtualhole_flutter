@@ -6,7 +6,14 @@ import '../../configs/configs.dart';
 import '../../ui/ui.dart';
 
 class CreatorPage extends StatelessWidget {
-  const CreatorPage({Key key}) : super(key: key);
+  const CreatorPage({
+    Key key,
+    this.pageBuilder,
+    this.bottomNavigationBarItems,
+  }) : super(key: key);
+
+  final FlowPage Function(int index) pageBuilder;
+  final List<BottomNavigationBarItem> bottomNavigationBarItems;
 
   Widget _buildAvatarHighlight(BuildContext context) {
     return Stack(
@@ -133,72 +140,76 @@ class CreatorPage extends StatelessWidget {
     VirtualHoleApiClient vHoleApi =
         VirtualHoleApiClient.managed(domain: AppConfig.virtualHoleApi);
 
-    return ListView.builder(
-      padding: EdgeInsets.zero,
-      itemBuilder: (BuildContext buildContext, int index) {
-        if (index == 0) {
-          return _buildAvatarHighlight(context);
-        } else if (index == 1) {
-          return _buildSocialLinks(context);
-        }
+    return RootScaffold(
+      body: ListView.builder(
+        padding: EdgeInsets.zero,
+        itemBuilder: (BuildContext buildContext, int index) {
+          if (index == 0) {
+            return _buildAvatarHighlight(context);
+          } else if (index == 1) {
+            return _buildSocialLinks(context);
+          }
 
-        // else if (index == 2) {
-        //   return _buildContentFeed(ContentFeedTab(
-        //     name: 'Live',
-        //     builder: (int page) => APIResponseProvider(
-        //       vHoleApi.contents.getLive(ContentRequest(
-        //         page: page,
-        //         pageSize: 5,
-        //       )),
-        //       onError: _onError,
-        //     ).getResult(),
-        //   ));
-        // }
+          // else if (index == 2) {
+          //   return _buildContentFeed(ContentFeedTab(
+          //     name: 'Live',
+          //     builder: (int page) => APIResponseProvider(
+          //       vHoleApi.contents.getLive(ContentRequest(
+          //         page: page,
+          //         pageSize: 5,
+          //       )),
+          //       onError: _onError,
+          //     ).getResult(),
+          //   ));
+          // }
 
-        else if (index == 3) {
-          return _buildContentFeed(ContentFeedTab(
-            name: 'Scheduled',
-            builder: (int page) => APIResponseProvider(
-              vHoleApi.contents.getDiscover(ContentRequest(
-                page: page,
-                pageSize: 5,
-              )),
-              onError: _onError,
-            ).getResult(),
-          ));
-        } else if (index == 4) {
-          return _buildContentFeed(ContentFeedTab(
-            name: 'Scheduled',
-            builder: (int page) => APIResponseProvider(
-              vHoleApi.contents.getSchedule(ContentRequest(
-                page: page,
-                pageSize: 5,
-              )),
-              onError: _onError,
-            ).getResult(),
-          ));
-        }
+          else if (index == 3) {
+            return _buildContentFeed(ContentFeedTab(
+              name: 'Scheduled',
+              builder: (int page) => APIResponseProvider(
+                vHoleApi.contents.getDiscover(ContentRequest(
+                  page: page,
+                  pageSize: 5,
+                )),
+                onError: _onError,
+              ).getResult(),
+            ));
+          } else if (index == 4) {
+            return _buildContentFeed(ContentFeedTab(
+              name: 'Scheduled',
+              builder: (int page) => APIResponseProvider(
+                vHoleApi.contents.getSchedule(ContentRequest(
+                  page: page,
+                  pageSize: 5,
+                )),
+                onError: _onError,
+              ).getResult(),
+            ));
+          }
 
-        // else if (index == 4) {
-        //   return _buildContentFeed(ContentFeedTab(
-        //     name: 'Discover',
-        //     builder: (int page) => APIResponseProvider(
-        //       vHoleApi.contents.getDiscover(ContentRequest(page: page)),
-        //       onError: _onError,
-        //     ).getResult(),
-        //   ));
-        // } else if (index == 5) {
-        //   return _buildContentFeed(ContentFeedTab(
-        //     name: 'Community',
-        //     builder: (int page) => APIResponseProvider(
-        //       vHoleApi.contents.getCommunity(ContentRequest(page: page)),
-        //       onError: _onError,
-        //     ).getResult(),
-        //   ));
-        // }
-        return Text('Line $index');
-      },
-      itemCount: 6,
+          // else if (index == 4) {
+          //   return _buildContentFeed(ContentFeedTab(
+          //     name: 'Discover',
+          //     builder: (int page) => APIResponseProvider(
+          //       vHoleApi.contents.getDiscover(ContentRequest(page: page)),
+          //       onError: _onError,
+          //     ).getResult(),
+          //   ));
+          // } else if (index == 5) {
+          //   return _buildContentFeed(ContentFeedTab(
+          //     name: 'Community',
+          //     builder: (int page) => APIResponseProvider(
+          //       vHoleApi.contents.getCommunity(ContentRequest(page: page)),
+          //       onError: _onError,
+          //     ).getResult(),
+          //   ));
+          // }
+          return Text('Line $index');
+        },
+        itemCount: 6,
+      ),
+      pageBuilder: pageBuilder,
+      bottomNavigationBarItems: bottomNavigationBarItems,
     );
   }
 }

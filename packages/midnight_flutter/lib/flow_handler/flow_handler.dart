@@ -224,31 +224,6 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
 
   @override
   Widget build(BuildContext context) {
-    Widget generateInnerNavigator() {
-      FlowPage topPage = pages.length > 0 ? pages.last : null;
-      if (topPage != null) {
-        return Navigator(
-          key: navigatorKey,
-          pages: pages,
-          onPopPage: (Route<dynamic> route, dynamic result) {
-            MLog.log(
-              'Navigator pop.',
-              prepend: (FlowHandler).toString(),
-            );
-
-            bool didPop = route.didPop(result);
-            pages.removeLast();
-            notifyListeners();
-
-            return didPop;
-          },
-        );
-      }
-
-      throw Exception(
-          "[${(FlowHandler).toString()}] Page stack is empty! Make sure initial pages are not empty or that you're not emptying the page stack.");
-    }
-
     LocalKey rootFlowKey = ValueKey('root');
 
     return Navigator(
@@ -257,12 +232,12 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
         if (designType == FlowDesignType.Material)
           MaterialPage(
             key: rootFlowKey,
-            child: generateInnerNavigator(),
+            child: _generateInnerNavigator(),
           ),
         if (designType == FlowDesignType.Cupertino)
           CupertinoPage(
             key: rootFlowKey,
-            child: generateInnerNavigator(),
+            child: _generateInnerNavigator(),
           ),
       ],
       onPopPage: (Route<dynamic> route, dynamic result) {
@@ -273,6 +248,31 @@ class FlowHandlerRouterDelegate extends RouterDelegate<FlowHandlerRoutePath>
         return route.didPop(result);
       },
     );
+  }
+
+  Widget _generateInnerNavigator() {
+    FlowPage topPage = pages.length > 0 ? pages.last : null;
+    if (topPage != null) {
+      return Navigator(
+        key: navigatorKey,
+        pages: pages,
+        onPopPage: (Route<dynamic> route, dynamic result) {
+          MLog.log(
+            'Navigator pop.',
+            prepend: (FlowHandler).toString(),
+          );
+
+          bool didPop = route.didPop(result);
+          pages.removeLast();
+          notifyListeners();
+
+          return didPop;
+        },
+      );
+    }
+
+    throw Exception(
+        "[${(FlowHandler).toString()}] Page stack is empty! Make sure initial pages are not empty or that you're not emptying the page stack.");
   }
 }
 

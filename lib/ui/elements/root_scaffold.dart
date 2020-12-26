@@ -58,7 +58,8 @@ class RootScaffold extends StatelessWidget {
           FlowPage page = pageBuilder(index);
           FlowPage currentPage = FlowHandler.get().routerDelegate.pages.last;
 
-          if (currentPage.runtimeType == page.runtimeType) {
+          if (currentPage.runtimeType == page.runtimeType &&
+              currentPage.child.runtimeType == page.child.runtimeType) {
             MLog.log(
               'Navigating to same page',
               prepend: (RootScaffold),

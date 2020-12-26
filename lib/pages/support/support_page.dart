@@ -6,14 +6,22 @@ import '../../pages/pages.dart';
 import '../../ui/ui.dart';
 
 class SupportPage extends StatelessWidget {
-  const SupportPage({Key key}) : super(key: key);
+  const SupportPage({
+    Key key,
+    this.pageBuilder,
+    this.bottomNavigationBarItems,
+  }) : super(key: key);
+
+  final FlowPage Function(int index) pageBuilder;
+  final List<BottomNavigationBarItem> bottomNavigationBarItems;
 
   @override
   Widget build(BuildContext context) {
     SupportListViewModel supportListViewModel =
         ViewModel.get<SupportListViewModel>();
 
-    return FutureBuilder(
+    return RootScaffold(
+      body: FutureBuilder(
         future: supportListViewModel.resourcesClient.getSupportListAsync(),
         builder: (BuildContext context,
             AsyncSnapshot<APIResponse<List<SupportInfo>>> snapshot) {
@@ -54,6 +62,11 @@ class SupportPage extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-        });
+        },
+      ),
+      pageBuilder: pageBuilder,
+      bottomNavigationBarItems: bottomNavigationBarItems,
+      bottomNavigationBarIndex: 3,
+    );
   }
 }
