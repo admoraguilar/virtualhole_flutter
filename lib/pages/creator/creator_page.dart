@@ -1,21 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
-import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
-import '../../configs/configs.dart';
 import '../../ui/ui.dart';
 
 class CreatorPage extends StatelessWidget {
   const CreatorPage({
     Key key,
-    this.pageBuilder,
-    this.bottomNavigationBarItems,
-  }) : super(key: key);
+    @required this.contentFeedTabs,
+    @required this.pageBuilder,
+    @required this.bottomNavigationBarItems,
+  })  : assert(contentFeedTabs != null),
+        assert(pageBuilder != null),
+        assert(bottomNavigationBarItems != null),
+        super(key: key);
 
+  final List<ContentFeedTab> contentFeedTabs;
   final FlowPage Function(int index) pageBuilder;
   final List<BottomNavigationBarItem> bottomNavigationBarItems;
 
-  Widget _buildAvatarHighlight(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
+    return RootScaffold(
+      body: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          _CreatorAvatarHighlight(),
+          _CreatorSocialLinks(),
+          for (ContentFeedTab tab in contentFeedTabs) ...[
+            _CreatorContentFeed(tab: tab),
+            SizedBox(height: 16)
+          ]
+        ],
+        cacheExtent: double.infinity,
+      ),
+      pageBuilder: pageBuilder,
+      bottomNavigationBarItems: bottomNavigationBarItems,
+    );
+  }
+}
+
+class _CreatorAvatarHighlight extends StatelessWidget {
+  const _CreatorAvatarHighlight({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
@@ -23,8 +51,9 @@ class CreatorPage extends StatelessWidget {
           height: 400,
           decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('assets/images/suisei-avatar.jpg'),
-                fit: BoxFit.cover),
+              image: AssetImage('assets/images/suisei-avatar.jpg'),
+              fit: BoxFit.cover,
+            ),
           ),
           foregroundDecoration: BoxDecoration(
             gradient: LinearGradient(
@@ -52,8 +81,13 @@ class CreatorPage extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget _buildSocialLinks(BuildContext context) {
+class _CreatorSocialLinks extends StatelessWidget {
+  const _CreatorSocialLinks({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
@@ -105,111 +139,40 @@ class CreatorPage extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildContentFeed(ContentFeedTab tab) {
-    return Column(
-      children: [
-        Text(
-          '${tab.name}',
-          textAlign: TextAlign.left,
-          style: TextStyle(fontSize: 24),
-        ),
-        SizedBox(
-          height: 250,
-          child: ContentFeed(
-            scrollDirection: Axis.horizontal,
-            scrollPhysics: ClampingScrollPhysics(),
-            shouldLoadMoreOnScroll: false,
-            tabs: [tab],
-          ),
-        ),
-      ],
-    );
-  }
+class _CreatorContentFeed extends StatelessWidget {
+  const _CreatorContentFeed({
+    Key key,
+    @required this.tab,
+  })  : assert(tab != null),
+        super(key: key);
+
+  final ContentFeedTab tab;
 
   @override
   Widget build(BuildContext context) {
-    void _onError(APIError error) {
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
-          content: Text('${error.statusCode}: ${error.reasonPhrase}'),
-        ),
-      );
-    }
-
-    VirtualHoleApiClient vHoleApi =
-        VirtualHoleApiClient.managed(domain: AppConfig.virtualHoleApi);
-
-    return RootScaffold(
-      body: ListView.builder(
-        padding: EdgeInsets.zero,
-        itemBuilder: (BuildContext buildContext, int index) {
-          if (index == 0) {
-            return _buildAvatarHighlight(context);
-          } else if (index == 1) {
-            return _buildSocialLinks(context);
-          }
-
-          // else if (index == 2) {
-          //   return _buildContentFeed(ContentFeedTab(
-          //     name: 'Live',
-          //     builder: (int page) => APIResponseProvider(
-          //       vHoleApi.contents.getLive(ContentRequest(
-          //         page: page,
-          //         pageSize: 5,
-          //       )),
-          //       onError: _onError,
-          //     ).getResult(),
-          //   ));
-          // }
-
-          else if (index == 3) {
-            return _buildContentFeed(ContentFeedTab(
-              name: 'Scheduled',
-              builder: (int page) => APIResponseProvider(
-                vHoleApi.contents.getDiscover(ContentRequest(
-                  page: page,
-                  pageSize: 5,
-                )),
-                onError: _onError,
-              ).getResult(),
-            ));
-          } else if (index == 4) {
-            return _buildContentFeed(ContentFeedTab(
-              name: 'Scheduled',
-              builder: (int page) => APIResponseProvider(
-                vHoleApi.contents.getSchedule(ContentRequest(
-                  page: page,
-                  pageSize: 5,
-                )),
-                onError: _onError,
-              ).getResult(),
-            ));
-          }
-
-          // else if (index == 4) {
-          //   return _buildContentFeed(ContentFeedTab(
-          //     name: 'Discover',
-          //     builder: (int page) => APIResponseProvider(
-          //       vHoleApi.contents.getDiscover(ContentRequest(page: page)),
-          //       onError: _onError,
-          //     ).getResult(),
-          //   ));
-          // } else if (index == 5) {
-          //   return _buildContentFeed(ContentFeedTab(
-          //     name: 'Community',
-          //     builder: (int page) => APIResponseProvider(
-          //       vHoleApi.contents.getCommunity(ContentRequest(page: page)),
-          //       onError: _onError,
-          //     ).getResult(),
-          //   ));
-          // }
-          return Text('Line $index');
-        },
-        itemCount: 6,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '${tab.name}',
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: 24),
+          ),
+          SizedBox(
+            height: 250,
+            child: ContentFeed(
+              scrollDirection: Axis.horizontal,
+              scrollPhysics: ClampingScrollPhysics(),
+              shouldLoadMoreOnScroll: false,
+              tabs: [tab],
+            ),
+          ),
+        ],
       ),
-      pageBuilder: pageBuilder,
-      bottomNavigationBarItems: bottomNavigationBarItems,
     );
   }
 }
