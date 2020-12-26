@@ -23,9 +23,9 @@ class HomeFlowPage<T> extends FlowPage<T> {
         body: HomePage(
           scrollController: scrollController,
         ),
-        pageBuilder: RootFlowPageHelper.generateRootPages,
+        pageBuilder: AppFlowPage.generateRootPages,
         bottomNavigationBarItems:
-            RootFlowPageHelper.generateBottomNavigationBarItems(),
+            AppFlowPage.generateBottomNavigationBarItems(),
         bottomNavigationBarIndex: 0,
         onBottomNavigateSamePage: () {
           if (scrollController.hasClients) {

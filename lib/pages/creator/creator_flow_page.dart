@@ -13,9 +13,9 @@ class CreatorFlowPage<T> extends FlowPage<T> {
           child: RootScaffold(
             key: GlobalKey<NavigatorState>(),
             body: CreatorPage(),
-            pageBuilder: RootFlowPageHelper.generateRootPages,
+            pageBuilder: AppFlowPage.generateRootPages,
             bottomNavigationBarItems:
-                RootFlowPageHelper.generateBottomNavigationBarItems(),
+                AppFlowPage.generateBottomNavigationBarItems(),
           ),
         );
 }

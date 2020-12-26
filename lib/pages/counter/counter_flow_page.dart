@@ -24,9 +24,9 @@ class CounterFlowPage<T> extends FlowPage<T> {
                 );
               },
             ),
-            pageBuilder: RootFlowPageHelper.generateRootPages,
+            pageBuilder: AppFlowPage.generateRootPages,
             bottomNavigationBarItems:
-                RootFlowPageHelper.generateBottomNavigationBarItems(),
+                AppFlowPage.generateBottomNavigationBarItems(),
             bottomNavigationBarIndex: 1,
           ),
         );

@@ -7,7 +7,7 @@ class AppFlowHandler {
     runApp(
       FlowHandler(
         designType: FlowDesignType.Material,
-        initialPages: RootFlowPageHelper.generateInitialPages(),
+        initialPages: AppFlowPage.generateInitialPages(),
         settings: FlowHandlerSettings(
           title: '${AppConfig.appName}',
           theme: ThemeData(

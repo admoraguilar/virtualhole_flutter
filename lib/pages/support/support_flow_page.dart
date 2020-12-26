@@ -14,9 +14,9 @@ class SupportFlowPage<T> extends FlowPage<T> {
             key: GlobalKey<NavigatorState>(),
             title: Text('${AppConfig.appName}'),
             body: SupportPage(),
-            pageBuilder: RootFlowPageHelper.generateRootPages,
+            pageBuilder: AppFlowPage.generateRootPages,
             bottomNavigationBarItems:
-                RootFlowPageHelper.generateBottomNavigationBarItems(),
+                AppFlowPage.generateBottomNavigationBarItems(),
             bottomNavigationBarIndex: 3,
           ),
         );
