@@ -9,6 +9,7 @@ class HololiveRotatingImage extends StatelessWidget {
     'assets/images/icons/spinners/matsuri-512.png',
     'assets/images/icons/spinners/miko-512.png',
     'assets/images/icons/spinners/watame-512.png',
+    'assets/images/icons/spinners/pekora-512.png'
   ];
 
   static final Random _random = Random();

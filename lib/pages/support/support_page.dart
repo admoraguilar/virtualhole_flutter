@@ -61,7 +61,7 @@ class SupportPage extends StatelessWidget {
             );
           } else {
             return Center(
-              child: CircularProgressIndicator(),
+              child: HololiveRotatingImage(),
             );
           }
         },
