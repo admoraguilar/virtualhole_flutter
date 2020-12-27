@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:midnight_flutter/flow_handler/flow_handler.dart';
-import '../../ui/ui.dart';
+import 'package:midnight_flutter/midnight_flutter.dart';
 
 class CounterPage extends StatefulWidget {
   CounterPage({
@@ -28,7 +28,7 @@ class _CounterPageState extends State<CounterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return RootScaffold(
+    return FlowPageScaffold(
       title: widget.title,
       body: Align(
         alignment: Alignment.center,

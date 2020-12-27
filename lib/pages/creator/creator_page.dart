@@ -25,7 +25,7 @@ class CreatorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RootScaffold(
+    return FlowPageScaffold(
       body: ListView(
         padding: EdgeInsets.zero,
         children: [

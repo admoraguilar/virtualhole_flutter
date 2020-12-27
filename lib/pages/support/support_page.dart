@@ -22,7 +22,7 @@ class SupportPage extends StatelessWidget {
     SupportListViewModel supportListViewModel =
         ViewModel.get<SupportListViewModel>();
 
-    return RootScaffold(
+    return FlowPageScaffold(
       body: FutureBuilder(
         future: supportListViewModel.resourcesClient.getSupportListAsync(),
         builder: (BuildContext context,

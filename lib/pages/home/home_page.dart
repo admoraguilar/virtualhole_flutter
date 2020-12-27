@@ -28,7 +28,7 @@ class HomePage<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RootScaffold(
+    return FlowPageScaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: ContentFeed(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:midnight_flutter/midnight_flutter.dart';
+import '../midnight_flutter.dart';
 
-class RootScaffold extends StatelessWidget {
+class FlowPageScaffold extends StatelessWidget {
   static int _bottomNavigationBarIndex = 0;
 
-  const RootScaffold({
+  const FlowPageScaffold({
     Key key,
     this.title,
     @required this.body,
@@ -62,7 +62,7 @@ class RootScaffold extends StatelessWidget {
               currentPage.child.runtimeType == page.child.runtimeType) {
             MLog.log(
               'Navigating to same page',
-              prepend: (RootScaffold),
+              prepend: (FlowPageScaffold),
             );
             onBottomNavigateSamePage?.call();
             return;
