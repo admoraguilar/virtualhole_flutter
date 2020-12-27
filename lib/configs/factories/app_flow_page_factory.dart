@@ -22,7 +22,10 @@ class AppFlowPageFactory {
       '/creator',
       CreatorPage(
         key: GlobalKey<NavigatorState>(),
-        contentFeedTabs: AppContentFeedTabFactory.main(),
+        creator: AppCreatorFactory.suisei(),
+        contentFeedTabs: AppContentFeedTabFactory.creator([
+          AppCreatorFactory.suisei(),
+        ]),
         pageBuilder: _generateRootPage,
         bottomNavigationBarItems: AppBottomNavigationFactory.main(),
       ),

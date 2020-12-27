@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
 import '../../ui/ui.dart';
 
 class CreatorPage extends StatelessWidget {
   const CreatorPage({
     Key key,
+    @required this.creator,
     @required this.contentFeedTabs,
     @required this.pageBuilder,
     @required this.bottomNavigationBarItems,
-  })  : assert(contentFeedTabs != null),
+  })  : assert(creator != null),
+        assert(contentFeedTabs != null),
         assert(pageBuilder != null),
         assert(bottomNavigationBarItems != null),
         super(key: key);
 
+  final Creator creator;
   final List<ContentFeedTab> contentFeedTabs;
   final FlowPage Function(int index) pageBuilder;
   final List<BottomNavigationBarItem> bottomNavigationBarItems;
@@ -24,8 +29,8 @@ class CreatorPage extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
-          _CreatorAvatarHighlight(),
-          _CreatorSocialLinks(),
+          _CreatorAvatarHighlight(creator: creator),
+          _CreatorSocialLinks(creator: creator),
           for (ContentFeedTab tab in contentFeedTabs) ...[
             _CreatorContentFeed(tab: tab),
             SizedBox(height: 16)
@@ -40,7 +45,13 @@ class CreatorPage extends StatelessWidget {
 }
 
 class _CreatorAvatarHighlight extends StatelessWidget {
-  const _CreatorAvatarHighlight({Key key}) : super(key: key);
+  const _CreatorAvatarHighlight({
+    Key key,
+    @required this.creator,
+  })  : assert(creator != null),
+        super(key: key);
+
+  final Creator creator;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +62,7 @@ class _CreatorAvatarHighlight extends StatelessWidget {
           height: 400,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/suisei-avatar.jpg'),
+              image: NetworkImage(creator.avatarUrl),
               fit: BoxFit.cover,
             ),
           ),
@@ -71,7 +82,7 @@ class _CreatorAvatarHighlight extends StatelessWidget {
           height: 400,
           alignment: Alignment.bottomCenter,
           child: Text(
-            'Suisei Hoshimachi',
+            '${creator.name}',
             style: TextStyle(
               color: Colors.white,
               fontSize: 24,
@@ -84,7 +95,13 @@ class _CreatorAvatarHighlight extends StatelessWidget {
 }
 
 class _CreatorSocialLinks extends StatelessWidget {
-  const _CreatorSocialLinks({Key key}) : super(key: key);
+  const _CreatorSocialLinks({
+    Key key,
+    @required this.creator,
+  })  : assert(creator != null),
+        super(key: key);
+
+  final Creator creator;
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +135,7 @@ class _CreatorSocialLinks extends StatelessWidget {
           ButtonBar(
             alignment: MainAxisAlignment.center,
             children: [
-              for (int i = 0; i < 4; i++)
+              for (CreatorSocial social in creator.socials)
                 TextButton(
                   child: Icon(
                     Icons.music_note,
@@ -129,9 +146,7 @@ class _CreatorSocialLinks extends StatelessWidget {
                     backgroundColor: Colors.blue,
                     shape: CircleBorder(),
                   ),
-                  onPressed: () {
-                    MLog.log('press');
-                  },
+                  onPressed: () => launch(social.url),
                 )
             ],
           )

@@ -2,7 +2,6 @@ import '../../virtualhole_api_client_dart.dart';
 
 class ContentRequest extends PagedRequest {
   const ContentRequest({
-    DateTime timestamp,
     String locale,
     int page,
     int pageSize,
@@ -91,7 +90,6 @@ class ContentRequest extends PagedRequest {
     bool isSortAscending,
   }) {
     return ContentRequest(
-      timestamp: timestamp ?? this.timestamp,
       locale: locale ?? this.locale,
       page: page ?? this.page,
       pageSize: pageSize ?? this.pageSize,

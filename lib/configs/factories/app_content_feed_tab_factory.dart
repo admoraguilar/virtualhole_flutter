@@ -6,6 +6,38 @@ class AppContentFeedTabFactory {
   static VirtualHoleApiClient _vHoleApi =
       VirtualHoleApiClient.managed(domain: AppConfig.virtualHoleApi);
 
+  static List<ContentFeedTab> creator(List<Creator> creators) {
+    return [
+      discover(
+        request: ContentRequest(
+          isCreatorsInclude: true,
+          creatorIds: creators.map((c) => c.id).toList(),
+        ),
+      ),
+      community(
+        request: ContentRequest(
+          isCreatorRelated: true,
+          creatorIds: creators.map((c) => c.id).toList(),
+          creatorNames: creators.map((c) => c.name).toList(),
+          creatorSocialIds:
+              creators.expand((c) => c.socials.map((s) => s.id)).toList(),
+        ),
+      ),
+      live(
+        request: ContentRequest(
+          isCreatorsInclude: true,
+          creatorIds: creators.map((c) => c.id).toList(),
+        ),
+      ),
+      scheduled(
+        request: ContentRequest(
+          isCreatorsInclude: true,
+          creatorIds: creators.map((c) => c.id).toList(),
+        ),
+      )
+    ];
+  }
+
   static List<ContentFeedTab> main() {
     return [
       discover(),
@@ -15,38 +47,42 @@ class AppContentFeedTabFactory {
     ];
   }
 
-  static ContentFeedTab discover() {
+  static ContentFeedTab discover({ContentRequest request}) {
+    request ??= ContentRequest();
     return ContentFeedTab(
       name: 'Discover',
       builder: (int page) => APIResponseProvider(
-        _vHoleApi.contents.getDiscover(ContentRequest(page: page)),
+        _vHoleApi.contents.getDiscover(request.copyWith(page: page)),
       ).getResult(),
     );
   }
 
-  static ContentFeedTab community() {
+  static ContentFeedTab community({ContentRequest request}) {
+    request ??= ContentRequest();
     return ContentFeedTab(
       name: 'Community',
       builder: (int page) => APIResponseProvider(
-        _vHoleApi.contents.getCommunity(ContentRequest(page: page)),
+        _vHoleApi.contents.getCommunity(request.copyWith(page: page)),
       ).getResult(),
     );
   }
 
-  static ContentFeedTab live() {
+  static ContentFeedTab live({ContentRequest request}) {
+    request ??= ContentRequest();
     return ContentFeedTab(
       name: 'Live',
       builder: (int page) => APIResponseProvider(
-        _vHoleApi.contents.getLive(ContentRequest(page: page)),
+        _vHoleApi.contents.getLive(request.copyWith(page: page)),
       ).getResult(),
     );
   }
 
-  static ContentFeedTab scheduled() {
+  static ContentFeedTab scheduled({ContentRequest request}) {
+    request ??= ContentRequest();
     return ContentFeedTab(
       name: 'Scheduled',
       builder: (int page) => APIResponseProvider(
-        _vHoleApi.contents.getSchedule(ContentRequest(page: page)),
+        _vHoleApi.contents.getSchedule(request.copyWith(page: page)),
       ).getResult(),
     );
   }
