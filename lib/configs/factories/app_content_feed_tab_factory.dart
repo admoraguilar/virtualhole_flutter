@@ -8,6 +8,18 @@ class AppContentFeedTabFactory {
 
   static List<ContentFeedTab> creator(List<Creator> creators) {
     return [
+      live(
+        request: ContentRequest(
+          isCreatorsInclude: true,
+          creatorIds: creators.map((c) => c.id).toList(),
+        ),
+      ),
+      scheduled(
+        request: ContentRequest(
+          isCreatorsInclude: true,
+          creatorIds: creators.map((c) => c.id).toList(),
+        ),
+      ),
       discover(
         request: ContentRequest(
           isCreatorsInclude: true,
@@ -23,18 +35,6 @@ class AppContentFeedTabFactory {
               creators.expand((c) => c.socials.map((s) => s.id)).toList(),
         ),
       ),
-      live(
-        request: ContentRequest(
-          isCreatorsInclude: true,
-          creatorIds: creators.map((c) => c.id).toList(),
-        ),
-      ),
-      scheduled(
-        request: ContentRequest(
-          isCreatorsInclude: true,
-          creatorIds: creators.map((c) => c.id).toList(),
-        ),
-      )
     ];
   }
 

@@ -15,6 +15,7 @@ class ContentFeed extends StatefulWidget {
     this.shouldLoadMoreOnScroll = true,
     @required this.tabs,
     this.initialTabIndex = 0,
+    this.onTapMore,
   })  : assert(scrollDirection != null),
         assert(shouldLoadMoreOnScroll != null),
         assert(tabs != null && tabs.length > 0),
@@ -30,6 +31,7 @@ class ContentFeed extends StatefulWidget {
   final bool shouldLoadMoreOnScroll;
   final List<ContentFeedTab> tabs;
   final int initialTabIndex;
+  final Function(ContentDTO) onTapMore;
 
   @override
   _ContentFeedState createState() => _ContentFeedState();
@@ -93,6 +95,7 @@ class _ContentFeedState extends State<ContentFeed> {
               scrollPhysics: widget.scrollPhysics,
               shouldLoadMoreOnScroll: widget.shouldLoadMoreOnScroll,
               contentDTOs: _contentDTOs,
+              onTapMore: widget.onTapMore,
             ),
             if (widget.tabs.length > 1)
               _ContentFeedSelector(
@@ -130,6 +133,7 @@ class _ContentFeedBuilder extends StatelessWidget {
     ScrollPhysics scrollPhysics,
     this.shouldLoadMoreOnScroll = true,
     @required this.contentDTOs,
+    this.onTapMore,
   })  : assert(isLoading != null),
         assert(scrollDirection != null),
         assert(shouldLoadMoreOnScroll != null),
@@ -144,6 +148,7 @@ class _ContentFeedBuilder extends StatelessWidget {
   final ScrollPhysics scrollPhysics;
   final bool shouldLoadMoreOnScroll;
   final List<ContentDTO> contentDTOs;
+  final Function(ContentDTO) onTapMore;
 
   @override
   Widget build(BuildContext context) {
@@ -162,6 +167,7 @@ class _ContentFeedBuilder extends StatelessWidget {
               creationDateDisplay: contentDTO.creationDateDisplay,
               thumbnailUrl: contentDTO.content.thumbnailUrl,
               url: contentDTO.content.url,
+              onTapMore: onTapMore != null ? () => onTapMore(contentDTO) : null,
             );
           } else {
             return Padding(

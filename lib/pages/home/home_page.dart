@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
+import 'package:virtualhole_api_client_dart/contents/content_dto.dart';
+import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
+import 'package:virtualhole_flutter/configs/configs.dart';
 import '../../ui/ui.dart';
 
 class HomePage<T> extends StatelessWidget {
@@ -32,6 +35,15 @@ class HomePage<T> extends StatelessWidget {
           scrollController: scrollController,
           tabs: contentFeedTabs,
           initialTabIndex: contentFeedInitialTabIndex,
+          onTapMore: (ContentDTO contentDTO) async {
+            Creator creator = await AppCreatorFactory.fromIdAsync(
+                contentDTO.content.creator.id);
+            FlowHandler.get().routerDelegate.setDirty(() {
+              FlowHandler.get().routerDelegate.pages.add(
+                    AppFlowPageFactory.creator(creator: creator),
+                  );
+            });
+          },
         ),
       ),
       pageBuilder: pageBuilder,

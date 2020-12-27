@@ -5,7 +5,7 @@ class AppCreatorFactory {
   static VirtualHoleApiClient _vHoleApi =
       VirtualHoleApiClient.managed(domain: AppConfig.virtualHoleApi);
 
-  static Future<Creator> fromId(String id) async {
+  static Future<Creator> fromIdAsync(String id) async {
     assert(id != null);
 
     List<Creator> result = await APIResponseProvider(

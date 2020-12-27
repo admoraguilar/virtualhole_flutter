@@ -32,6 +32,6 @@ class AppFlowHandler {
   }
 
   List<FlowPage> _generateInitialPages() {
-    return [AppFlowPageFactory.creator()];
+    return [AppFlowPageFactory.home()];
   }
 }

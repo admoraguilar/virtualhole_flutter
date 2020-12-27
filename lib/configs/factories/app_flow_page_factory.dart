@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
+import 'package:virtualhole_api_client_dart/creators/creator.dart';
 import '../../configs/configs.dart';
 import '../../pages/pages.dart';
 
@@ -17,15 +18,15 @@ class AppFlowPageFactory {
     );
   }
 
-  static FlowPage creator() {
+  static FlowPage creator({Creator creator}) {
+    assert(creator != null);
+
     return _generateMaterialPage(
       '/creator',
       CreatorPage(
         key: GlobalKey<NavigatorState>(),
-        creator: AppCreatorFactory.suisei(),
-        contentFeedTabs: AppContentFeedTabFactory.creator([
-          AppCreatorFactory.suisei(),
-        ]),
+        creator: creator,
+        contentFeedTabs: AppContentFeedTabFactory.creator([creator]),
         pageBuilder: _generateRootPage,
         bottomNavigationBarItems: AppBottomNavigationFactory.main(),
       ),
