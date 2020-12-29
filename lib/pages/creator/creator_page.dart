@@ -28,33 +28,36 @@ class CreatorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget withLoader(AsyncSnapshot<Creator> snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return HololiveRotatingImage();
+      }
+
+      if (snapshot.connectionState == ConnectionState.done &&
+          (!snapshot.hasData || snapshot.hasError)) {
+        FlowApp.of(context).map.navigate(ToErrorPage());
+      }
+
+      return ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          _CreatorAvatarHighlight(creator: snapshot.data),
+          _CreatorSocialLinks(creator: snapshot.data),
+          for (ContentFeedTab tab in contentFeedTabBuilder(snapshot.data)) ...[
+            _CreatorContentFeed(tab: tab),
+            SizedBox(height: 16)
+          ]
+        ],
+        cacheExtent: double.infinity,
+      );
+    }
+
     if (creatorBuilder != null) {
       return FutureBuilder(
         future: creatorBuilder,
         builder: (BuildContext context, AsyncSnapshot<Creator> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return HololiveRotatingImage();
-          }
-
-          if (snapshot.connectionState == ConnectionState.done &&
-              (!snapshot.hasData || snapshot.hasError)) {
-            FlowApp.of(context).map.navigate(ToErrorPage());
-          }
-
           return FlowScaffold(
-            body: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                _CreatorAvatarHighlight(creator: snapshot.data),
-                _CreatorSocialLinks(creator: snapshot.data),
-                for (ContentFeedTab tab
-                    in contentFeedTabBuilder(snapshot.data)) ...[
-                  _CreatorContentFeed(tab: tab),
-                  SizedBox(height: 16)
-                ]
-              ],
-              cacheExtent: double.infinity,
-            ),
+            body: withLoader(snapshot),
             onBottomNavigationBarItemTap: onBottomNavigationBarItemTap,
             bottomNavigationBarItems: bottomNavigationBarItems,
           );
