@@ -12,23 +12,4 @@ Future<void> main() async {
 
   // AppViewModel().registerViewModels();
   // AppFlowHandler().runFlow();
-
-  runApp(MaterialApp(
-    home: Scaffold(
-      appBar: AppBar(
-        title: Text('Network Resilience Test'),
-      ),
-      body: NetworkResilientWidget(
-        networkChecking: Center(
-          child: Text('Checking network connection... 🤔'),
-        ),
-        networkError: Center(
-          child: Text('No internet connection! 😞'),
-        ),
-        child: Center(
-          child: Text('Happy with internet connection!!! 😄'),
-        ),
-      ),
-    ),
-  ));
 }
