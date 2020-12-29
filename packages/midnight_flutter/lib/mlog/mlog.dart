@@ -7,6 +7,8 @@ class MLog {
     Object prepend,
     bool isSupressed = true,
   }) {
+    assert(message != null);
+
     if (!kDebugMode && !isSupressed) {
       return;
     }

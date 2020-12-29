@@ -8,6 +8,28 @@ import '../midnight_flutter.dart';
 // Some code snippets from:
 // package:connectivity: https://pub.dev/packages/connectivity/example
 // package:data_connection_checker: https://pub.dev/packages/data_connection_checker
+//
+//
+// Sample:
+// Network-resilient test
+// runApp(MaterialApp(
+//   home: Scaffold(
+//     appBar: AppBar(
+//       title: Text('Network Resilience Test'),
+//     ),
+//     body: NetworkResilientWidget(
+//       networkChecking: Center(
+//         child: Text('Checking network connection... 🤔'),
+//       ),
+//       networkError: Center(
+//         child: Text('No internet connection! 😞'),
+//       ),
+//       child: Center(
+//         child: Text('Happy with internet connection!!! 😄'),
+//       ),
+//     ),
+//   ),
+// ));
 class NetworkResilientWidget extends StatefulWidget {
   NetworkResilientWidget({
     Key key,
