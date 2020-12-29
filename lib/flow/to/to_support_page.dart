@@ -9,12 +9,14 @@ class ToSupportPageResponse extends FlowResponse<ToSupportPage> {
   bool get canRespond => true;
 
   void respond() {
+    MLog.log('support page respond');
+
     pages.add(FlowPage(
       key: UniqueKey(),
       name: '/support',
       child: SupportPage(
         key: GlobalKey<NavigatorState>(),
-        bottomNavigationBarItemOnTap: (int index) =>
+        onBottomNavigationBarItemTap: (int index) =>
             navigate(ToHomeRoute(index)),
         bottomNavigationBarItems: BottomNavigationFactory.main(),
       ),

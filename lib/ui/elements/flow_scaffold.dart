@@ -8,11 +8,10 @@ class FlowScaffold extends StatelessWidget {
     Key key,
     this.title,
     @required this.body,
-    @required this.onBottomNavigationBarItemTap,
-    @required this.bottomNavigationBarItems,
+    this.bottomNavigationBarItems,
+    this.onBottomNavigationBarItemTap,
     this.bottomNavigationBarIndex = 0,
   })  : assert(body != null),
-        assert(bottomNavigationBarItems != null),
         super(key: key);
 
   final Widget title;
@@ -28,6 +27,17 @@ class FlowScaffold extends StatelessWidget {
           bottomNavigationBarIndex >= bottomNavigationBarItems.length
               ? 0
               : bottomNavigationBarIndex;
+    }
+
+    BottomNavigationBar bottomNavigationBar;
+    if (bottomNavigationBarItems != null &&
+        onBottomNavigationBarItemTap != null) {
+      bottomNavigationBar = BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: bottomNavigationBarItems,
+        onTap: onBottomNavigationBarItemTap,
+        currentIndex: _bottomNavigationBarIndex,
+      );
     }
 
     return Scaffold(
@@ -46,12 +56,7 @@ class FlowScaffold extends StatelessWidget {
           },
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: bottomNavigationBarItems,
-        onTap: onBottomNavigationBarItemTap,
-        currentIndex: _bottomNavigationBarIndex,
-      ),
+      bottomNavigationBar: bottomNavigationBar,
       extendBodyBehindAppBar: true,
     );
   }

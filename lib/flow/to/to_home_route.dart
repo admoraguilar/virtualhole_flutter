@@ -13,6 +13,7 @@ class ToHomeRouteResponse extends FlowResponse<ToHomeRoute> {
 
   @override
   void respond() {
+    MLog.log('home route respond');
     if (context.index == 0) {
       navigate(ToExplorePage());
     } else if (context.index == 1) {

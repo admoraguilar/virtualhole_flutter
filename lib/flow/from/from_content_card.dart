@@ -11,18 +11,18 @@ class FromContentCard extends FlowContext {
 class ToCreatorPageResponse extends FlowResponse<FromContentCard> {
   bool get canRespond => true;
 
-  void respond() {
-    // Creator creator =
-    //     await CreatorFactory.fromIdAsync(context.contentDTO.content.creator.id);
-    // pages.add(FlowPageFactory.creator(creator));
+  Future<void> respond() async {
+    Creator creator =
+        await CreatorFactory.fromIdAsync(context.contentDTO.content.creator.id);
+
     pages.add(FlowPage(
       key: UniqueKey(),
       name: '/creator',
       child: CreatorPage(
         key: GlobalKey<NavigatorState>(),
-        // creator: creator,
-        // contentFeedTabs: ContentFeedTabFactory.creator([creator]),
-        bottomNavigationBarItemOnTap: (int index) =>
+        creator: creator,
+        contentFeedTabs: ContentFeedTabFactory.creator([creator]),
+        onBottomNavigationBarItemTap: (int index) =>
             navigate(ToHomeRoute(index)),
         bottomNavigationBarItems: BottomNavigationFactory.main(),
       ),

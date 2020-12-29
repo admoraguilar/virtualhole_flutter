@@ -10,22 +10,22 @@ class CreatorPage extends StatelessWidget {
     Key key,
     @required this.creator,
     @required this.contentFeedTabs,
-    @required this.pageBuilder,
+    @required this.onBottomNavigationBarItemTap,
     @required this.bottomNavigationBarItems,
   })  : assert(creator != null),
         assert(contentFeedTabs != null),
-        assert(pageBuilder != null),
+        assert(onBottomNavigationBarItemTap != null),
         assert(bottomNavigationBarItems != null),
         super(key: key);
 
   final Creator creator;
   final List<ContentFeedTab> contentFeedTabs;
-  final FlowPage Function(int index) pageBuilder;
+  final Function(int index) onBottomNavigationBarItemTap;
   final List<BottomNavigationBarItem> bottomNavigationBarItems;
 
   @override
   Widget build(BuildContext context) {
-    return FlowPageScaffold(
+    return FlowScaffold(
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -38,7 +38,7 @@ class CreatorPage extends StatelessWidget {
         ],
         cacheExtent: double.infinity,
       ),
-      pageBuilder: pageBuilder,
+      onBottomNavigationBarItemTap: onBottomNavigationBarItemTap,
       bottomNavigationBarItems: bottomNavigationBarItems,
     );
   }

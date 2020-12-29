@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
-import '../../pages/pages.dart';
-import '../../ui/ui.dart';
+import '../../virtualhole_client.dart';
 
 class SupportPage extends StatelessWidget {
   const SupportPage({
     Key key,
-    this.pageBuilder,
+    this.onBottomNavigationBarItemTap,
     this.bottomNavigationBarItems,
-  })  : assert(pageBuilder != null),
+  })  : assert(onBottomNavigationBarItemTap != null),
         assert(bottomNavigationBarItems != null),
         super(key: key);
 
-  final FlowPage Function(int index) pageBuilder;
+  final Function(int index) onBottomNavigationBarItemTap;
   final List<BottomNavigationBarItem> bottomNavigationBarItems;
 
   @override
@@ -22,7 +21,7 @@ class SupportPage extends StatelessWidget {
     SupportListViewModel supportListViewModel =
         ViewModel.get<SupportListViewModel>();
 
-    return FlowPageScaffold(
+    return FlowScaffold(
       body: FutureBuilder(
         future: supportListViewModel.resourcesClient.getSupportListAsync(),
         builder: (BuildContext context,
@@ -66,7 +65,7 @@ class SupportPage extends StatelessWidget {
           }
         },
       ),
-      pageBuilder: pageBuilder,
+      onBottomNavigationBarItemTap: onBottomNavigationBarItemTap,
       bottomNavigationBarItems: bottomNavigationBarItems,
       bottomNavigationBarIndex: 3,
     );

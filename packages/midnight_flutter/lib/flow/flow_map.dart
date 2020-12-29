@@ -9,11 +9,11 @@ class FlowMap {
   Map<Type, List<FlowResponse<FlowContext>>> _map = {};
   FlowRouterDelegate _routerDelegate;
 
-  void navigate(FlowContext context) {
-    Type contextType = context.runtimeType;
+  void navigate(FlowContext flowContext) {
+    Type contextType = flowContext.runtimeType;
     if (!_map.containsKey(contextType)) {
       MLog.log(
-        'No response set for context of type: ${(context.runtimeType)}',
+        'No response set for context of type: ${(flowContext.runtimeType)}',
         prepend: (FlowMap),
       );
       return;
@@ -24,15 +24,17 @@ class FlowMap {
         continue;
       }
 
-      response._context = context;
+      response._context = flowContext;
       response._map = this;
 
       List<FlowPage> prevPages = _routerDelegate.pages.toList();
       response.respond();
 
+      MLog.log('${flowContext.runtimeType}');
+
       // Only fire updates after the very first context
       // has been fully responded to
-      if (context._prev == null) {
+      if (flowContext._isRoot) {
         if (!listEquals(prevPages, _routerDelegate.pages)) {
           _routerDelegate.setDirty(() {});
         } else {
@@ -57,7 +59,7 @@ class FlowMap {
   }
 
   void upsert(FlowResponse response) {
-    Type contextType = response.runtimeType;
+    Type contextType = response.contextType;
     _initMap(contextType);
     if (!_map[contextType].contains(response)) {
       _map[contextType].add(response);
@@ -65,7 +67,7 @@ class FlowMap {
   }
 
   void remove(FlowResponse response) {
-    Type contextType = response.runtimeType;
+    Type contextType = response.contextType;
     _initMap(contextType);
     if (_map[contextType].contains(response)) {
       _map[contextType].remove(response);
@@ -80,10 +82,7 @@ class FlowMap {
 }
 
 abstract class FlowContext {
-  FlowContext _prev;
-
-  // ignore: unused_field
-  FlowContext _next;
+  bool _isRoot = true;
 }
 
 abstract class FlowResponse<T extends FlowContext> {
@@ -97,9 +96,7 @@ abstract class FlowResponse<T extends FlowContext> {
   bool get canRespond => true;
 
   void navigate(FlowContext context) {
-    context._prev = this.context;
-    this.context._next = context;
-
+    context._isRoot = false;
     _map.navigate(context);
   }
 
