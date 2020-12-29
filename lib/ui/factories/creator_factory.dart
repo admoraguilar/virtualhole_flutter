@@ -1,19 +1,16 @@
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
-import '../configs.dart';
+import '../../virtualhole_client.dart';
 
-class AppCreatorFactory {
-  static VirtualHoleApiClient _vHoleApi =
-      VirtualHoleApiClient.managed(domain: AppConfig.virtualHoleApi);
-
+class CreatorFactory {
   static Future<Creator> fromIdAsync(String id) async {
     assert(id != null);
 
     List<Creator> result = await ApiResponseProvider(
-      _vHoleApi.creators.get(
-        CreatorRequest(
-          search: id,
-        ),
-      ),
+      ClientFactory.vHoleApi().creators.get(
+            CreatorRequest(
+              search: id,
+            ),
+          ),
     ).getResult();
 
     return result[0];

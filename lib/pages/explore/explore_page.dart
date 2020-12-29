@@ -5,8 +5,8 @@ import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
 import 'package:virtualhole_flutter/configs/configs.dart';
 import '../../ui/ui.dart';
 
-class HomePage<T> extends StatelessWidget {
-  HomePage({
+class ExplorePage<T> extends StatelessWidget {
+  ExplorePage({
     Key key,
     ScrollController scrollController,
     @required this.contentFeedTabs,

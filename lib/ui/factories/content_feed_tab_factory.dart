@@ -1,11 +1,7 @@
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
-import '../../configs/configs.dart';
 import '../../ui/ui.dart';
 
-class AppContentFeedTabFactory {
-  static VirtualHoleApiClient _vHoleApi =
-      VirtualHoleApiClient.managed(domain: AppConfig.virtualHoleApi);
-
+class ContentFeedTabFactory {
   static List<ContentFeedTab> creator(List<Creator> creators) {
     return [
       live(
@@ -52,7 +48,9 @@ class AppContentFeedTabFactory {
     return ContentFeedTab(
       name: 'Discover',
       builder: (int page) => ApiResponseProvider(
-        _vHoleApi.contents.getDiscover(request.copyWith(page: page)),
+        ClientFactory.vHoleApi()
+            .contents
+            .getDiscover(request.copyWith(page: page)),
       ).getResult(),
     );
   }
@@ -62,7 +60,9 @@ class AppContentFeedTabFactory {
     return ContentFeedTab(
       name: 'Community',
       builder: (int page) => ApiResponseProvider(
-        _vHoleApi.contents.getCommunity(request.copyWith(page: page)),
+        ClientFactory.vHoleApi()
+            .contents
+            .getCommunity(request.copyWith(page: page)),
       ).getResult(),
     );
   }
@@ -72,7 +72,7 @@ class AppContentFeedTabFactory {
     return ContentFeedTab(
       name: 'Live',
       builder: (int page) => ApiResponseProvider(
-        _vHoleApi.contents.getLive(request.copyWith(page: page)),
+        ClientFactory.vHoleApi().contents.getLive(request.copyWith(page: page)),
       ).getResult(),
     );
   }
@@ -82,7 +82,9 @@ class AppContentFeedTabFactory {
     return ContentFeedTab(
       name: 'Scheduled',
       builder: (int page) => ApiResponseProvider(
-        _vHoleApi.contents.getSchedule(request.copyWith(page: page)),
+        ClientFactory.vHoleApi()
+            .contents
+            .getSchedule(request.copyWith(page: page)),
       ).getResult(),
     );
   }

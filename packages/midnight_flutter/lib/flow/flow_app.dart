@@ -19,7 +19,7 @@ class FlowApp extends StatefulWidget {
 
   FlowApp({
     Key key,
-    @required this.initialPages,
+    this.initialPages,
     this.onSetNewRoutePath,
     this.initialContext,
     this.map,
