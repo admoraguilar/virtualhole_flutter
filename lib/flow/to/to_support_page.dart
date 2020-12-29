@@ -9,8 +9,6 @@ class ToSupportPageResponse extends FlowResponse<ToSupportPage> {
   bool get canRespond => true;
 
   void respond() {
-    MLog.log('support page respond');
-
     pages.add(FlowPage(
       key: UniqueKey(),
       name: '/support',

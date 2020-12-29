@@ -8,12 +8,13 @@ class FlowMap {
 
   Map<Type, List<FlowResponse<FlowContext>>> _map = {};
   FlowRouterDelegate _routerDelegate;
+  bool _isDirty = false;
 
-  void navigate(FlowContext flowContext) {
-    Type contextType = flowContext.runtimeType;
+  void navigate(FlowContext context) {
+    Type contextType = context.runtimeType;
     if (!_map.containsKey(contextType)) {
       MLog.log(
-        'No response set for context of type: ${(flowContext.runtimeType)}',
+        'No response set for context of type: ${(context.runtimeType)}',
         prepend: (FlowMap),
       );
       return;
@@ -24,32 +25,32 @@ class FlowMap {
         continue;
       }
 
-      response._context = flowContext;
+      response._context = context;
       response._map = this;
 
-      List<FlowPage> prevPages = _routerDelegate.pages.toList();
-      response.respond();
+      if (!_isDirty) {
+        _isDirty = true;
 
-      MLog.log('${flowContext.runtimeType}');
-
-      // Only fire updates after the very first context
-      // has been fully responded to
-      if (flowContext._isRoot) {
-        if (!listEquals(prevPages, _routerDelegate.pages)) {
-          _routerDelegate.setDirty(() {});
-        } else {
-          if (_routerDelegate.pages.length > 0) {
-            MLog.log('Navigating to same page..', prepend: (FlowMap));
-            Widget topPageChild = _routerDelegate.pages.last.child;
-            if (topPageChild is FlowMapListenerMixin) {
-              FlowMapListenerMixin listener =
-                  topPageChild as FlowMapListenerMixin;
-              listener.onNavigateSamePage();
+        List<FlowPage> prevPages = _routerDelegate.pages.toList();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!listEquals(prevPages, _routerDelegate.pages)) {
+            _routerDelegate.setDirty(() {});
+          } else {
+            if (_routerDelegate.pages.length > 0) {
+              MLog.log('Navigating to same page..', prepend: (FlowMap));
+              Widget topPageChild = _routerDelegate.pages.last.child;
+              if (topPageChild is FlowMapListenerMixin) {
+                FlowMapListenerMixin listener =
+                    topPageChild as FlowMapListenerMixin;
+                listener.onNavigateSamePage();
+              }
             }
           }
-        }
+          _isDirty = false;
+        });
       }
 
+      response.respond();
       break;
     }
   }
@@ -81,9 +82,7 @@ class FlowMap {
   }
 }
 
-abstract class FlowContext {
-  bool _isRoot = true;
-}
+abstract class FlowContext {}
 
 abstract class FlowResponse<T extends FlowContext> {
   Type get contextType => T;
@@ -96,7 +95,6 @@ abstract class FlowResponse<T extends FlowContext> {
   bool get canRespond => true;
 
   void navigate(FlowContext context) {
-    context._isRoot = false;
     _map.navigate(context);
   }
 
