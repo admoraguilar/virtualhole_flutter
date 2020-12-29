@@ -8,7 +8,7 @@ class AppCreatorFactory {
   static Future<Creator> fromIdAsync(String id) async {
     assert(id != null);
 
-    List<Creator> result = await APIResponseProvider(
+    List<Creator> result = await ApiResponseProvider(
       _vHoleApi.creators.get(
         CreatorRequest(
           search: id,

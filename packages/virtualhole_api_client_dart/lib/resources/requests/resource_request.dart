@@ -1,6 +1,6 @@
 import '../../virtualhole_api_client_dart.dart';
 
-class ResourceRequest extends APIRequest {
+class ResourceRequest extends ApiRequest {
   const ResourceRequest({
     DateTime timestamp,
     String locale,

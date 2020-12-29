@@ -1,5 +1,5 @@
-abstract class APIRequest {
-  const APIRequest({
+abstract class ApiRequest {
+  const ApiRequest({
     String locale,
   }) : this.locale = locale ?? 'en-US';
 

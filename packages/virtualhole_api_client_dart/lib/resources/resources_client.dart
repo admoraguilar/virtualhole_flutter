@@ -1,6 +1,6 @@
 import '../virtualhole_api_client_dart.dart';
 
-class ResourcesClient extends APIClient {
+class ResourcesClient extends ApiClient {
   ResourcesClient({String domain})
       : assert(domain.isNotEmpty),
         super(domain: domain);
@@ -11,7 +11,7 @@ class ResourcesClient extends APIClient {
   @override
   String get rootPath => "resources";
 
-  Future<APIResponse<List<SupportInfo>>> getSupportListAsync() async {
+  Future<ApiResponse<List<SupportInfo>>> getSupportListAsync() async {
     return await getAsync(
       buildObjectUri('dynamic/support-list.json'),
       SupportInfo.fromJsonDecode,

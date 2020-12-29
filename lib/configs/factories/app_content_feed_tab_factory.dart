@@ -51,7 +51,7 @@ class AppContentFeedTabFactory {
     request ??= ContentRequest();
     return ContentFeedTab(
       name: 'Discover',
-      builder: (int page) => APIResponseProvider(
+      builder: (int page) => ApiResponseProvider(
         _vHoleApi.contents.getDiscover(request.copyWith(page: page)),
       ).getResult(),
     );
@@ -61,7 +61,7 @@ class AppContentFeedTabFactory {
     request ??= ContentRequest();
     return ContentFeedTab(
       name: 'Community',
-      builder: (int page) => APIResponseProvider(
+      builder: (int page) => ApiResponseProvider(
         _vHoleApi.contents.getCommunity(request.copyWith(page: page)),
       ).getResult(),
     );
@@ -71,7 +71,7 @@ class AppContentFeedTabFactory {
     request ??= ContentRequest();
     return ContentFeedTab(
       name: 'Live',
-      builder: (int page) => APIResponseProvider(
+      builder: (int page) => ApiResponseProvider(
         _vHoleApi.contents.getLive(request.copyWith(page: page)),
       ).getResult(),
     );
@@ -81,7 +81,7 @@ class AppContentFeedTabFactory {
     request ??= ContentRequest();
     return ContentFeedTab(
       name: 'Scheduled',
-      builder: (int page) => APIResponseProvider(
+      builder: (int page) => ApiResponseProvider(
         _vHoleApi.contents.getSchedule(request.copyWith(page: page)),
       ).getResult(),
     );

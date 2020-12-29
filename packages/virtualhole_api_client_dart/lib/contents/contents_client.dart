@@ -1,6 +1,6 @@
 import '../virtualhole_api_client_dart.dart';
 
-class ContentsClient extends APIClient {
+class ContentsClient extends ApiClient {
   ContentsClient({String domain})
       : assert(domain.isNotEmpty),
         super(domain: domain);
@@ -11,7 +11,7 @@ class ContentsClient extends APIClient {
   @override
   String get rootPath => 'contents';
 
-  Future<APIResponse<List<ContentDTO>>> getDiscover(
+  Future<ApiResponse<List<ContentDTO>>> getDiscover(
       ContentRequest request) async {
     return await getAsync(
       createUri(
@@ -22,7 +22,7 @@ class ContentsClient extends APIClient {
     );
   }
 
-  Future<APIResponse<List<ContentDTO>>> getCommunity(
+  Future<ApiResponse<List<ContentDTO>>> getCommunity(
       ContentRequest request) async {
     return await getAsync(
       createUri(
@@ -33,7 +33,7 @@ class ContentsClient extends APIClient {
     );
   }
 
-  Future<APIResponse<List<ContentDTO>>> getLive(ContentRequest request) async {
+  Future<ApiResponse<List<ContentDTO>>> getLive(ContentRequest request) async {
     return await getAsync(
       createUri(
         slug: 'live',
@@ -43,7 +43,7 @@ class ContentsClient extends APIClient {
     );
   }
 
-  Future<APIResponse<List<ContentDTO>>> getSchedule(
+  Future<ApiResponse<List<ContentDTO>>> getSchedule(
       ContentRequest request) async {
     return await getAsync(
       createUri(
