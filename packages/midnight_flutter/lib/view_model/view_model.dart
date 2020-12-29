@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../observables/callback.dart';
+import '../midnight_flutter.dart';
 
 abstract class ViewModel {
   static _InstanceContainer _instanceContainer = _InstanceContainer();

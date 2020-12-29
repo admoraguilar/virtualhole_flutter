@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:midnight_flutter/flow/flow_page.dart';
 import '../midnight_flutter.dart';
 
 class FlowRouterDelegate extends RouterDelegate<FlowRoutePath>

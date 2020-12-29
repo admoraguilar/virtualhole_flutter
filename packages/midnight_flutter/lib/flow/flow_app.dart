@@ -19,7 +19,6 @@ class FlowApp extends StatefulWidget {
 
   FlowApp({
     Key key,
-    this.initialPages,
     this.onSetNewRoutePath,
     this.initialContext,
     this.map,
@@ -46,7 +45,6 @@ class FlowApp extends StatefulWidget {
     this.actions,
   }) : super(key: key);
 
-  final List<FlowPage> initialPages;
   final Function(FlowRoutePath) onSetNewRoutePath;
   final FlowContext initialContext;
   final FlowMap map;
@@ -93,7 +91,6 @@ class FlowAppState extends State<FlowApp> {
   @override
   Widget build(BuildContext context) {
     _routerDelegate = FlowRouterDelegate(
-      pages: widget.initialPages,
       onSetNewRoutePath: widget.onSetNewRoutePath,
     );
     _routeInformationParser = FlowRouteInformationParser();

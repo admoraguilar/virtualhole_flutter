@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:midnight_flutter/view_model/view_model.dart';
+import '../midnight_flutter.dart';
 
 class ViewModelAdapter extends StatefulWidget {
   ViewModelAdapter({Key key, this.observables, @required this.builder})
