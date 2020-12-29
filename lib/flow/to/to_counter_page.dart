@@ -14,7 +14,7 @@ class ToCounterPageResponse extends FlowResponse<ToCounterPage> {
         child: CounterPage(
           key: GlobalKey<NavigatorState>(),
           title: Text('Counter'),
-          onBottomNavigationBarItemTap: (int index) =>
+          bottomNavigationBarOnItemTap: (int index) =>
               navigate(ToHomeRoute(index)),
           bottomNavigationBarItems: BottomNavigationFactory.main(),
           onExtraTap: () => navigate(ToCounterPage()),

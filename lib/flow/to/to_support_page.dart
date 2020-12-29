@@ -14,7 +14,7 @@ class ToSupportPageResponse extends FlowResponse<ToSupportPage> {
       name: '/support',
       child: SupportPage(
         key: GlobalKey<NavigatorState>(),
-        onBottomNavigationBarItemTap: (int index) =>
+        bottomNavigationBarOnItemTap: (int index) =>
             navigate(ToHomeRoute(index)),
         bottomNavigationBarItems: BottomNavigationFactory.main(),
       ),

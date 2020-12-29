@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:midnight_flutter/midnight_flutter.dart';
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
 import '../../virtualhole_client.dart';
 
 class SupportPage extends StatelessWidget {
   const SupportPage({
     Key key,
-    this.onBottomNavigationBarItemTap,
+    this.bottomNavigationBarOnItemTap,
     this.bottomNavigationBarItems,
-  })  : assert(onBottomNavigationBarItemTap != null),
+  })  : assert(bottomNavigationBarOnItemTap != null),
         assert(bottomNavigationBarItems != null),
         super(key: key);
 
-  final Function(int index) onBottomNavigationBarItemTap;
+  final Function(int index) bottomNavigationBarOnItemTap;
   final List<BottomNavigationBarItem> bottomNavigationBarItems;
 
   @override
@@ -65,7 +64,7 @@ class SupportPage extends StatelessWidget {
           }
         },
       ),
-      onBottomNavigationBarItemTap: onBottomNavigationBarItemTap,
+      bottomNavigationBarOnItemTap: bottomNavigationBarOnItemTap,
       bottomNavigationBarItems: bottomNavigationBarItems,
       bottomNavigationBarIndex: 3,
     );

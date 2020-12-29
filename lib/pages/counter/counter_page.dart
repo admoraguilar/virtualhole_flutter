@@ -5,16 +5,16 @@ class CounterPage extends StatefulWidget {
   CounterPage({
     Key key,
     this.title,
-    this.onBottomNavigationBarItemTap,
+    this.bottomNavigationBarOnItemTap,
     this.bottomNavigationBarItems,
     this.onExtraTap,
   })  : assert(title != null),
-        assert(onBottomNavigationBarItemTap != null),
+        assert(bottomNavigationBarOnItemTap != null),
         assert(bottomNavigationBarItems != null),
         super(key: key);
 
   final Widget title;
-  final Function(int index) onBottomNavigationBarItemTap;
+  final Function(int index) bottomNavigationBarOnItemTap;
   final List<BottomNavigationBarItem> bottomNavigationBarItems;
   final Function() onExtraTap;
 
@@ -61,7 +61,7 @@ class _CounterPageState extends State<CounterPage> {
           ],
         ),
       ),
-      onBottomNavigationBarItemTap: widget.onBottomNavigationBarItemTap,
+      bottomNavigationBarOnItemTap: widget.bottomNavigationBarOnItemTap,
       bottomNavigationBarItems: widget.bottomNavigationBarItems,
       bottomNavigationBarIndex: 1,
     );

@@ -17,11 +17,11 @@ class ToExplorePageResponse extends FlowResponse<ToExplorePage> {
       name: '/explore',
       child: ExplorePage(
         key: GlobalKey<NavigatorState>(),
-        contentFeedTabs: ContentFeedTabFactory.main(),
-        onBottomNavigationBarItemTap: (int index) =>
+        tabs: ContentFeedTabFactory.main(),
+        bottomNavigationBarOnItemTap: (int index) =>
             navigate(ToHomeRoute(index)),
         bottomNavigationBarItems: BottomNavigationFactory.main(),
-        contentFeedInitialTabIndex: 0,
+        initialTabIndex: 0,
       ),
     ));
   }

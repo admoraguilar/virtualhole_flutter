@@ -13,9 +13,9 @@ class CreatorPage extends StatelessWidget {
     this.creatorBuilder,
     this.contentFeedTabs,
     this.contentFeedTabBuilder,
-    @required this.onBottomNavigationBarItemTap,
+    @required this.bottomNavigationBarOnItemTap,
     @required this.bottomNavigationBarItems,
-  })  : assert(onBottomNavigationBarItemTap != null),
+  })  : assert(bottomNavigationBarOnItemTap != null),
         assert(bottomNavigationBarItems != null),
         super(key: key);
 
@@ -23,7 +23,7 @@ class CreatorPage extends StatelessWidget {
   final Future<Creator> creatorBuilder;
   final List<ContentFeedTab> Function(Creator) contentFeedTabBuilder;
   final List<ContentFeedTab> contentFeedTabs;
-  final Function(int index) onBottomNavigationBarItemTap;
+  final Function(int index) bottomNavigationBarOnItemTap;
   final List<BottomNavigationBarItem> bottomNavigationBarItems;
 
   @override
@@ -58,7 +58,7 @@ class CreatorPage extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<Creator> snapshot) {
           return FlowScaffold(
             body: withLoader(snapshot),
-            onBottomNavigationBarItemTap: onBottomNavigationBarItemTap,
+            bottomNavigationBarOnItemTap: bottomNavigationBarOnItemTap,
             bottomNavigationBarItems: bottomNavigationBarItems,
           );
         },
@@ -77,7 +77,7 @@ class CreatorPage extends StatelessWidget {
           ],
           cacheExtent: double.infinity,
         ),
-        onBottomNavigationBarItemTap: onBottomNavigationBarItemTap,
+        bottomNavigationBarOnItemTap: bottomNavigationBarOnItemTap,
         bottomNavigationBarItems: bottomNavigationBarItems,
       );
     }

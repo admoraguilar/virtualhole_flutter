@@ -7,21 +7,21 @@ class ExplorePage<T> extends StatelessWidget with FlowMapListenerMixin {
   ExplorePage({
     Key key,
     ScrollController scrollController,
-    @required this.contentFeedTabs,
-    this.contentFeedInitialTabIndex = 0,
-    @required this.onBottomNavigationBarItemTap,
+    @required this.tabs,
+    this.initialTabIndex = 0,
+    @required this.bottomNavigationBarOnItemTap,
     @required this.bottomNavigationBarItems,
-  })  : assert(contentFeedTabs != null),
-        assert(contentFeedInitialTabIndex != null),
-        assert(onBottomNavigationBarItemTap != null),
+  })  : assert(tabs != null),
+        assert(initialTabIndex != null),
+        assert(bottomNavigationBarOnItemTap != null),
         assert(bottomNavigationBarItems != null),
         scrollController = scrollController ?? ScrollController(),
         super(key: key);
 
   final ScrollController scrollController;
-  final List<ContentFeedTab> contentFeedTabs;
-  final int contentFeedInitialTabIndex;
-  final Function(int index) onBottomNavigationBarItemTap;
+  final List<ContentFeedTab> tabs;
+  final int initialTabIndex;
+  final Function(int index) bottomNavigationBarOnItemTap;
   final List<BottomNavigationBarItem> bottomNavigationBarItems;
 
   @override
@@ -42,21 +42,14 @@ class ExplorePage<T> extends StatelessWidget with FlowMapListenerMixin {
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: ContentFeed(
           scrollController: scrollController,
-          tabs: contentFeedTabs,
-          initialTabIndex: contentFeedInitialTabIndex,
-          onTapMore: (ContentDTO contentDTO) async {
-            // Creator creator =
-            //     await CreatorFactory.fromIdAsync(contentDTO.content.creator.id);
-            // FlowHandler.get().routerDelegate.setDirty(() {
-            //   FlowHandler.get().routerDelegate.pages.add(
-            //         AppFlowPageFactory.creator(creator: creator),
-            //       );
-            // });
+          tabs: tabs,
+          initialTabIndex: initialTabIndex,
+          onTapMore: (ContentDTO contentDTO) {
             FlowApp.of(context).map.navigate(FromContentCard(contentDTO));
           },
         ),
       ),
-      onBottomNavigationBarItemTap: onBottomNavigationBarItemTap,
+      bottomNavigationBarOnItemTap: bottomNavigationBarOnItemTap,
       bottomNavigationBarItems: bottomNavigationBarItems,
       bottomNavigationBarIndex: 0,
     );

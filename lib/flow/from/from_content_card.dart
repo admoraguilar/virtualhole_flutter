@@ -21,7 +21,7 @@ class ToCreatorPageResponse extends FlowResponse<FromContentCard> {
             CreatorFactory.fromIdAsync(context.contentDTO.content.creator.id),
         contentFeedTabBuilder: (Creator creator) =>
             ContentFeedTabFactory.creator([creator]),
-        onBottomNavigationBarItemTap: (int index) =>
+        bottomNavigationBarOnItemTap: (int index) =>
             navigate(ToHomeRoute(index)),
         bottomNavigationBarItems: BottomNavigationFactory.main(),
       ),
