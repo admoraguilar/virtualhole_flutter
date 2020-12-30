@@ -40,6 +40,7 @@ class RootSetup extends StatelessWidget {
         ToErrorPageResponse(),
         ToCreatorPageResponse(),
         ToSearchPageResponse(),
+        FromContentCardResponse(),
       ]),
       title: 'holohole',
       theme: ThemeData(

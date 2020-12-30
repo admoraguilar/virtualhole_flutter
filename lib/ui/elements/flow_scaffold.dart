@@ -7,6 +7,7 @@ class FlowScaffold extends StatelessWidget {
   const FlowScaffold({
     Key key,
     this.title,
+    this.appBar,
     @required this.body,
     this.bottomNavigationBarItems,
     this.bottomNavigationBarOnItemTap,
@@ -15,6 +16,7 @@ class FlowScaffold extends StatelessWidget {
         super(key: key);
 
   final Widget title;
+  final PreferredSizeWidget appBar;
   final Widget body;
   final Function(int index) bottomNavigationBarOnItemTap;
   final List<BottomNavigationBarItem> bottomNavigationBarItems;
@@ -40,9 +42,9 @@ class FlowScaffold extends StatelessWidget {
       );
     }
 
-    return Scaffold(
-      body: body,
-      appBar: AppBar(
+    PreferredSizeWidget appBar = this.appBar;
+    if (appBar == null) {
+      appBar = AppBar(
         title: title,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
@@ -55,7 +57,12 @@ class FlowScaffold extends StatelessWidget {
             );
           },
         ),
-      ),
+      );
+    }
+
+    return Scaffold(
+      body: body,
+      appBar: appBar,
       bottomNavigationBar: bottomNavigationBar,
       extendBodyBehindAppBar: true,
     );

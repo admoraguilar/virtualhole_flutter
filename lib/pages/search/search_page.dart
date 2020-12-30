@@ -37,7 +37,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
+      child: FlowScaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(60),
           child: TextField(
@@ -126,6 +126,9 @@ class _SearchPageState extends State<SearchPage> {
             );
           },
         ),
+        bottomNavigationBarOnItemTap: widget.bottomNavigationBarOnItemTap,
+        bottomNavigationBarItems: widget.bottomNavigationBarItems,
+        bottomNavigationBarIndex: 2,
       ),
     );
   }
