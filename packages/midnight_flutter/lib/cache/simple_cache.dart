@@ -1,4 +1,4 @@
-import 'cache.dart';
+import '../midnight_flutter.dart';
 
 class SimpleCache<T> extends Cache<T> {
   static Map<Type, Object> _instances = {};

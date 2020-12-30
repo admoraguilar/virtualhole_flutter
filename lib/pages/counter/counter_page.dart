@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:midnight_flutter/flow_handler/flow_handler.dart';
-import 'package:midnight_flutter/midnight_flutter.dart';
+import '../../virtualhole_client.dart';
 
 class CounterPage extends StatefulWidget {
   CounterPage({
     Key key,
     this.title,
-    this.pageBuilder,
+    this.bottomNavigationBarOnItemTap,
     this.bottomNavigationBarItems,
     this.onExtraTap,
   })  : assert(title != null),
-        assert(pageBuilder != null),
+        assert(bottomNavigationBarOnItemTap != null),
         assert(bottomNavigationBarItems != null),
         super(key: key);
 
   final Widget title;
-  final FlowPage Function(int index) pageBuilder;
+  final Function(int index) bottomNavigationBarOnItemTap;
   final List<BottomNavigationBarItem> bottomNavigationBarItems;
   final Function() onExtraTap;
 
@@ -28,7 +27,7 @@ class _CounterPageState extends State<CounterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FlowPageScaffold(
+    return FlowScaffold(
       title: widget.title,
       body: Align(
         alignment: Alignment.center,
@@ -62,7 +61,7 @@ class _CounterPageState extends State<CounterPage> {
           ],
         ),
       ),
-      pageBuilder: widget.pageBuilder,
+      bottomNavigationBarOnItemTap: widget.bottomNavigationBarOnItemTap,
       bottomNavigationBarItems: widget.bottomNavigationBarItems,
       bottomNavigationBarIndex: 1,
     );

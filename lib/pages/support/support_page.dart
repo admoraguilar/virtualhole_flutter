@@ -1,32 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:midnight_flutter/midnight_flutter.dart';
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
-import '../../pages/pages.dart';
-import '../../ui/ui.dart';
+import '../../virtualhole_client.dart';
 
 class SupportPage extends StatelessWidget {
   const SupportPage({
     Key key,
-    this.pageBuilder,
+    this.bottomNavigationBarOnItemTap,
     this.bottomNavigationBarItems,
-  })  : assert(pageBuilder != null),
+  })  : assert(bottomNavigationBarOnItemTap != null),
         assert(bottomNavigationBarItems != null),
         super(key: key);
 
-  final FlowPage Function(int index) pageBuilder;
+  final Function(int index) bottomNavigationBarOnItemTap;
   final List<BottomNavigationBarItem> bottomNavigationBarItems;
 
   @override
   Widget build(BuildContext context) {
-    SupportListViewModel supportListViewModel =
-        ViewModel.get<SupportListViewModel>();
+    ResourcesClient resourcesClient =
+        VirtualHoleApiClient.managed(domain: 'www.virtualhole.app').resources;
 
-    return FlowPageScaffold(
+    return FlowScaffold(
       body: FutureBuilder(
-        future: supportListViewModel.resourcesClient.getSupportListAsync(),
+        future: resourcesClient.getSupportListAsync(),
         builder: (BuildContext context,
-            AsyncSnapshot<APIResponse<List<SupportInfo>>> snapshot) {
+            AsyncSnapshot<ApiResponse<List<SupportInfo>>> snapshot) {
           if (snapshot.hasError) {
             throw snapshot.error;
           }
@@ -48,7 +46,7 @@ class SupportPage extends StatelessWidget {
                       InfoCard(
                         header: supportInfo.header,
                         content: supportInfo.content,
-                        imageUrl: supportListViewModel.resourcesClient
+                        imageUrl: resourcesClient
                             .buildObjectUri(supportInfo.imagePath)
                             .toString(),
                         onTap: () => launch(supportInfo.url),
@@ -66,7 +64,7 @@ class SupportPage extends StatelessWidget {
           }
         },
       ),
-      pageBuilder: pageBuilder,
+      bottomNavigationBarOnItemTap: bottomNavigationBarOnItemTap,
       bottomNavigationBarItems: bottomNavigationBarItems,
       bottomNavigationBarIndex: 3,
     );

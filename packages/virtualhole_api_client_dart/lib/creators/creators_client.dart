@@ -1,6 +1,6 @@
 import '../virtualhole_api_client_dart.dart';
 
-class CreatorsClient extends APIClient {
+class CreatorsClient extends ApiClient {
   CreatorsClient({String domain})
       : assert(domain.isNotEmpty),
         super(domain: domain);
@@ -11,7 +11,7 @@ class CreatorsClient extends APIClient {
   @override
   String get rootPath => 'creators';
 
-  Future<APIResponse<List<Creator>>> get(CreatorRequest request) async {
+  Future<ApiResponse<List<Creator>>> get(CreatorRequest request) async {
     return await getAsync(createUri(queryParameters: request.toQueryMap()),
         Creator.fromJsonDecode);
   }

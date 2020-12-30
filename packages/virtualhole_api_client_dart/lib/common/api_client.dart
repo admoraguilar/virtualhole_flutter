@@ -3,25 +3,25 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../virtualhole_api_client_dart.dart';
 
-abstract class APIClient {
-  APIClient({this.domain}) : assert(domain.isNotEmpty);
+abstract class ApiClient {
+  ApiClient({this.domain}) : assert(domain.isNotEmpty);
 
   final String domain;
 
   String get version;
   String get rootPath;
 
-  Future<APIResponse<T>> getAsync<T>(
+  Future<ApiResponse<T>> getAsync<T>(
       Uri uri, T Function(dynamic) decoder) async {
     print('[API Client] Sending GET: ${uri.toString()}');
     http.Response res = await http.get(uri).timeout(Duration(seconds: 30));
-    return APIResponse(
+    return ApiResponse(
       body: decoder(jsonDecode(res.body)),
       error: _createError(res),
     );
   }
 
-  Future<APIResponse<String>> postAsync(dynamic uri, dynamic body) async {
+  Future<ApiResponse<String>> postAsync(dynamic uri, dynamic body) async {
     print('[API Client] Sending POST: ${uri.toString()}');
     http.Response res = await http
         .post(
@@ -30,7 +30,7 @@ abstract class APIClient {
           body: body,
         )
         .timeout(Duration(seconds: 30));
-    return APIResponse(
+    return ApiResponse(
       body: res.body,
       error: _createError(res),
     );
@@ -62,9 +62,9 @@ abstract class APIClient {
     return Uri.https(domain, path, queryParameters);
   }
 
-  APIError _createError(http.Response res) {
+  ApiError _createError(http.Response res) {
     return res.statusCode >= 400
-        ? APIError(
+        ? ApiError(
             statusCode: res.statusCode,
             reasonPhrase: res.reasonPhrase,
           )

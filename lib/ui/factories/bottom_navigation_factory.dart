@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppBottomNavigationFactory {
+class BottomNavigationFactory {
   static List<BottomNavigationBarItem> main() {
     return [
       BottomNavigationBarItem(

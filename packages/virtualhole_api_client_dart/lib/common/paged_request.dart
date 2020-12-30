@@ -1,6 +1,6 @@
 import '../virtualhole_api_client_dart.dart';
 
-abstract class PagedRequest extends APIRequest {
+abstract class PagedRequest extends ApiRequest {
   const PagedRequest({
     String locale,
     int page,
