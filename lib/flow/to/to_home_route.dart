@@ -18,7 +18,7 @@ class ToHomeRouteResponse extends FlowResponse<ToHomeRoute> {
     } else if (context.index == 1) {
       navigate(ToCounterPage());
     } else if (context.index == 2) {
-      navigate(ToErrorPage());
+      navigate(ToSearchPage());
     } else if (context.index == 3) {
       navigate(ToSupportPage());
     } else {
