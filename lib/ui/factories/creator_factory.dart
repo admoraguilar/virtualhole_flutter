@@ -2,18 +2,23 @@ import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
 import '../../virtualhole_client.dart';
 
 class CreatorFactory {
-  static Future<Creator> fromIdAsync(String id) async {
+  static Future<Creator> fromId(String id) async {
     assert(id != null);
 
-    List<Creator> result = await ApiResponseProvider(
+    List<Creator> results = await search(id);
+    return results[0];
+  }
+
+  static Future<List<Creator>> search(String search) async {
+    assert(search != null);
+
+    List<Creator> results = await ApiResponseProvider(
       ClientFactory.vHoleApi().creators.get(
-            CreatorRequest(
-              search: id,
-            ),
+            CreatorRequest(search: search),
           ),
     ).getResult();
 
-    return result[0];
+    return results;
   }
 
   static Creator suisei() {

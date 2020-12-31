@@ -89,40 +89,48 @@ class _SearchPageState extends State<SearchPage> {
               FlowApp.of(context).map.navigate(ToErrorPage());
             }
 
+            if (snapshot.connectionState == ConnectionState.done &&
+                (snapshot.data == null || snapshot.data.length <= 0)) {
+              return Center(
+                child: Text('No results found. TMT'),
+              );
+            }
+
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.builder(
-                  controller: _scrollController,
-                  physics: ClampingScrollPhysics(),
-                  itemBuilder: (BuildContext context, int index) {
-                    Creator creator = snapshot.data[index];
-                    return Container(
-                      height: 40,
-                      child: GestureDetector(
-                        child: Card(
-                          child: Row(
-                            children: [
-                              if (creator.avatarUrl.isNotEmpty)
-                                CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(creator.avatarUrl),
-                                ),
-                              SizedBox(width: 8),
-                              Text(creator.name)
-                            ],
-                          ),
+                controller: _scrollController,
+                physics: ClampingScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  Creator creator = snapshot.data[index];
+                  return Container(
+                    height: 40,
+                    child: GestureDetector(
+                      child: Card(
+                        child: Row(
+                          children: [
+                            if (creator.avatarUrl.isNotEmpty)
+                              CircleAvatar(
+                                backgroundImage:
+                                    NetworkImage(creator.avatarUrl),
+                              ),
+                            SizedBox(width: 8),
+                            Text(creator.name)
+                          ],
                         ),
-                        onTap: () {
-                          _textEditingController.clear();
-                          FocusScope.of(context).unfocus();
-                          FlowApp.of(context)
-                              .map
-                              .navigate(ToCreatorPage(creator.id));
-                        },
                       ),
-                    );
-                  },
-                  itemCount: snapshot.data.length),
+                      onTap: () {
+                        _textEditingController.clear();
+                        FocusScope.of(context).unfocus();
+                        FlowApp.of(context)
+                            .map
+                            .navigate(ToCreatorPage(creator.id));
+                      },
+                    ),
+                  );
+                },
+                itemCount: snapshot.data.length,
+              ),
             );
           },
         ),

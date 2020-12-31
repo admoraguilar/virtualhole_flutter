@@ -17,7 +17,7 @@ class ToCreatorPageResponse extends FlowResponse<ToCreatorPage> {
       name: '/creator',
       child: CreatorPage(
         key: GlobalKey<NavigatorState>(),
-        creatorBuilder: CreatorFactory.fromIdAsync(context.creatorId),
+        creatorBuilder: CreatorFactory.fromId(context.creatorId),
         contentFeedTabBuilder: (Creator creator) =>
             ContentFeedTabFactory.creator([creator]),
         bottomNavigationBarOnItemTap: (int index) =>
