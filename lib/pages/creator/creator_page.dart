@@ -3,8 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
-import 'package:virtualhole_flutter/flow/flow.dart';
-import '../../ui/ui.dart';
+import '../../virtualhole_client.dart';
 
 class CreatorPage extends StatelessWidget {
   const CreatorPage({

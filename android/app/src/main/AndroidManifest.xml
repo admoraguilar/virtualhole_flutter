@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.virtualhole_flutter">
+    package="com.virtualhole.android">
+   <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="virtualhole_flutter"
+        android:label="VirtualHole"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

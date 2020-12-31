@@ -1,3 +1,6 @@
+# Privates
+/keys/
+
 # Miscellaneous
 *.class
 *.log
