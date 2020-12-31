@@ -219,7 +219,11 @@ class _ContentFeedSelector extends StatelessWidget {
     return Container(
       alignment: Alignment.bottomRight,
       child: SpeedDial(
-        child: Icon(Icons.ac_unit),
+        child: CircleAvatar(
+          backgroundImage:
+              AssetImage('assets/images/icons/virtualhole-512.png'),
+          radius: 25,
+        ),
         animationSpeed: 300,
         overlayOpacity: .3,
         overlayColor: Theme.of(context).backgroundColor,
