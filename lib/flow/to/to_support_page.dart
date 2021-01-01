@@ -6,8 +6,7 @@ import '../../virtualhole_client.dart';
 class ToSupportPage extends FlowContext {}
 
 class ToSupportPageResponse extends FlowResponse<ToSupportPage> {
-  bool get canRespond => true;
-
+  @override
   void respond() {
     pages.add(FlowPage(
       key: UniqueKey(),

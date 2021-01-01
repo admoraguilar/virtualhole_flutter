@@ -5,8 +5,7 @@ import '../../virtualhole_client.dart';
 class ToCounterPage extends FlowContext {}
 
 class ToCounterPageResponse extends FlowResponse<ToCounterPage> {
-  bool get canRespond => true;
-
+  @override
   void respond() {
     pages.add(FlowPage(
         key: UniqueKey(),

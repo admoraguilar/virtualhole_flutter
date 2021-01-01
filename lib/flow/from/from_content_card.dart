@@ -4,6 +4,7 @@ import '../../virtualhole_client.dart';
 
 class FromContentCard extends FlowContext {
   FromContentCard(this.contentDTO) : assert(contentDTO != null);
+
   final ContentDTO contentDTO;
 }
 

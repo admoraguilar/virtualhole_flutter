@@ -7,6 +7,6 @@ class ApiResponse<T> {
     @required this.error,
   });
 
-  T body;
-  ApiError error;
+  final T body;
+  final ApiError error;
 }

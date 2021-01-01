@@ -3,7 +3,7 @@ import '../virtualhole_api_client_dart.dart';
 class CreatorsClient extends ApiClient {
   CreatorsClient({String domain})
       : assert(domain.isNotEmpty),
-        super(domain: domain);
+        super(domain);
 
   @override
   String get version => 'api/v1';
@@ -12,7 +12,7 @@ class CreatorsClient extends ApiClient {
   String get rootPath => 'creators';
 
   Future<ApiResponse<List<Creator>>> get(CreatorRequest request) async {
-    return await getAsync(createUri(queryParameters: request.toQueryMap()),
+    return await getRequest(createUri(queryParameters: request.toQueryMap()),
         Creator.fromJsonDecode);
   }
 }

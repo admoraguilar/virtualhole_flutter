@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
-import 'package:midnight_flutter/midnight_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:midnight_flutter/midnight_flutter.dart';
 
 class LocalData {
   LocalData(this._fileName);

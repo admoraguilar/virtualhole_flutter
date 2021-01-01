@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
-import '../../virtualhole_client.dart';
+import '../virtualhole_client.dart';
 
 class SearchPage extends StatefulWidget {
   SearchPage({

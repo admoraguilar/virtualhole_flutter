@@ -4,14 +4,14 @@ import 'package:http/http.dart' as http;
 import '../virtualhole_api_client_dart.dart';
 
 abstract class ApiClient {
-  ApiClient({this.domain}) : assert(domain.isNotEmpty);
+  ApiClient(this.domain) : assert(domain.isNotEmpty);
 
   final String domain;
 
   String get version;
   String get rootPath;
 
-  Future<ApiResponse<T>> getAsync<T>(
+  Future<ApiResponse<T>> getRequest<T>(
       Uri uri, T Function(dynamic) decoder) async {
     print('[API Client] Sending GET: ${uri.toString()}');
     http.Response res = await http.get(uri).timeout(Duration(seconds: 30));
@@ -21,7 +21,7 @@ abstract class ApiClient {
     );
   }
 
-  Future<ApiResponse<String>> postAsync(dynamic uri, dynamic body) async {
+  Future<ApiResponse<String>> postRequest(dynamic uri, dynamic body) async {
     print('[API Client] Sending POST: ${uri.toString()}');
     http.Response res = await http
         .post(

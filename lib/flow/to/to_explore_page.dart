@@ -5,8 +5,7 @@ import '../../virtualhole_client.dart';
 class ToExplorePage extends FlowContext {}
 
 class ToExplorePageResponse extends FlowResponse<ToExplorePage> {
-  bool get canRespond => true;
-
+  @override
   void respond() {
     if (pages.length > 0 && pages.last.name == '/explore') {
       return;

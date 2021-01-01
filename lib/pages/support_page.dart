@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
-import '../../virtualhole_client.dart';
+import '../virtualhole_client.dart';
 
 class SupportPage extends StatelessWidget {
   const SupportPage({
@@ -19,7 +19,7 @@ class SupportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlowScaffold(
       body: FutureBuilder(
-        future: ClientFactory.vHoleApi().resources.getSupportListAsync(),
+        future: ClientFactory.vHoleApi().resources.getSupportList(),
         builder: (BuildContext context,
             AsyncSnapshot<ApiResponse<List<SupportInfo>>> snapshot) {
           if (snapshot.hasError) {

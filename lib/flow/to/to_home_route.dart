@@ -9,9 +9,6 @@ class ToHomeRoute extends FlowContext {
 
 class ToHomeRouteResponse extends FlowResponse<ToHomeRoute> {
   @override
-  bool get canRespond => true;
-
-  @override
   void respond() {
     if (context.index == 0) {
       navigate(ToExplorePage());

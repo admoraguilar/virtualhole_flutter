@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../virtualhole_client.dart';
+import '../virtualhole_client.dart';
 
 class CounterPage extends StatefulWidget {
   CounterPage({

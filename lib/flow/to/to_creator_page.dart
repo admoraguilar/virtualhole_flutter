@@ -6,6 +6,7 @@ import '../../virtualhole_client.dart';
 class ToCreatorPage extends FlowContext {
   ToCreatorPage(this.creatorId)
       : assert(creatorId != null && creatorId.isNotEmpty);
+
   final String creatorId;
 }
 
