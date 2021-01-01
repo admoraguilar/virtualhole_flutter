@@ -9,20 +9,13 @@ class ExplorePage<T> extends StatelessWidget with FlowMapListenerMixin {
     ScrollController scrollController,
     @required this.tabs,
     this.initialTabIndex = 0,
-    @required this.bottomNavigationBarOnItemTap,
-    @required this.bottomNavigationBarItems,
   })  : assert(tabs != null),
-        assert(initialTabIndex != null),
-        assert(bottomNavigationBarOnItemTap != null),
-        assert(bottomNavigationBarItems != null),
         scrollController = scrollController ?? ScrollController(),
         super(key: key);
 
   final ScrollController scrollController;
   final List<ContentFeedTab> tabs;
   final int initialTabIndex;
-  final Function(int index) bottomNavigationBarOnItemTap;
-  final List<BottomNavigationBarItem> bottomNavigationBarItems;
 
   @override
   void onNavigateSamePage() {
@@ -37,21 +30,16 @@ class ExplorePage<T> extends StatelessWidget with FlowMapListenerMixin {
 
   @override
   Widget build(BuildContext context) {
-    return FlowScaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: ContentFeed(
-          scrollController: scrollController,
-          tabs: tabs,
-          initialTabIndex: initialTabIndex,
-          onTapMore: (ContentDTO contentDTO) {
-            FlowApp.of(context).map.navigate(FromContentCard(contentDTO));
-          },
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: ContentFeed(
+        scrollController: scrollController,
+        tabs: tabs,
+        initialTabIndex: initialTabIndex,
+        onTapMore: (ContentDTO contentDTO) {
+          FlowApp.of(context).map.navigate(FromContentCard(contentDTO));
+        },
       ),
-      bottomNavigationBarOnItemTap: bottomNavigationBarOnItemTap,
-      bottomNavigationBarItems: bottomNavigationBarItems,
-      bottomNavigationBarIndex: 0,
     );
   }
 }

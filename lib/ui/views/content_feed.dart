@@ -14,14 +14,15 @@ class ContentFeed extends StatefulWidget {
     this.scrollPhysics,
     this.shouldLoadMoreOnScroll = true,
     @required this.tabs,
-    this.initialTabIndex = 0,
+    int initialTabIndex,
     this.onTapMore,
-  })  : assert(scrollDirection != null),
-        assert(shouldLoadMoreOnScroll != null),
+  })  : assert(shouldLoadMoreOnScroll != null),
         assert(tabs != null && tabs.length > 0),
-        assert(initialTabIndex != null &&
-            initialTabIndex >= 0 &&
-            initialTabIndex < tabs.length),
+        initialTabIndex = initialTabIndex == null
+            ? 0
+            : initialTabIndex > tabs.length
+                ? tabs.length - 1
+                : initialTabIndex,
         scrollController = scrollController ?? ScrollController(),
         super(key: key);
 

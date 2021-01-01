@@ -1,3 +1,4 @@
+import 'package:VirtualHole/ui/elements/root_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
 import '../../virtualhole_client.dart';
@@ -14,13 +15,16 @@ class ToExplorePageResponse extends FlowResponse<ToExplorePage> {
     pages.add(FlowPage(
       key: UniqueKey(),
       name: '/explore',
-      child: ExplorePage(
+      child: RootScaffold(
         key: GlobalKey<NavigatorState>(),
-        tabs: ContentFeedTabFactory.main(),
+        body: ExplorePage(
+          tabs: ContentFeedTabFactory.main(),
+          initialTabIndex: 0,
+        ),
+        bottomNavigationBarItems: BottomNavigationFactory.main(),
         bottomNavigationBarOnItemTap: (int index) =>
             navigate(FromHomeRoute(index)),
-        bottomNavigationBarItems: BottomNavigationFactory.main(),
-        initialTabIndex: 0,
+        bottomNavigationBarIndex: 0,
       ),
     ));
   }
