@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:path_provider/path_provider.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
 
-class LocalData {
+class LocalData<T> {
   LocalData(this._fileName);
 
   final String _fileName;
@@ -22,13 +22,40 @@ class LocalData {
 
     _isInit = true;
     _directory = await getApplicationDocumentsDirectory();
-    _file = File(_directory.path + '/' + _fileName);
+    _file = File(_directory.path + '/' + _fileName + '.json');
     MLog.log(_file.path, prepend: (LocalData));
-
-    load();
   }
 
-  Future<bool> load() async {
+  Future<T> load(Function(dynamic) decoder, T fallback) async {
+    if (await _loadData()) {
+      MLog.log('Successfully loaded ${_directory.path}');
+      return decoder(_data);
+    }
+    return fallback;
+  }
+
+  Future<void> write(dynamic value) async {
+    _checkInit();
+
+    if (!await _loadData()) {
+      await _file.create();
+    }
+
+    // _data[key] = value;
+    await _file.writeAsString(json.encode(value));
+
+    MLog.log('Successfully written at ${_directory.path}',
+        prepend: (LocalData));
+  }
+
+  void _checkInit() {
+    if (!_isInit) {
+      throw Exception(
+          "[${(LocalData)}] Data hasn't been initialized yet. Make sure to call .init() first.");
+    }
+  }
+
+  Future<bool> _loadData() async {
     _checkInit();
 
     if (await _file.exists()) {
@@ -38,25 +65,5 @@ class LocalData {
     }
 
     return false;
-  }
-
-  Future<void> write(String key, dynamic value) async {
-    _checkInit();
-
-    if (!await load()) {
-      await _file.create();
-    }
-
-    _data[key] = value;
-    await _file.writeAsString(json.encode(_data));
-
-    MLog.log('Write success', prepend: (LocalData));
-  }
-
-  void _checkInit() {
-    if (!_isInit) {
-      throw Exception(
-          "[${(LocalData)}] Data hasn't been initialized yet. Make sure to call .init() first.");
-    }
   }
 }

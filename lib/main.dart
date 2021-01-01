@@ -9,5 +9,9 @@ Future<void> main() async {
     prepend: 'Main',
   );
 
+  // // If we're not doing runApp(), but wanna have
+  // // something tested quick
+  // WidgetsFlutterBinding.ensureInitialized();
+
   runApp(RootSetup());
 }

@@ -7,6 +7,8 @@ class RootSetup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LocalStorageClient().init();
+
     return FlowApp(
       initialContext: ToExplorePage(),
       map: FlowMap([

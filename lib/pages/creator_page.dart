@@ -133,7 +133,7 @@ class _CreatorAvatarHighlight extends StatelessWidget {
   }
 }
 
-class _CreatorSocialLinks extends StatelessWidget {
+class _CreatorSocialLinks extends StatefulWidget {
   const _CreatorSocialLinks({
     Key key,
     @required this.creator,
@@ -143,7 +143,14 @@ class _CreatorSocialLinks extends StatelessWidget {
   final Creator creator;
 
   @override
+  State<StatefulWidget> createState() => _CreatorSocialLinksState();
+}
+
+class _CreatorSocialLinksState extends State<_CreatorSocialLinks> {
+  @override
   Widget build(BuildContext context) {
+    UserData userData = LocalStorageClient().userData;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
@@ -157,7 +164,10 @@ class _CreatorSocialLinks extends StatelessWidget {
               ),
             ),
             style: OutlinedButton.styleFrom(
-              // backgroundColor: Colors.blue,
+              backgroundColor:
+                  userData.followedCreatorIds.contains(widget.creator.id)
+                      ? Colors.blue
+                      : Colors.transparent,
               shape: new RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(30.0),
               ),
@@ -168,13 +178,20 @@ class _CreatorSocialLinks extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              MLog.log('press');
+              if (userData.followedCreatorIds.contains(widget.creator.id)) {
+                userData.followedCreatorIds.remove(widget.creator.id);
+              } else {
+                userData.followedCreatorIds.add(widget.creator.id);
+              }
+
+              LocalStorageClient().userDataClient.write(userData);
+              setState(() {});
             },
           ),
           ButtonBar(
             alignment: MainAxisAlignment.center,
             children: [
-              for (CreatorSocial social in creator.socials)
+              for (CreatorSocial social in widget.creator.socials)
                 TextButton(
                   child: Icon(
                     Icons.music_note,
