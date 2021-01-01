@@ -1,5 +1,5 @@
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
-import '../../ui/ui.dart';
+import '../../virtualhole_client.dart';
 
 class ContentFeedTabFactory {
   static List<ContentFeedTab> creator(List<Creator> creators) {

@@ -17,12 +17,9 @@ class SupportPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ResourcesClient resourcesClient =
-        VirtualHoleApiClient.managed(domain: 'www.virtualhole.app').resources;
-
     return FlowScaffold(
       body: FutureBuilder(
-        future: resourcesClient.getSupportListAsync(),
+        future: ClientFactory.vHoleApi().resources.getSupportListAsync(),
         builder: (BuildContext context,
             AsyncSnapshot<ApiResponse<List<SupportInfo>>> snapshot) {
           if (snapshot.hasError) {
@@ -46,7 +43,8 @@ class SupportPage extends StatelessWidget {
                       InfoCard(
                         header: supportInfo.header,
                         content: supportInfo.content,
-                        imageUrl: resourcesClient
+                        imageUrl: ClientFactory.vHoleApi()
+                            .resources
                             .buildObjectUri(supportInfo.imagePath)
                             .toString(),
                         onTap: () => launch(supportInfo.url),

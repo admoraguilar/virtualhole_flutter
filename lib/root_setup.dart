@@ -3,8 +3,6 @@ import 'package:midnight_flutter/midnight_flutter.dart';
 import 'virtualhole_client.dart';
 
 class RootSetup extends StatelessWidget {
-  static const String virtualHoleApi = 'www.virtualhole.app';
-
   const RootSetup({Key key}) : super(key: key);
 
   @override
@@ -21,7 +19,7 @@ class RootSetup extends StatelessWidget {
         ToSearchPageResponse(),
         FromContentCardResponse(),
       ]),
-      title: 'holohole',
+      title: AppConfig.kAppName,
       theme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: Colors.lightBlue[700],

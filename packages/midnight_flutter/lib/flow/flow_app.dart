@@ -89,7 +89,9 @@ class FlowAppState extends State<FlowApp> {
   FlowMap _map;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+
     _routerDelegate = FlowRouterDelegate(
       onSetNewRoutePath: widget.onSetNewRoutePath,
     );
@@ -98,7 +100,10 @@ class FlowAppState extends State<FlowApp> {
     _map = widget.map;
     _map._routerDelegate = _routerDelegate;
     _map.navigate(widget.initialContext);
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp.router(
       routerDelegate: _routerDelegate,
       routeInformationParser: _routeInformationParser,
