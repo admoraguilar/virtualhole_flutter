@@ -9,14 +9,15 @@ class ToSupportPageResponse extends FlowResponse<ToSupportPage> {
   @override
   void respond() {
     pages.add(FlowPage(
-      key: UniqueKey(),
-      name: '/support',
-      child: SupportPage(
-        key: GlobalKey<NavigatorState>(),
-        bottomNavigationBarOnItemTap: (int index) =>
-            navigate(FromHomeRoute(index)),
-        bottomNavigationBarItems: BottomNavigationFactory.main(),
-      ),
-    ));
+        key: UniqueKey(),
+        name: '/support',
+        child: RootScaffold(
+          key: GlobalKey<NavigatorState>(),
+          body: SupportPage(),
+          bottomNavigationBarItems: BottomNavigationFactory.main(),
+          bottomNavigationBarOnItemTap: (int index) =>
+              navigate(FromHomeRoute(index)),
+          bottomNavigationBarIndex: 3,
+        )));
   }
 }

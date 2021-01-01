@@ -10,11 +10,13 @@ class ToSearchPageResponse extends FlowResponse<ToSearchPage> {
     pages.add(FlowPage(
       key: UniqueKey(),
       name: '/search',
-      child: SearchPage(
+      child: RootScaffold(
         key: GlobalKey<NavigatorState>(),
+        body: SearchPage(),
+        bottomNavigationBarItems: BottomNavigationFactory.main(),
         bottomNavigationBarOnItemTap: (int index) =>
             navigate(FromHomeRoute(index)),
-        bottomNavigationBarItems: BottomNavigationFactory.main(),
+        bottomNavigationBarIndex: 2,
       ),
     ));
   }

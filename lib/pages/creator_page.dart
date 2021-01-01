@@ -12,72 +12,55 @@ class CreatorPage extends StatelessWidget {
     this.creatorBuilder,
     this.contentFeedTabs,
     this.contentFeedTabBuilder,
-    @required this.bottomNavigationBarOnItemTap,
-    @required this.bottomNavigationBarItems,
-  })  : assert(bottomNavigationBarOnItemTap != null),
-        assert(bottomNavigationBarItems != null),
-        super(key: key);
+  }) : super(key: key);
 
   final Creator creator;
   final Future<Creator> creatorBuilder;
   final List<ContentFeedTab> Function(Creator) contentFeedTabBuilder;
   final List<ContentFeedTab> contentFeedTabs;
-  final Function(int index) bottomNavigationBarOnItemTap;
-  final List<BottomNavigationBarItem> bottomNavigationBarItems;
 
   @override
   Widget build(BuildContext context) {
-    Widget withLoader(AsyncSnapshot<Creator> snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return HololiveRotatingImage();
-      }
+    if (creatorBuilder != null) {
+      return FutureBuilder(
+        future: creatorBuilder,
+        builder: (BuildContext context, AsyncSnapshot<Creator> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return HololiveRotatingImage();
+          }
 
-      if (snapshot.connectionState == ConnectionState.done &&
-          (!snapshot.hasData || snapshot.hasError)) {
-        FlowApp.of(context).map.navigate(ToErrorPage());
-      }
+          if (snapshot.connectionState == ConnectionState.done &&
+              (!snapshot.hasData || snapshot.hasError)) {
+            FlowApp.of(context).map.navigate(ToErrorPage());
+          }
 
+          return ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              _CreatorAvatarHighlight(creator: snapshot.data),
+              _CreatorSocialLinks(creator: snapshot.data),
+              for (ContentFeedTab tab
+                  in contentFeedTabBuilder(snapshot.data)) ...[
+                _CreatorContentFeed(tab: tab),
+                SizedBox(height: 16)
+              ]
+            ],
+            cacheExtent: double.infinity,
+          );
+        },
+      );
+    } else {
       return ListView(
         padding: EdgeInsets.zero,
         children: [
-          _CreatorAvatarHighlight(creator: snapshot.data),
-          _CreatorSocialLinks(creator: snapshot.data),
-          for (ContentFeedTab tab in contentFeedTabBuilder(snapshot.data)) ...[
+          _CreatorAvatarHighlight(creator: creator),
+          _CreatorSocialLinks(creator: creator),
+          for (ContentFeedTab tab in contentFeedTabs) ...[
             _CreatorContentFeed(tab: tab),
             SizedBox(height: 16)
           ]
         ],
         cacheExtent: double.infinity,
-      );
-    }
-
-    if (creatorBuilder != null) {
-      return FutureBuilder(
-        future: creatorBuilder,
-        builder: (BuildContext context, AsyncSnapshot<Creator> snapshot) {
-          return FlowScaffold(
-            body: withLoader(snapshot),
-            bottomNavigationBarOnItemTap: bottomNavigationBarOnItemTap,
-            bottomNavigationBarItems: bottomNavigationBarItems,
-          );
-        },
-      );
-    } else {
-      return FlowScaffold(
-        body: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            _CreatorAvatarHighlight(creator: creator),
-            _CreatorSocialLinks(creator: creator),
-            for (ContentFeedTab tab in contentFeedTabs) ...[
-              _CreatorContentFeed(tab: tab),
-              SizedBox(height: 16)
-            ]
-          ],
-          cacheExtent: double.infinity,
-        ),
-        bottomNavigationBarOnItemTap: bottomNavigationBarOnItemTap,
-        bottomNavigationBarItems: bottomNavigationBarItems,
       );
     }
   }

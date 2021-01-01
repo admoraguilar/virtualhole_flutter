@@ -14,17 +14,18 @@ class ToCreatorPageResponse extends FlowResponse<ToCreatorPage> {
   @override
   void respond() {
     pages.add(FlowPage(
-      key: UniqueKey(),
-      name: '/creator',
-      child: CreatorPage(
-        key: GlobalKey<NavigatorState>(),
-        creatorBuilder: CreatorFactory.fromId(context.creatorId),
-        contentFeedTabBuilder: (Creator creator) =>
-            ContentFeedTabFactory.creator([creator]),
-        bottomNavigationBarOnItemTap: (int index) =>
-            navigate(FromHomeRoute(index)),
-        bottomNavigationBarItems: BottomNavigationFactory.main(),
-      ),
-    ));
+        key: UniqueKey(),
+        name: '/creator',
+        child: RootScaffold(
+          key: GlobalKey<NavigatorState>(),
+          body: CreatorPage(
+            creatorBuilder: CreatorFactory.fromId(context.creatorId),
+            contentFeedTabBuilder: (Creator creator) =>
+                ContentFeedTabFactory.creator([creator]),
+          ),
+          bottomNavigationBarItems: BottomNavigationFactory.main(),
+          bottomNavigationBarOnItemTap: (int index) =>
+              navigate(FromHomeRoute(index)),
+        )));
   }
 }

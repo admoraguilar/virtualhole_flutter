@@ -52,14 +52,7 @@ class _RootScaffoldState extends State<RootScaffold> {
       );
     }
 
-    if (widget.bottomNavigationBarIndex != null) {
-      _bottomNavigationBarIndex = widget.bottomNavigationBarIndex;
-    }
-
-    _bottomNavigationBarIndex =
-        _bottomNavigationBarIndex >= widget.bottomNavigationBarItems.length
-            ? 0
-            : _bottomNavigationBarIndex;
+    _updateBottomNavigattionBarIndex();
 
     if (widget.bottomNavigationBarItems != null &&
         widget.bottomNavigationBarOnItemTap != null) {
@@ -74,15 +67,31 @@ class _RootScaffoldState extends State<RootScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBar,
-      body: NetworkResilientWidget(
-        networkChecking: HololiveRotatingImage(),
-        networkError: ErrorPage(),
-        child: widget.body,
+    _updateBottomNavigattionBarIndex();
+
+    return SafeArea(
+      child: Scaffold(
+        appBar: _appBar,
+        body: NetworkResilientWidget(
+          networkChecking: HololiveRotatingImage(),
+          networkError: ErrorPage(),
+          child: widget.body,
+        ),
+        bottomNavigationBar: _bottomNavigationBar,
+        extendBodyBehindAppBar: true,
       ),
-      bottomNavigationBar: _bottomNavigationBar,
-      extendBodyBehindAppBar: true,
     );
+  }
+
+  void _updateBottomNavigattionBarIndex() {
+    if (widget.bottomNavigationBarIndex != null) {
+      _bottomNavigationBarIndex = widget.bottomNavigationBarIndex;
+      _bottomNavigationBarIndex =
+          _bottomNavigationBarIndex >= widget.bottomNavigationBarItems.length
+              ? 0
+              : _bottomNavigationBarIndex;
+    }
+
+    MLog.log('Index: $_bottomNavigationBarIndex');
   }
 }

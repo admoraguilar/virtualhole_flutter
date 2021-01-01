@@ -10,13 +10,16 @@ class ToCounterPageResponse extends FlowResponse<ToCounterPage> {
     pages.add(FlowPage(
         key: UniqueKey(),
         name: '/counter',
-        child: CounterPage(
+        child: RootScaffold(
           key: GlobalKey<NavigatorState>(),
           title: Text('Counter'),
+          body: CounterPage(
+            onExtraTap: () => navigate(ToCounterPage()),
+          ),
+          bottomNavigationBarItems: BottomNavigationFactory.main(),
           bottomNavigationBarOnItemTap: (int index) =>
               navigate(FromHomeRoute(index)),
-          bottomNavigationBarItems: BottomNavigationFactory.main(),
-          onExtraTap: () => navigate(ToCounterPage()),
+          bottomNavigationBarIndex: 1,
         )));
   }
 }
