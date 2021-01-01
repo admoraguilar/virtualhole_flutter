@@ -22,7 +22,7 @@ class ToCreatorPageResponse extends FlowResponse<ToCreatorPage> {
         contentFeedTabBuilder: (Creator creator) =>
             ContentFeedTabFactory.creator([creator]),
         bottomNavigationBarOnItemTap: (int index) =>
-            navigate(ToHomeRoute(index)),
+            navigate(FromHomeRoute(index)),
         bottomNavigationBarItems: BottomNavigationFactory.main(),
       ),
     ));

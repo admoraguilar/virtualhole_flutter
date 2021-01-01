@@ -1,13 +1,13 @@
 import 'package:midnight_flutter/midnight_flutter.dart';
 import '../../virtualhole_client.dart';
 
-class ToHomeRoute extends FlowContext {
-  ToHomeRoute(this.index) : assert(index != null && index > -1);
+class FromHomeRoute extends FlowContext {
+  FromHomeRoute(this.index) : assert(index != null && index > -1);
 
   final int index;
 }
 
-class ToHomeRouteResponse extends FlowResponse<ToHomeRoute> {
+class FromHomeRouteResponse extends FlowResponse<FromHomeRoute> {
   @override
   void respond() {
     if (context.index == 0) {

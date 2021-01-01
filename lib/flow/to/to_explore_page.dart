@@ -18,7 +18,7 @@ class ToExplorePageResponse extends FlowResponse<ToExplorePage> {
         key: GlobalKey<NavigatorState>(),
         tabs: ContentFeedTabFactory.main(),
         bottomNavigationBarOnItemTap: (int index) =>
-            navigate(ToHomeRoute(index)),
+            navigate(FromHomeRoute(index)),
         bottomNavigationBarItems: BottomNavigationFactory.main(),
         initialTabIndex: 0,
       ),

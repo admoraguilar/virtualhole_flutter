@@ -10,7 +10,7 @@ class RootSetup extends StatelessWidget {
     return FlowApp(
       initialContext: ToExplorePage(),
       map: FlowMap([
-        ToHomeRouteResponse(),
+        FromHomeRouteResponse(),
         ToExplorePageResponse(),
         ToCounterPageResponse(),
         ToSupportPageResponse(),
