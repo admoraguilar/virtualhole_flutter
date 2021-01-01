@@ -26,7 +26,7 @@ class LocalData<T> {
     MLog.log(_file.path, prepend: (LocalData));
   }
 
-  Future<T> load(Function(dynamic) decoder, T fallback) async {
+  Future<T> load(T Function(dynamic) decoder, T fallback) async {
     if (await _loadData()) {
       MLog.log('Successfully loaded ${_directory.path}');
       return decoder(_data);
@@ -34,7 +34,7 @@ class LocalData<T> {
     return fallback;
   }
 
-  Future<void> write(dynamic value) async {
+  Future<void> write(T value) async {
     _checkInit();
 
     if (!await _loadData()) {

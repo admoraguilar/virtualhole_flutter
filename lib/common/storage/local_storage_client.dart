@@ -1,5 +1,5 @@
-import 'package:VirtualHole/common/storage/user_data.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
+import '../../virtualhole_client.dart';
 
 class LocalStorageClient {
   static LocalStorageClient _localStorageClient = LocalStorageClient._();
