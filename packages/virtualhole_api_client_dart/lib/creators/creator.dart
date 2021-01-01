@@ -42,6 +42,17 @@ class Creator implements Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'id': id,
+        'avatarUrl': avatarUrl,
+        'isHidden': isHidden,
+        'affiliations': affiliations,
+        'isGroup': isGroup,
+        'depth': depth,
+        'socials': socials.map((s) => s.toJson()).toList(),
+      };
+
   @override
   List<Object> get props => [
         name,

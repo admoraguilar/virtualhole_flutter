@@ -9,6 +9,7 @@ export 'flow/flow_page.dart';
 export 'flow/flow_route_information_parser.dart';
 export 'flow/flow_route_path.dart';
 export 'flow/flow_router_delegate.dart';
+export 'local_data/local_data.dart';
 export 'mlog/mlog.dart';
 export 'observables/callback.dart';
 export 'observables/observable.dart';

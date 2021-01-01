@@ -32,6 +32,14 @@ class CreatorSocial implements Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() => {
+        'socialType': socialType,
+        'name': name,
+        'id': id,
+        'url': url,
+        'avatarUrl': avatarUrl,
+      };
+
   @override
   List<Object> get props => [
         socialType,
