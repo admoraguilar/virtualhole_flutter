@@ -2,40 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
 import 'virtualhole_client.dart';
 
-class RootSetup extends StatelessWidget {
+class RootSetup extends StatefulWidget {
   const RootSetup({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    Widget _materialAppWrapper(Widget home) {
-      return MaterialApp(
-        home: home,
-        theme: ThemeData(
-          brightness: Brightness.dark,
-          primaryColor: Colors.lightBlue[700],
-          accentColor: Colors.lightBlue[700],
-          backgroundColor: Colors.black,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          textTheme: TextTheme(
-            headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-            headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-          ),
-          scaffoldBackgroundColor: Colors.black,
-          bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            backgroundColor: Colors.black,
-          ),
-        ),
-        debugShowCheckedModeBanner: false,
-      );
-    }
+  State<StatefulWidget> createState() => _RootSetupState();
+}
 
+class _RootSetupState extends State<RootSetup> {
+  Future<List<Future>> _initSystemsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Midnight.init();
+    _initSystemsFuture = Future.wait([
+      LocalStorageClient().init(),
+    ]);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Initialize systems here...
     return FutureBuilder(
-      future: Future.wait([
-        LocalStorageClient().init(),
-      ]),
-      builder: (BuildContext context, AsyncSnapshot<List<void>> snapshot) {
+      future: _initSystemsFuture,
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return _materialAppWrapper(Align(
+          return _createMaterialAppWrapper(Align(
             alignment: Alignment.center,
             child: HololiveRotatingImage(),
           ));
@@ -44,7 +38,7 @@ class RootSetup extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.hasError) {
           print(snapshot.error);
-          return _materialAppWrapper(Align(
+          return _createMaterialAppWrapper(Align(
             alignment: Alignment.center,
             child: ErrorPage(),
           ));
@@ -63,45 +57,39 @@ class RootSetup extends StatelessWidget {
             FromContentCardResponse(),
           ]),
           title: AppConfig().appName,
-          theme: ThemeData(
-            brightness: Brightness.dark,
-            primaryColor: Colors.lightBlue[700],
-            accentColor: Colors.lightBlue[700],
-            backgroundColor: Colors.black,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-            textTheme: TextTheme(
-              headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-              headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-            ),
-            scaffoldBackgroundColor: Colors.black,
-            bottomNavigationBarTheme: BottomNavigationBarThemeData(
-              backgroundColor: Colors.black,
-            ),
-          ),
+          theme: _createRootTheme(),
           debugShowCheckedModeBanner: false,
         );
       },
     );
 
-    // return MaterialApp(
-    //   home: SearchPage(),
-    //   title: 'holohole',
-    //   theme: ThemeData(
-    //     brightness: Brightness.dark,
-    //     primaryColor: Colors.lightBlue[700],
-    //     accentColor: Colors.lightBlue[700],
-    //     backgroundColor: Colors.black,
-    //     visualDensity: VisualDensity.adaptivePlatformDensity,
-    //     textTheme: TextTheme(
-    //       headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-    //       headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-    //     ),
-    //     scaffoldBackgroundColor: Colors.black,
-    //     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    //       backgroundColor: Colors.black,
-    //     ),
-    //   ),
-    //   debugShowCheckedModeBanner: false,
-    // );
+    // return _createMaterialAppWrapper(SearchPage());
+  }
+
+  Widget _createMaterialAppWrapper(Widget home) {
+    return MaterialApp(
+      title: AppConfig().appName,
+      home: home,
+      theme: _createRootTheme(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+
+  ThemeData _createRootTheme() {
+    return ThemeData(
+      brightness: Brightness.dark,
+      primaryColor: Colors.lightBlue[700],
+      accentColor: Colors.lightBlue[700],
+      backgroundColor: Colors.black,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      textTheme: TextTheme(
+        headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+        headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+      ),
+      scaffoldBackgroundColor: Colors.black,
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: Colors.black,
+      ),
+    );
   }
 }

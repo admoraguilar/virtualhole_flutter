@@ -6,15 +6,20 @@ class LocalStorageClient {
 
   LocalStorageClient._();
 
+  final LocalData<UserData> _userDataClient = LocalData('userData');
+
   UserData userData;
-  final LocalData<UserData> userDataClient = LocalData('userData');
 
   factory LocalStorageClient() {
     return _localStorageClient;
   }
 
   Future<void> init() async {
-    await userDataClient.init();
-    userData = await userDataClient.load(UserData.fromJsonDecode, UserData());
+    await _userDataClient.init();
+    userData = await _userDataClient.load(UserData.fromJsonDecode, UserData());
+  }
+
+  Future<void> write() async {
+    await _userDataClient.write(userData);
   }
 }

@@ -167,7 +167,7 @@ class _CreatorSocialLinksState extends State<_CreatorSocialLinks> {
                 userData.followedCreatorIds.add(widget.creator.id);
               }
 
-              LocalStorageClient().userDataClient.write(userData);
+              LocalStorageClient().write();
               setState(() {});
             },
           ),
