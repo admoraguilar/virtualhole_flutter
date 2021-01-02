@@ -16,6 +16,7 @@ class ContentFeed extends StatefulWidget {
     @required this.tabs,
     int initialTabIndex,
     this.onTapMore,
+    this.errorBuilder,
   })  : assert(shouldLoadMoreOnScroll != null),
         assert(tabs != null && tabs.length > 0),
         initialTabIndex = initialTabIndex == null
@@ -33,6 +34,7 @@ class ContentFeed extends StatefulWidget {
   final List<ContentFeedTab> tabs;
   final int initialTabIndex;
   final Function(ContentDTO) onTapMore;
+  final Widget Function(BuildContext, Object, StackTrace) errorBuilder;
 
   @override
   _ContentFeedState createState() => _ContentFeedState();
@@ -73,6 +75,12 @@ class _ContentFeedState extends State<ContentFeed> {
       builder:
           (BuildContext context, AsyncSnapshot<List<ContentDTO>> snapshot) {
         if (snapshot.hasError) {
+          Widget error =
+              widget.errorBuilder(context, snapshot.error, StackTrace.current);
+          if (error != null) {
+            return error;
+          }
+
           throw snapshot.error;
         }
 

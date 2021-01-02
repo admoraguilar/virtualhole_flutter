@@ -51,7 +51,7 @@ class _RootSetupState extends State<RootSetup> {
         }
 
         return FlowApp(
-          initialContext: ToFollowedPage(),
+          initialContext: ToExplorePage(),
           map: FlowMap([
             FromHomeRouteResponse(),
             ToExplorePageResponse(),

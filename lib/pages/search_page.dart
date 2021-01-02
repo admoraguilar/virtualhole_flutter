@@ -80,7 +80,9 @@ class _SearchPageState extends State<SearchPage> {
 
               if (snapshot.connectionState == ConnectionState.done &&
                   (!snapshot.hasData || snapshot.hasError)) {
-                FlowApp.of(context).map.navigate(ToErrorPage());
+                return ErrorPage(
+                  onTryAgain: () => setState(() {}),
+                );
               }
 
               if (snapshot.connectionState == ConnectionState.done &&

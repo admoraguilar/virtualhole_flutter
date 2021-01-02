@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
 import '../virtualhole_client.dart';
 
-class CreatorPage extends StatelessWidget {
+class CreatorPage extends StatefulWidget {
   const CreatorPage({
     Key key,
     this.creator,
@@ -20,10 +20,15 @@ class CreatorPage extends StatelessWidget {
   final List<ContentFeedTab> contentFeedTabs;
 
   @override
+  _CreatorPageState createState() => _CreatorPageState();
+}
+
+class _CreatorPageState extends State<CreatorPage> {
+  @override
   Widget build(BuildContext context) {
-    if (creatorBuilder != null) {
+    if (widget.creatorBuilder != null) {
       return FutureBuilder(
-        future: creatorBuilder,
+        future: widget.creatorBuilder,
         builder: (BuildContext context, AsyncSnapshot<Creator> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return HololiveRotatingImage();
@@ -31,7 +36,9 @@ class CreatorPage extends StatelessWidget {
 
           if (snapshot.connectionState == ConnectionState.done &&
               (!snapshot.hasData || snapshot.hasError)) {
-            FlowApp.of(context).map.navigate(ToErrorPage());
+            return ErrorPage(
+              onTryAgain: () => setState(() {}),
+            );
           }
 
           return ListView(
@@ -40,7 +47,7 @@ class CreatorPage extends StatelessWidget {
               _CreatorAvatarHighlight(creator: snapshot.data),
               _CreatorSocialLinks(creator: snapshot.data),
               for (ContentFeedTab tab
-                  in contentFeedTabBuilder(snapshot.data)) ...[
+                  in widget.contentFeedTabBuilder(snapshot.data)) ...[
                 _CreatorContentFeed(tab: tab),
                 SizedBox(height: 16)
               ]
@@ -53,9 +60,9 @@ class CreatorPage extends StatelessWidget {
       return ListView(
         padding: EdgeInsets.zero,
         children: [
-          _CreatorAvatarHighlight(creator: creator),
-          _CreatorSocialLinks(creator: creator),
-          for (ContentFeedTab tab in contentFeedTabs) ...[
+          _CreatorAvatarHighlight(creator: widget.creator),
+          _CreatorSocialLinks(creator: widget.creator),
+          for (ContentFeedTab tab in widget.contentFeedTabs) ...[
             _CreatorContentFeed(tab: tab),
             SizedBox(height: 16)
           ]

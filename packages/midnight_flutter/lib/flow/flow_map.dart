@@ -6,6 +6,8 @@ class FlowMap {
     upsertAll(responses);
   }
 
+  Function() _onNavigateSamePage;
+
   Map<Type, List<FlowResponse<FlowContext>>> _map = {};
   FlowRouterDelegate _routerDelegate;
   bool _isDirty = false;
@@ -37,13 +39,8 @@ class FlowMap {
             _routerDelegate.setDirty(() {});
           } else {
             if (_routerDelegate.pages.length > 0) {
-              MLog.log('Navigating to same page..', prepend: (FlowMap));
-              Widget topPageChild = _routerDelegate.pages.last.child;
-              if (topPageChild is FlowMapListenerMixin) {
-                FlowMapListenerMixin listener =
-                    topPageChild as FlowMapListenerMixin;
-                listener.onNavigateSamePage();
-              }
+              MLog.log('Navigating to same page..', prepend: runtimeType);
+              _onNavigateSamePage?.call();
             }
           }
           _isDirty = false;
@@ -101,6 +98,41 @@ abstract class FlowResponse<T extends FlowContext> {
   void respond();
 }
 
-mixin FlowMapListenerMixin {
-  void onNavigateSamePage();
+class FlowMapListener extends StatefulWidget {
+  FlowMapListener({
+    Key key,
+    this.onNavigateSamePage,
+    @required this.child,
+  })  : assert(child != null),
+        super(key: key);
+
+  final Function() onNavigateSamePage;
+  final Widget child;
+
+  @override
+  _FlowMapListenerState createState() => _FlowMapListenerState();
+}
+
+class _FlowMapListenerState extends State<FlowMapListener> {
+  FlowMap _map;
+
+  @override
+  void initState() {
+    super.initState();
+    _map = FlowApp.of(context).map;
+  }
+
+  @override
+  void dispose() {
+    if (_map._onNavigateSamePage == widget.onNavigateSamePage) {
+      _map._onNavigateSamePage = null;
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _map._onNavigateSamePage = widget.onNavigateSamePage;
+    return widget.child;
+  }
 }

@@ -3,7 +3,7 @@ import 'package:midnight_flutter/midnight_flutter.dart';
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
 import '../virtualhole_client.dart';
 
-class ExplorePage<T> extends StatelessWidget with FlowMapListenerMixin {
+class ExplorePage extends StatefulWidget {
   ExplorePage({
     Key key,
     ScrollController scrollController,
@@ -18,27 +18,38 @@ class ExplorePage<T> extends StatelessWidget with FlowMapListenerMixin {
   final int initialTabIndex;
 
   @override
-  void onNavigateSamePage() {
-    if (scrollController.hasClients) {
-      scrollController.animateTo(
-        0,
-        duration: Duration(milliseconds: 500),
-        curve: Curves.easeOutCirc,
-      );
-    }
-  }
+  _ExplorePageState createState() => _ExplorePageState();
+}
 
+class _ExplorePageState extends State<ExplorePage> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: ContentFeed(
-        scrollController: scrollController,
-        tabs: tabs,
-        initialTabIndex: initialTabIndex,
-        onTapMore: (ContentDTO contentDTO) {
-          FlowApp.of(context).map.navigate(FromContentCard(contentDTO));
-        },
+    return FlowMapListener(
+      onNavigateSamePage: () {
+        if (widget.scrollController.hasClients) {
+          widget.scrollController.animateTo(
+            0,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeOutCirc,
+          );
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: ContentFeed(
+          scrollController: widget.scrollController,
+          tabs: widget.tabs,
+          initialTabIndex: widget.initialTabIndex,
+          onTapMore: (ContentDTO contentDTO) {
+            FlowApp.of(context).map.navigate(FromContentCard(contentDTO));
+          },
+          errorBuilder:
+              (BuildContext context, Object exception, StackTrace stackTrace) {
+            return ErrorPage(
+              onTryAgain: () => setState(() {}),
+            );
+          },
+        ),
       ),
     );
   }
