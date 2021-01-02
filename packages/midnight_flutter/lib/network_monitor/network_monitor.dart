@@ -36,8 +36,6 @@ class NetworkMonitor {
 
   Future<void> init() async {
     _onStatusChanged = StreamController<NetworkMonitorStatus>.broadcast();
-
-    await _initConnectivityAsync();
     _connectivitySubscription = _connectivity.onConnectivityChanged
         .listen(_updateConnectionStatusAsync);
   }
@@ -45,16 +43,6 @@ class NetworkMonitor {
   void dispose() {
     _onStatusChanged.close();
     _connectivitySubscription.cancel();
-  }
-
-  Future<void> _initConnectivityAsync() async {
-    _status = NetworkMonitorStatus.checking;
-
-    ConnectivityResult result;
-    result = await _connectivity.checkConnectivity();
-
-    MLog.log('Initializing connectivity', prepend: runtimeType);
-    return _updateConnectionStatusAsync(result);
   }
 
   Future<void> _updateConnectionStatusAsync(ConnectivityResult result) async {
