@@ -19,9 +19,7 @@ abstract class ApiRequest {
     toJson().forEach((key, value) {
       if (value != null) {
         if (value is List) {
-          value.forEach((element) {
-            result.addAll({key: element.toString()});
-          });
+          result.addAll({key: value.join(',')});
         } else {
           result.addAll({key: value.toString()});
         }

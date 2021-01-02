@@ -21,7 +21,7 @@ class ToCreatorPageResponse extends FlowResponse<ToCreatorPage> {
           body: CreatorPage(
             creatorBuilder: CreatorFactory().fromId(context.creatorId),
             contentFeedTabBuilder: (Creator creator) =>
-                CreatorFeedTabBuilder(creator).build(),
+                CreatorFeedTabBuilder.single(creator).build(),
           ),
           bottomNavigationBarItems: HomeBottomNavigationItemsBuilder().build(),
           bottomNavigationBarOnItemTap: (int index) =>

@@ -15,7 +15,6 @@ class LocalStorageClient {
 
   Future<void> init() async {
     await userDataClient.init();
-
     userData = await userDataClient.load(UserData.fromJsonDecode, UserData());
   }
 }

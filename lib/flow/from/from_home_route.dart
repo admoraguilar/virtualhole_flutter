@@ -1,3 +1,4 @@
+import 'package:VirtualHole/flow/to/to_followed_page.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
 import '../../virtualhole_client.dart';
 
@@ -13,7 +14,7 @@ class FromHomeRouteResponse extends FlowResponse<FromHomeRoute> {
     if (context.index == 0) {
       navigate(ToExplorePage());
     } else if (context.index == 1) {
-      navigate(ToCounterPage());
+      navigate(ToFollowedPage());
     } else if (context.index == 2) {
       navigate(ToSearchPage());
     } else if (context.index == 3) {

@@ -7,37 +7,80 @@ class RootSetup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LocalStorageClient().init();
-
-    return FlowApp(
-      initialContext: ToExplorePage(),
-      map: FlowMap([
-        FromHomeRouteResponse(),
-        ToExplorePageResponse(),
-        ToCounterPageResponse(),
-        ToSupportPageResponse(),
-        ToErrorPageResponse(),
-        ToCreatorPageResponse(),
-        ToSearchPageResponse(),
-        FromContentCardResponse(),
-      ]),
-      title: AppConfig().appName,
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: Colors.lightBlue[700],
-        accentColor: Colors.lightBlue[700],
-        backgroundColor: Colors.black,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        textTheme: TextTheme(
-          headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-          headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-        ),
-        scaffoldBackgroundColor: Colors.black,
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    Widget _materialAppWrapper(Widget home) {
+      return MaterialApp(
+        home: home,
+        theme: ThemeData(
+          brightness: Brightness.dark,
+          primaryColor: Colors.lightBlue[700],
+          accentColor: Colors.lightBlue[700],
           backgroundColor: Colors.black,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          textTheme: TextTheme(
+            headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+            headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          ),
+          scaffoldBackgroundColor: Colors.black,
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            backgroundColor: Colors.black,
+          ),
         ),
-      ),
-      debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: false,
+      );
+    }
+
+    return FutureBuilder(
+      future: Future.wait([
+        LocalStorageClient().init(),
+      ]),
+      builder: (BuildContext context, AsyncSnapshot<List<void>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return _materialAppWrapper(Align(
+            alignment: Alignment.center,
+            child: HololiveRotatingImage(),
+          ));
+        }
+
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.hasError) {
+          print(snapshot.error);
+          return _materialAppWrapper(Align(
+            alignment: Alignment.center,
+            child: ErrorPage(),
+          ));
+        }
+
+        return FlowApp(
+          initialContext: ToFollowedPage(),
+          map: FlowMap([
+            FromHomeRouteResponse(),
+            ToExplorePageResponse(),
+            ToFollowPageResponse(),
+            ToSupportPageResponse(),
+            ToErrorPageResponse(),
+            ToCreatorPageResponse(),
+            ToSearchPageResponse(),
+            FromContentCardResponse(),
+          ]),
+          title: AppConfig().appName,
+          theme: ThemeData(
+            brightness: Brightness.dark,
+            primaryColor: Colors.lightBlue[700],
+            accentColor: Colors.lightBlue[700],
+            backgroundColor: Colors.black,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+            textTheme: TextTheme(
+              headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+              headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+            ),
+            scaffoldBackgroundColor: Colors.black,
+            bottomNavigationBarTheme: BottomNavigationBarThemeData(
+              backgroundColor: Colors.black,
+            ),
+          ),
+          debugShowCheckedModeBanner: false,
+        );
+      },
     );
 
     // return MaterialApp(

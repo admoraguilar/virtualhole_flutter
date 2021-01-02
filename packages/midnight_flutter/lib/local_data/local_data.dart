@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:path_provider/path_provider.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
 
+// Inspired by: https://github.com/bramvbilsen/Flutter-JSON-Storage-Tutorial/blob/master/lib/main.dart
 class LocalData<T> {
   LocalData(this._fileName);
 
@@ -17,7 +18,7 @@ class LocalData<T> {
 
   Future<void> init() async {
     if (_isInit) {
-      return;
+      throw Exception('[${(LocalData)}].init() should only be called once.');
     }
 
     _isInit = true;
