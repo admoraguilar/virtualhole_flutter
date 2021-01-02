@@ -72,8 +72,6 @@ class _ContentFeedState extends State<ContentFeed> {
       future: _future,
       builder:
           (BuildContext context, AsyncSnapshot<List<ContentDTO>> snapshot) {
-        MLog.log(snapshot.connectionState);
-
         if (snapshot.hasError) {
           throw snapshot.error;
         }

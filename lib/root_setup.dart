@@ -10,16 +10,22 @@ class RootSetup extends StatefulWidget {
 }
 
 class _RootSetupState extends State<RootSetup> {
-  Future<List<Future>> _initSystemsFuture;
+  Future<List<dynamic>> _initSystemsFuture;
 
   @override
   void initState() {
     super.initState();
 
-    Midnight.init();
     _initSystemsFuture = Future.wait([
+      Midnight().init(),
       LocalStorageClient().init(),
     ]);
+  }
+
+  @override
+  void dispose() {
+    Midnight().dispose();
+    super.dispose();
   }
 
   @override
@@ -37,11 +43,11 @@ class _RootSetupState extends State<RootSetup> {
 
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.hasError) {
-          print(snapshot.error);
-          return _createMaterialAppWrapper(Align(
-            alignment: Alignment.center,
-            child: ErrorPage(),
-          ));
+          throw snapshot.error;
+          // return _createMaterialAppWrapper(Align(
+          //   alignment: Alignment.center,
+          //   child: ErrorPage(),
+          // ));
         }
 
         return FlowApp(

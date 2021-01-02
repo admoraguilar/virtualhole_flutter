@@ -91,7 +91,5 @@ class _RootScaffoldState extends State<RootScaffold> {
               ? 0
               : _bottomNavigationBarIndex;
     }
-
-    MLog.log('Index: $_bottomNavigationBarIndex');
   }
 }
