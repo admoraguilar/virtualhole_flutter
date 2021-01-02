@@ -1,5 +1,5 @@
-import 'package:virtualhole_api_client_dart/common/api_error.dart';
-import '../common/api_response.dart';
+import 'package:midnight_flutter/midnight_flutter.dart';
+import '../virtualhole_api_client_dart.dart';
 
 class ApiResponseProvider<T> {
   ApiResponseProvider(
@@ -17,8 +17,11 @@ class ApiResponseProvider<T> {
       if (onError != null) {
         onError(response.error);
       } else {
-        throw Exception(
-            '[${(ApiResponseProvider)}] ${response.error.statusCode} - ${response.error.reasonPhrase}');
+        throw MLog.exception(
+          (String message) => Exception(message),
+          '${response.error.statusCode} - ${response.error.reasonPhrase}',
+          prepend: runtimeType,
+        );
       }
     }
 

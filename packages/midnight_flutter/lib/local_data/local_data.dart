@@ -18,18 +18,26 @@ class LocalData<T> {
 
   Future<void> init() async {
     if (_isInit) {
-      throw Exception('[${(LocalData)}].init() should only be called once.');
+      throw MLog.exception((String message) => Exception(message),
+          '.init() should only be called once.',
+          prepend: runtimeType);
     }
 
     _isInit = true;
     _directory = await getApplicationDocumentsDirectory();
     _file = File(_directory.path + '/' + _fileName + '.json');
-    MLog.log(_file.path, prepend: (LocalData));
+    MLog.log(
+      'Init at ${_file.path}',
+      prepend: runtimeType,
+    );
   }
 
   Future<T> load(T Function(dynamic) decoder, T fallback) async {
     if (await _loadData()) {
-      MLog.log('Successfully loaded ${_directory.path}');
+      MLog.log(
+        'Successfully loaded ${_directory.path}',
+        prepend: runtimeType,
+      );
       return decoder(_data);
     }
     return fallback;
@@ -45,14 +53,17 @@ class LocalData<T> {
     // _data[key] = value;
     await _file.writeAsString(json.encode(value));
 
-    MLog.log('Successfully written at ${_directory.path}',
-        prepend: (LocalData));
+    MLog.log(
+      'Successfully written at ${_directory.path}',
+      prepend: runtimeType,
+    );
   }
 
   void _checkInit() {
     if (!_isInit) {
-      throw Exception(
-          "[${(LocalData)}] Data hasn't been initialized yet. Make sure to call .init() first.");
+      throw MLog.exception((String message) => Exception(message),
+          "Data hasn't been initialized yet. Make sure to call .init() first.",
+          prepend: runtimeType);
     }
   }
 

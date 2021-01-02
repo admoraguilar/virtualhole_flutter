@@ -1,3 +1,4 @@
+import 'package:midnight_flutter/midnight_flutter.dart';
 import '../../virtualhole_api_client_dart.dart';
 
 extension ContentExtensions on Content {
@@ -10,7 +11,10 @@ extension ContentExtensions on Content {
       }
     }
 
-    throw Exception(
-        '[${(Content)}] Thumbnail is unsupported for this content type.');
+    throw MLog.exception(
+      (String message) => Exception(message),
+      'Thumbnail is unsupported for this content type.',
+      prepend: runtimeType,
+    );
   }
 }
