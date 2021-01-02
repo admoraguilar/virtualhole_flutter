@@ -35,6 +35,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  # Source: Easiest Splash Screen - https://stackoverflow.com/a/58116812  
+  flutter_native_splash: ^0.1.9
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.
@@ -77,3 +80,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  
+flutter_native_splash:
+  image: assets/images/icons/virtualhole-circle-512.png
+  color: "000000"
