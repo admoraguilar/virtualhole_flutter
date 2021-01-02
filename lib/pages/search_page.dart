@@ -66,7 +66,7 @@ class _SearchPageState extends State<SearchPage> {
         Expanded(
           child: FutureBuilder(
             future: ApiResponseProvider(
-              ClientFactory.vHoleApi().creators.get(
+              ClientFactory.managed().vHoleApi.creators.get(
                     CreatorRequest(
                       search: _textEditingController.text,
                     ),

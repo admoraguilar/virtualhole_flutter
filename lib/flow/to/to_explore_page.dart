@@ -18,10 +18,10 @@ class ToExplorePageResponse extends FlowResponse<ToExplorePage> {
       child: RootScaffold(
         key: GlobalKey<NavigatorState>(),
         body: ExplorePage(
-          tabs: ContentFeedTabFactory.main(),
+          tabs: ExploreFeedTabBuilder().build(),
           initialTabIndex: 0,
         ),
-        bottomNavigationBarItems: BottomNavigationFactory.main(),
+        bottomNavigationBarItems: HomeBottomNavigationItemsBuilder().build(),
         bottomNavigationBarOnItemTap: (int index) =>
             navigate(FromHomeRoute(index)),
         bottomNavigationBarIndex: 0,

@@ -11,7 +11,7 @@ class SupportPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: ClientFactory.vHoleApi().resources.getSupportList(),
+      future: ClientFactory.managed().vHoleApi.resources.getSupportList(),
       builder: (BuildContext context,
           AsyncSnapshot<ApiResponse<List<SupportInfo>>> snapshot) {
         if (snapshot.hasError) {
@@ -35,7 +35,8 @@ class SupportPage extends StatelessWidget {
                     InfoCard(
                       header: supportInfo.header,
                       content: supportInfo.content,
-                      imageUrl: ClientFactory.vHoleApi()
+                      imageUrl: ClientFactory.managed()
+                          .vHoleApi
                           .resources
                           .buildObjectUri(supportInfo.imagePath)
                           .toString(),

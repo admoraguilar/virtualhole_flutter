@@ -109,7 +109,11 @@ class _NetworkResilientWidgetState extends State<NetworkResilientWidget> {
     _isCheckingConnectivity = true;
     _connectivityType = result;
 
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    } else {
+      return null;
+    }
 
     if (_connectivityType != ConnectivityResult.none) {
       _isConnectivitySuccess = await DataConnectionChecker().hasConnection;
@@ -119,7 +123,11 @@ class _NetworkResilientWidgetState extends State<NetworkResilientWidget> {
 
     _isCheckingConnectivity = false;
 
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    } else {
+      return null;
+    }
 
     MLog.log(
         'Updating connectivity: $_connectivityType | $_isConnectivitySuccess',

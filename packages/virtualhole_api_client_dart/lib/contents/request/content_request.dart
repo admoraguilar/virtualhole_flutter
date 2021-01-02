@@ -11,11 +11,8 @@ class ContentRequest extends PagedRequest {
     this.isContentTypeInclude,
     this.contentType,
     this.isCreatorsInclude,
-    this.creatorIds,
     this.isCreatorRelated,
-    this.creatorNames,
-    this.creatorSocialIds,
-    this.creatorSocialUrls,
+    this.creatorIds,
     this.isCheckCreatorAffiliations,
     this.isAffiliationsAll,
     this.isAffiliationsInclude,
@@ -33,11 +30,8 @@ class ContentRequest extends PagedRequest {
   final bool isContentTypeInclude;
   final List<String> contentType;
   final bool isCreatorsInclude;
-  final List<String> creatorIds;
   final bool isCreatorRelated;
-  final List<String> creatorNames;
-  final List<String> creatorSocialIds;
-  final List<String> creatorSocialUrls;
+  final List<String> creatorIds;
   final bool isCheckCreatorAffiliations;
   final bool isAffiliationsAll;
   final bool isAffiliationsInclude;
@@ -53,11 +47,8 @@ class ContentRequest extends PagedRequest {
       'isContentTypeInclude': isContentTypeInclude,
       'contentType': contentType,
       'isCreatorsInclude': isCreatorsInclude,
-      'creatorIds': creatorIds,
       'isCreatorRelated': isCreatorRelated,
-      'creatorNames': creatorNames,
-      'creatorSocialIds': creatorSocialIds,
-      'creatorSocialUrls': creatorSocialUrls,
+      'creatorIds': creatorIds,
       'isCheckCreatorAffiliations': isCheckCreatorAffiliations,
       'isAffiliationsAll': isAffiliationsAll,
       'isAffiliationsInclude': isAffiliationsInclude,
@@ -78,11 +69,8 @@ class ContentRequest extends PagedRequest {
     bool isContentTypeInclude,
     List<String> contentType,
     bool isCreatorsInclude,
-    List<String> creatorIds,
     bool isCreatorRelated,
-    List<String> creatorNames,
-    List<String> creatorSocialIds,
-    List<String> creatorSocialUrls,
+    List<String> creatorIds,
     bool isCheckCreatorAffiliations,
     bool isAffiliationsAll,
     bool isAffiliationsInclude,
@@ -99,11 +87,8 @@ class ContentRequest extends PagedRequest {
       isContentTypeInclude: isContentTypeInclude ?? this.isContentTypeInclude,
       contentType: contentType ?? this.contentType,
       isCreatorsInclude: isCreatorsInclude ?? this.isCreatorsInclude,
-      creatorIds: creatorIds ?? this.creatorIds,
       isCreatorRelated: isCreatorRelated ?? this.isCreatorRelated,
-      creatorNames: creatorNames ?? this.creatorNames,
-      creatorSocialIds: creatorSocialIds ?? this.creatorSocialIds,
-      creatorSocialUrls: creatorSocialUrls ?? this.creatorSocialUrls,
+      creatorIds: creatorIds ?? this.creatorIds,
       isCheckCreatorAffiliations:
           isCheckCreatorAffiliations ?? this.isCheckCreatorAffiliations,
       isAffiliationsAll: isAffiliationsAll ?? this.isAffiliationsAll,

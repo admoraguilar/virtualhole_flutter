@@ -5,7 +5,7 @@ import 'virtualhole_client.dart';
 
 Future<void> main() async {
   MLog.log(
-    'Starting ${AppConfig.kAppName}... [Debug: $kDebugMode]',
+    'Starting ${AppConfig().appName}... [Debug: $kDebugMode]',
     prepend: 'Main',
   );
 

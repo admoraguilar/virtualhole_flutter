@@ -52,7 +52,7 @@ class _RootScaffoldState extends State<RootScaffold> {
       );
     }
 
-    _updateBottomNavigattionBarIndex();
+    _updateBottomNavigationBarIndex();
 
     if (widget.bottomNavigationBarItems != null &&
         widget.bottomNavigationBarOnItemTap != null) {
@@ -67,7 +67,7 @@ class _RootScaffoldState extends State<RootScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    _updateBottomNavigattionBarIndex();
+    _updateBottomNavigationBarIndex();
 
     return SafeArea(
       child: Scaffold(
@@ -83,7 +83,7 @@ class _RootScaffoldState extends State<RootScaffold> {
     );
   }
 
-  void _updateBottomNavigattionBarIndex() {
+  void _updateBottomNavigationBarIndex() {
     if (widget.bottomNavigationBarIndex != null) {
       _bottomNavigationBarIndex = widget.bottomNavigationBarIndex;
       _bottomNavigationBarIndex =

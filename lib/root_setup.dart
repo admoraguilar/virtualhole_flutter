@@ -21,7 +21,7 @@ class RootSetup extends StatelessWidget {
         ToSearchPageResponse(),
         FromContentCardResponse(),
       ]),
-      title: AppConfig.kAppName,
+      title: AppConfig().appName,
       theme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: Colors.lightBlue[700],

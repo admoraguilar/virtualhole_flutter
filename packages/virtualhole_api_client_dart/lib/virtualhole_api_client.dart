@@ -10,9 +10,7 @@ class VirtualHoleApiClient {
     @required this.resources,
   });
 
-  factory VirtualHoleApiClient.managed({
-    @required String domain,
-  }) {
+  factory VirtualHoleApiClient.managed(String domain) {
     return _instances.putIfAbsent(
       domain,
       () => VirtualHoleApiClient(

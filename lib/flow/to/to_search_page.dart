@@ -13,7 +13,7 @@ class ToSearchPageResponse extends FlowResponse<ToSearchPage> {
       child: RootScaffold(
         key: GlobalKey<NavigatorState>(),
         body: SearchPage(),
-        bottomNavigationBarItems: BottomNavigationFactory.main(),
+        bottomNavigationBarItems: HomeBottomNavigationItemsBuilder().build(),
         bottomNavigationBarOnItemTap: (int index) =>
             navigate(FromHomeRoute(index)),
         bottomNavigationBarIndex: 2,

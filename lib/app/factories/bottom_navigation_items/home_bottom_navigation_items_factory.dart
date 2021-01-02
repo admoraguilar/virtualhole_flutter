@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import '../../../virtualhole_client.dart';
 
-class BottomNavigationFactory {
-  static List<BottomNavigationBarItem> main() {
+class HomeBottomNavigationItemsBuilder extends BottomNavigationItemsFactory {
+  @override
+  List<BottomNavigationBarItem> build() {
     return [
       BottomNavigationBarItem(
         icon: Icon(Icons.explore),

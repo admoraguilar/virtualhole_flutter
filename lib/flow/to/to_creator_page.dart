@@ -19,11 +19,11 @@ class ToCreatorPageResponse extends FlowResponse<ToCreatorPage> {
         child: RootScaffold(
           key: GlobalKey<NavigatorState>(),
           body: CreatorPage(
-            creatorBuilder: CreatorFactory.fromId(context.creatorId),
+            creatorBuilder: CreatorFactory().fromId(context.creatorId),
             contentFeedTabBuilder: (Creator creator) =>
-                ContentFeedTabFactory.creator([creator]),
+                CreatorFeedTabBuilder(creator).build(),
           ),
-          bottomNavigationBarItems: BottomNavigationFactory.main(),
+          bottomNavigationBarItems: HomeBottomNavigationItemsBuilder().build(),
           bottomNavigationBarOnItemTap: (int index) =>
               navigate(FromHomeRoute(index)),
         )));
