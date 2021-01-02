@@ -12,6 +12,7 @@ class ToSearchPageResponse extends FlowResponse<ToSearchPage> {
       name: '/search',
       child: RootScaffold(
         key: GlobalKey<NavigatorState>(),
+        isShowAppBar: false,
         body: SearchPage(),
         bottomNavigationBarItems: HomeBottomNavigationItemsBuilder().build(),
         bottomNavigationBarOnItemTap: (int index) =>

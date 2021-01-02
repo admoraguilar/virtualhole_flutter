@@ -18,6 +18,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  // Source: TextField widget rebuilds on tap: https://stackoverflow.com/a/57417560
+  GlobalKey<EditableTextState> _textEditState = GlobalKey<EditableTextState>();
   TextEditingController _textEditingController = TextEditingController();
   ScrollController _scrollController = ScrollController();
   Timer _timer;
@@ -26,7 +28,9 @@ class _SearchPageState extends State<SearchPage> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      FocusScope.of(context).unfocus();
+      if (FocusScope.of(context).hasFocus) {
+        FocusScope.of(context).unfocus();
+      }
     });
   }
 
@@ -34,36 +38,51 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextField(
-          controller: _textEditingController,
-          textAlignVertical: TextAlignVertical.center,
-          decoration: InputDecoration(
-            prefixIcon: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                // FocusScope.of(context).unfocus();
-                FocusScope.of(context).requestFocus(new FocusNode());
-              },
-            ),
-            suffixIcon: IconButton(
-              icon: Icon(Icons.cancel),
-              onPressed: () {
-                _textEditingController.clear();
-                setState(() {});
-              },
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(8.0, 8.0, 0, 0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    onPressed: () {
+                      FlowApp.of(context).routerDelegate.popRoute();
+                    },
+                  ),
+                ),
+                Expanded(
+                  flex: 9,
+                  child: TextField(
+                    key: _textEditState,
+                    controller: _textEditingController,
+                    textAlignVertical: TextAlignVertical.center,
+                    decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.cancel),
+                        onPressed: () {
+                          _textEditingController.clear();
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                    onChanged: (String text) {
+                      if (_timer != null && _timer.isActive) {
+                        _timer.cancel();
+                      }
+
+                      _timer = Timer(Duration(seconds: 2), () {
+                        setState(() {});
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
-          onChanged: (String text) {
-            if (_timer != null && _timer.isActive) {
-              _timer.cancel();
-            }
-
-            _timer = Timer(Duration(seconds: 2), () {
-              setState(() {});
-            });
-          },
         ),
         Expanded(
+          flex: 12,
           child: FutureBuilder(
             future: ApiResponseProvider(
               ClientFactory.managed().vHoleApi.creators.get(

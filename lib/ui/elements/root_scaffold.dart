@@ -6,7 +6,7 @@ class RootScaffold extends StatefulWidget {
   RootScaffold({
     Key key,
     this.title,
-    this.appBar,
+    this.isShowAppBar = true,
     @required this.body,
     this.bottomNavigationBarItems,
     this.bottomNavigationBarOnItemTap,
@@ -15,7 +15,7 @@ class RootScaffold extends StatefulWidget {
         super(key: key);
 
   final Widget title;
-  final PreferredSize appBar;
+  final bool isShowAppBar;
   final Widget body;
   final Function(int index) bottomNavigationBarOnItemTap;
   final List<BottomNavigationBarItem> bottomNavigationBarItems;
@@ -28,14 +28,14 @@ class RootScaffold extends StatefulWidget {
 class _RootScaffoldState extends State<RootScaffold> {
   static int _bottomNavigationBarIndex = 0;
 
-  AppBar _appBar;
+  PreferredSizeWidget _appBar;
   BottomNavigationBar _bottomNavigationBar;
 
   @override
   void initState() {
     super.initState();
 
-    if (widget.appBar != null) {
+    if (widget.isShowAppBar != null && widget.isShowAppBar) {
       _appBar = AppBar(
         title: widget.title,
         automaticallyImplyLeading: false,
@@ -43,10 +43,16 @@ class _RootScaffoldState extends State<RootScaffold> {
         shadowColor: Colors.transparent,
         leading: Builder(
           builder: (BuildContext context) {
-            return IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: FlowApp.of(context).routerDelegate.popRoute,
-            );
+            FlowRouterDelegate routerDelegate =
+                FlowApp.of(context).routerDelegate;
+            if (routerDelegate.pages.length > 1) {
+              return IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: routerDelegate.popRoute,
+              );
+            } else {
+              return SizedBox.shrink();
+            }
           },
         ),
       );
