@@ -37,7 +37,11 @@ class _RootSetupState extends State<RootSetup> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return _createMaterialAppWrapper(Align(
             alignment: Alignment.center,
-            child: HololiveRotatingImage(),
+            child: CircleAvatar(
+              backgroundImage:
+                  AssetImage('assets/images/icons/virtualhole-512.png'),
+              radius: 40,
+            ),
           ));
         }
 
