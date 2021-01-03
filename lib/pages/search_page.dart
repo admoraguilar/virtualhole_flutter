@@ -30,14 +30,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
-
-    _searchFuture = ApiResponseProvider(
-      ClientFactory.managed().vHoleApi.creators.get(
-            CreatorRequest(
-              search: _textEditingController.text,
-            ),
-          ),
-    ).getResult();
+    _updateSearchFuture();
   }
 
   @override
@@ -79,7 +72,9 @@ class _SearchPageState extends State<SearchPage> {
                       _timer = Timer(Duration(seconds: 2), () {
                         widget.onSearchInitiate
                             ?.call(_textEditingController.text);
-                        setState(() {});
+                        setState(() {
+                          _updateSearchFuture();
+                        });
                       });
                     },
                   ),
@@ -156,5 +151,15 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ],
     );
+  }
+
+  void _updateSearchFuture() {
+    _searchFuture = ApiResponseProvider(
+      ClientFactory.managed().vHoleApi.creators.get(
+            CreatorRequest(
+              search: _textEditingController.text,
+            ),
+          ),
+    ).getResult();
   }
 }
