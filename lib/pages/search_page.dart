@@ -22,20 +22,22 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  // Source: TextField widget rebuilds on tap: https://stackoverflow.com/a/57417560
-  GlobalKey<EditableTextState> _textEditState = GlobalKey<EditableTextState>();
   TextEditingController _textEditingController = TextEditingController();
-  ScrollController _scrollController = ScrollController();
+
+  Future<List<Creator>> _searchFuture;
   Timer _timer;
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(() {
-      if (FocusScope.of(context).hasFocus) {
-        FocusScope.of(context).unfocus();
-      }
-    });
+
+    _searchFuture = ApiResponseProvider(
+      ClientFactory.managed().vHoleApi.creators.get(
+            CreatorRequest(
+              search: _textEditingController.text,
+            ),
+          ),
+    ).getResult();
   }
 
   @override
@@ -58,7 +60,6 @@ class _SearchPageState extends State<SearchPage> {
                 Expanded(
                   flex: 9,
                   child: TextField(
-                    key: _textEditState,
                     controller: _textEditingController,
                     textAlignVertical: TextAlignVertical.center,
                     decoration: InputDecoration(
@@ -90,13 +91,7 @@ class _SearchPageState extends State<SearchPage> {
         Expanded(
           flex: 12,
           child: FutureBuilder(
-            future: ApiResponseProvider(
-              ClientFactory.managed().vHoleApi.creators.get(
-                    CreatorRequest(
-                      search: _textEditingController.text,
-                    ),
-                  ),
-            ).getResult(),
+            future: _searchFuture,
             builder:
                 (BuildContext context, AsyncSnapshot<List<Creator>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -120,7 +115,6 @@ class _SearchPageState extends State<SearchPage> {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListView.builder(
-                  controller: _scrollController,
                   physics: ClampingScrollPhysics(),
                   itemBuilder: (BuildContext context, int index) {
                     Creator creator = snapshot.data[index];
