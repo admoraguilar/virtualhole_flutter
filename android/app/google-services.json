@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "678475630645",
+    "project_id": "virtualhole",
+    "storage_bucket": "virtualhole.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678475630645:android:48667993314fec299c497c",
+        "android_client_info": {
+          "package_name": "com.virtualhole.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "678475630645-e482ln8oapf7lrmaosgabsae0bu424em.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2KRB--kcK_x88E7mbmFuhuDh5A7ZgaAY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "678475630645-e482ln8oapf7lrmaosgabsae0bu424em.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

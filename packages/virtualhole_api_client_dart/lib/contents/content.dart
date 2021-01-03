@@ -72,4 +72,6 @@ class Content implements Equatable {
 
   @override
   bool get stringify => true;
+
+  String get fullType => '${socialType}_$contentType';
 }

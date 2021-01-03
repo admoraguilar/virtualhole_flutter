@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
@@ -15,7 +15,9 @@ class ContentFeed extends StatefulWidget {
     this.shouldLoadMoreOnScroll = true,
     @required this.tabs,
     int initialTabIndex,
+    this.onTapCard,
     this.onTapMore,
+    this.onSetTab,
     this.errorBuilder,
   })  : assert(shouldLoadMoreOnScroll != null),
         assert(tabs != null && tabs.length > 0),
@@ -33,7 +35,9 @@ class ContentFeed extends StatefulWidget {
   final bool shouldLoadMoreOnScroll;
   final List<ContentFeedTab> tabs;
   final int initialTabIndex;
+  final Function(ContentDTO) onTapCard;
   final Function(ContentDTO) onTapMore;
+  final Function(ContentFeedTab) onSetTab;
   final Widget Function(BuildContext, Object, StackTrace) errorBuilder;
 
   @override
@@ -102,13 +106,16 @@ class _ContentFeedState extends State<ContentFeed> {
               scrollPhysics: widget.scrollPhysics,
               shouldLoadMoreOnScroll: widget.shouldLoadMoreOnScroll,
               contentDTOs: _contentDTOs,
+              onTapCard: widget.onTapCard,
               onTapMore: widget.onTapMore,
             ),
             if (widget.tabs.length > 1)
               _ContentFeedSelector(
                 tabs: widget.tabs,
-                onSetTab: (ContentFeedTab tab) =>
-                    setState(() => _setCurrentTab(tab)),
+                onSetTab: (ContentFeedTab tab) {
+                  setState(() => _setCurrentTab(tab));
+                  widget.onSetTab?.call(tab);
+                },
               ),
           ],
         );
@@ -140,6 +147,7 @@ class _ContentFeedBuilder extends StatelessWidget {
     ScrollPhysics scrollPhysics,
     this.shouldLoadMoreOnScroll = true,
     @required this.contentDTOs,
+    this.onTapCard,
     this.onTapMore,
   })  : assert(isLoading != null),
         assert(scrollDirection != null),
@@ -155,6 +163,7 @@ class _ContentFeedBuilder extends StatelessWidget {
   final ScrollPhysics scrollPhysics;
   final bool shouldLoadMoreOnScroll;
   final List<ContentDTO> contentDTOs;
+  final Function(ContentDTO) onTapCard;
   final Function(ContentDTO) onTapMore;
 
   @override
@@ -174,6 +183,7 @@ class _ContentFeedBuilder extends StatelessWidget {
               creationDateDisplay: contentDTO.creationDateDisplay,
               thumbnailUrl: contentDTO.content.thumbnailUrl,
               url: contentDTO.content.url,
+              onTapCard: onTapCard != null ? () => onTapCard(contentDTO) : null,
               onTapMore: onTapMore != null ? () => onTapMore(contentDTO) : null,
             );
           } else {

@@ -8,10 +8,14 @@ class SearchPage extends StatefulWidget {
   SearchPage({
     Key key,
     ScrollController scrollController,
+    this.onSearchInitiate,
+    this.onCreatorTap,
   })  : scrollController = scrollController ?? ScrollController(),
         super(key: key);
 
   final ScrollController scrollController;
+  final Function(String search) onSearchInitiate;
+  final Function(Creator creator, String search) onCreatorTap;
 
   @override
   _SearchPageState createState() => _SearchPageState();
@@ -72,6 +76,8 @@ class _SearchPageState extends State<SearchPage> {
                       }
 
                       _timer = Timer(Duration(seconds: 2), () {
+                        widget.onSearchInitiate
+                            ?.call(_textEditingController.text);
                         setState(() {});
                       });
                     },
@@ -135,6 +141,10 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         ),
                         onTap: () {
+                          widget.onCreatorTap?.call(
+                            creator,
+                            _textEditingController.text,
+                          );
                           _textEditingController.clear();
                           FocusScope.of(context).unfocus();
                           FlowApp.of(context)

@@ -20,6 +20,8 @@ class FlowApp extends StatefulWidget {
   FlowApp({
     Key key,
     this.onSetNewRoutePath,
+    this.navigatorObservers,
+    this.onMapNavigate,
     this.initialContext,
     this.map,
     this.title,
@@ -46,6 +48,9 @@ class FlowApp extends StatefulWidget {
   }) : super(key: key);
 
   final Function(FlowRoutePath) onSetNewRoutePath;
+  final List<NavigatorObserver> navigatorObservers;
+  final Function(FlowPage) onMapNavigate;
+
   final FlowContext initialContext;
   final FlowMap map;
   final String title;
@@ -94,11 +99,13 @@ class FlowAppState extends State<FlowApp> {
 
     _routerDelegate = FlowRouterDelegate(
       onSetNewRoutePath: widget.onSetNewRoutePath,
+      navigatorObservers: widget.navigatorObservers,
     );
     _routeInformationParser = FlowRouteInformationParser();
     _backButtonDispatcher = RootBackButtonDispatcher();
     _map = widget.map;
     _map._routerDelegate = _routerDelegate;
+    _map._onMapNavigate = widget.onMapNavigate;
     _map.navigate(widget.initialContext);
   }
 

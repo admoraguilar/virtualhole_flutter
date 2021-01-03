@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
 import 'virtualhole_client.dart';
 
@@ -69,6 +70,9 @@ class _RootSetupState extends State<RootSetup> {
           title: AppConfig().appName,
           theme: _createRootTheme(),
           debugShowCheckedModeBanner: false,
+          onMapNavigate: (FlowPage page) {
+            FirebaseAnalytics().setCurrentScreen(screenName: page.name);
+          },
         );
       },
     );

@@ -9,6 +9,9 @@ class ExplorePage extends StatefulWidget {
     ScrollController scrollController,
     @required this.tabs,
     this.initialTabIndex = 0,
+    this.onTapCard,
+    this.onTapMore,
+    this.onSetTab,
   })  : assert(tabs != null),
         scrollController = scrollController ?? ScrollController(),
         super(key: key);
@@ -16,6 +19,9 @@ class ExplorePage extends StatefulWidget {
   final ScrollController scrollController;
   final List<ContentFeedTab> tabs;
   final int initialTabIndex;
+  final Function(ContentDTO) onTapCard;
+  final Function(ContentDTO) onTapMore;
+  final Function(ContentFeedTab) onSetTab;
 
   @override
   _ExplorePageState createState() => _ExplorePageState();
@@ -40,9 +46,12 @@ class _ExplorePageState extends State<ExplorePage> {
           scrollController: widget.scrollController,
           tabs: widget.tabs,
           initialTabIndex: widget.initialTabIndex,
+          onTapCard: widget.onTapCard,
           onTapMore: (ContentDTO contentDTO) {
             FlowApp.of(context).map.navigate(FromContentCard(contentDTO));
+            widget.onTapMore?.call(contentDTO);
           },
+          onSetTab: widget.onSetTab,
           errorBuilder:
               (BuildContext context, Object exception, StackTrace stackTrace) {
             return ErrorPage(

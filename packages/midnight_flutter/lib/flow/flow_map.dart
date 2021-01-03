@@ -6,6 +6,7 @@ class FlowMap {
     upsertAll(responses);
   }
 
+  Function(FlowPage) _onMapNavigate;
   Function() _onNavigateSamePage;
 
   Map<Type, List<FlowResponse<FlowContext>>> _map = {};
@@ -43,6 +44,11 @@ class FlowMap {
               _onNavigateSamePage?.call();
             }
           }
+
+          if (_routerDelegate.pages.length > 0) {
+            _onMapNavigate?.call(_routerDelegate.pages.last);
+          }
+
           _isDirty = false;
         });
       }

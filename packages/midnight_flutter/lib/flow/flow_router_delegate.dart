@@ -7,9 +7,12 @@ class FlowRouterDelegate extends RouterDelegate<FlowRoutePath>
   FlowRouterDelegate({
     List<FlowPage> pages,
     this.onSetNewRoutePath,
-  }) : pages = pages ?? [];
+    List<NavigatorObserver> navigatorObservers,
+  })  : pages = pages ?? [],
+        navigatorObservers = navigatorObservers ?? [];
 
   final Future<void> Function(FlowRoutePath) onSetNewRoutePath;
+  final List<NavigatorObserver> navigatorObservers;
 
   List<FlowPage> pages = [];
 
@@ -92,6 +95,7 @@ class FlowRouterDelegate extends RouterDelegate<FlowRoutePath>
 
         return didPop;
       },
+      observers: navigatorObservers,
     );
   }
 }
