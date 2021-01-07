@@ -18,7 +18,7 @@ class FromHomeRouteResponse extends FlowResponse<FromHomeRoute> {
     } else if (context.index == 2) {
       navigate(ToSearchPage());
     } else if (context.index == 3) {
-      navigate(ToSupportPage());
+      navigate(ToAboutPage());
     } else {
       navigate(ToErrorPage());
     }

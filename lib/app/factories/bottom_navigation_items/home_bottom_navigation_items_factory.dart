@@ -18,8 +18,8 @@ class HomeBottomNavigationItemsBuilder extends BottomNavigationItemsFactory {
         label: 'Search',
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.favorite),
-        label: 'Support',
+        icon: Icon(Icons.info),
+        label: 'About',
       ),
     ];
   }

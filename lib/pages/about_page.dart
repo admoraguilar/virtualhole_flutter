@@ -3,8 +3,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
 import '../virtualhole_client.dart';
 
-class SupportPage extends StatelessWidget {
-  const SupportPage({
+class AboutPage extends StatelessWidget {
+  const AboutPage({
     Key key,
   }) : super(key: key);
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:midnight_flutter/midnight_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
 import '../virtualhole_client.dart';

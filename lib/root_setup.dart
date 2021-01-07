@@ -61,7 +61,7 @@ class _RootSetupState extends State<RootSetup> {
             FromHomeRouteResponse(),
             ToExplorePageResponse(),
             ToFollowPageResponse(),
-            ToSupportPageResponse(),
+            ToAboutPageResponse(),
             ToErrorPageResponse(),
             ToCreatorPageResponse(),
             ToSearchPageResponse(),
