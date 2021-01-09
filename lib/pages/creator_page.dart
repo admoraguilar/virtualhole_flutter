@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
 import '../virtualhole_client.dart';
 
@@ -184,7 +183,7 @@ class _CreatorSocialLinksState extends State<_CreatorSocialLinks> {
               for (CreatorSocial social in widget.creator.socials)
                 TextButton(
                   child: Icon(
-                    _getIconForSocial(social.socialType),
+                    VHIcons().social(social.socialType),
                     color: Colors.white,
                   ),
                   style: TextButton.styleFrom(
@@ -199,16 +198,6 @@ class _CreatorSocialLinksState extends State<_CreatorSocialLinks> {
         ],
       ),
     );
-  }
-
-  IconData _getIconForSocial(String social) {
-    if (social == SocialType.youtube) {
-      return MdiIcons.youtube;
-    } else if (social == SocialType.twitter) {
-      return MdiIcons.twitter;
-    } else if (social == SocialType.twitch) {
-      return MdiIcons.twitch;
-    }
   }
 }
 
