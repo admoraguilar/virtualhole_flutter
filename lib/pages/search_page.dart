@@ -158,6 +158,9 @@ class _SearchPageState extends State<SearchPage> {
       ClientFactory.managed().vHoleApi.creators.get(
             CreatorRequest(
               search: _textEditingController.text,
+              isCheckForAffiliations: true,
+              isAffiliationsInclude: false,
+              affiliations: [AffiliationKeys.community],
             ),
           ),
     ).getResult();

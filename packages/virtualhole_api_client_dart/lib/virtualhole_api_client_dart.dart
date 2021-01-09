@@ -1,5 +1,6 @@
 library virtualhole_api_client_dart;
 
+export 'common/affiliation_keys.dart';
 export 'common/api_client.dart';
 export 'common/api_error.dart';
 export 'common/api_request.dart';
