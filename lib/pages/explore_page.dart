@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
-import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
 import '../virtualhole_client.dart';
 
 class ExplorePage extends StatefulWidget {
@@ -9,8 +8,6 @@ class ExplorePage extends StatefulWidget {
     ScrollController scrollController,
     @required this.tabs,
     this.initialTabIndex = 0,
-    this.onTapCard,
-    this.onTapMore,
     this.onSetTab,
   })  : assert(tabs != null),
         scrollController = scrollController ?? ScrollController(),
@@ -19,8 +16,6 @@ class ExplorePage extends StatefulWidget {
   final ScrollController scrollController;
   final List<ContentFeedTab> tabs;
   final int initialTabIndex;
-  final Function(ContentDTO) onTapCard;
-  final Function(ContentDTO) onTapMore;
   final Function(ContentFeedTab) onSetTab;
 
   @override
@@ -43,14 +38,10 @@ class _ExplorePageState extends State<ExplorePage> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: ContentFeed(
+          scrollDirection: Axis.vertical,
           scrollController: widget.scrollController,
           tabs: widget.tabs,
           initialTabIndex: widget.initialTabIndex,
-          onTapCard: widget.onTapCard,
-          onTapMore: (ContentDTO contentDTO) {
-            FlowApp.of(context).map.navigate(FromContentCard(contentDTO));
-            widget.onTapMore?.call(contentDTO);
-          },
           onSetTab: widget.onSetTab,
           errorBuilder:
               (BuildContext context, Object exception, StackTrace stackTrace) {
