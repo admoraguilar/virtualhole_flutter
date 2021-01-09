@@ -13,19 +13,27 @@ class ToCreatorPage extends FlowContext {
 class ToCreatorPageResponse extends FlowResponse<ToCreatorPage> {
   @override
   void respond() {
-    pages.add(FlowPage(
+    pages.add(
+      FlowPage(
         key: UniqueKey(),
         name: '/creator',
         child: RootScaffold(
           key: GlobalKey<NavigatorState>(),
-          body: CreatorPage(
-            creatorBuilder: CreatorFactory().fromId(context.creatorId),
-            contentFeedTabBuilder: (Creator creator) =>
-                CreatorFeedTabBuilder.single(creator).build(),
+          body: Builder(
+            builder: (BuildContext buildContext) {
+              return CreatorPage(
+                creatorBuilder: CreatorFactory().fromId(context.creatorId),
+                contentFeedTabBuilder: (Creator creator) =>
+                    CreatorFeedTabBuilder.single(creator).build(buildContext),
+              );
+            },
           ),
           bottomNavigationBarItems: HomeBottomNavigationItemsBuilder().build(),
-          bottomNavigationBarOnItemTap: (int index) =>
-              navigate(FromHomeRoute(index)),
-        )));
+          bottomNavigationBarOnItemTap: (int index) => navigate(
+            FromHomeRoute(index),
+          ),
+        ),
+      ),
+    );
   }
 }

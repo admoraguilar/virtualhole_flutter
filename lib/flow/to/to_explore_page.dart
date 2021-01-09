@@ -13,45 +13,32 @@ class ToExplorePageResponse extends FlowResponse<ToExplorePage> {
       return;
     }
 
-    pages.add(FlowPage(
-      key: UniqueKey(),
-      name: '/explore',
-      child: RootScaffold(
-        key: GlobalKey<NavigatorState>(),
-        body: ExplorePage(
-          tabs: CreatorFeedTabBuilder().build(),
-          initialTabIndex: 0,
-          onTapCard: (ContentDTO contentDTO) {
-            FirebaseAnalytics().logViewItem(
-              itemId: contentDTO.content.id,
-              itemName: contentDTO.content.title,
-              itemCategory: contentDTO.content.fullType,
+    pages.add(
+      FlowPage(
+        key: UniqueKey(),
+        name: '/explore',
+        child: Builder(
+          builder: (BuildContext context) {
+            return RootScaffold(
+              key: GlobalKey<NavigatorState>(),
+              body: ExplorePage(
+                tabs: CreatorFeedTabBuilder().build(context),
+                initialTabIndex: 0,
+                onSetTab: (ContentFeedTab contentFeedTab) {
+                  FirebaseAnalytics().logSelectContent(
+                      contentType: 'explore.content_feed_tab',
+                      itemId: contentFeedTab.name.toLowerCase());
+                },
+              ),
+              bottomNavigationBarItems:
+                  HomeBottomNavigationItemsBuilder().build(),
+              bottomNavigationBarOnItemTap: (int index) =>
+                  navigate(FromHomeRoute(index)),
+              bottomNavigationBarIndex: 0,
             );
-          },
-          onTapMore: (ContentDTO contentDTO) {
-            FirebaseAnalytics().logViewItem(
-              itemId: contentDTO.content.id,
-              itemName: contentDTO.content.title,
-              itemCategory: contentDTO.content.fullType,
-            );
-
-            FirebaseAnalytics().logViewItem(
-              itemId: contentDTO.content.creator.id,
-              itemName: contentDTO.content.creator.name,
-              itemCategory: 'creator',
-            );
-          },
-          onSetTab: (ContentFeedTab contentFeedTab) {
-            FirebaseAnalytics().logSelectContent(
-                contentType: 'explore.content_feed_tab',
-                itemId: contentFeedTab.name.toLowerCase());
           },
         ),
-        bottomNavigationBarItems: HomeBottomNavigationItemsBuilder().build(),
-        bottomNavigationBarOnItemTap: (int index) =>
-            navigate(FromHomeRoute(index)),
-        bottomNavigationBarIndex: 0,
       ),
-    ));
+    );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ContentCard extends StatelessWidget {
   const ContentCard({
@@ -105,12 +104,7 @@ class ContentCard extends StatelessWidget {
               ),
             ],
           ),
-          onTap: () {
-            onTapCard?.call();
-            if (url != null || url.isNotEmpty) {
-              launch(url);
-            }
-          },
+          onTap: onTapCard,
         ),
       ),
     );

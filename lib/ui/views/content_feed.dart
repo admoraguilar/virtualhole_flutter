@@ -9,17 +9,16 @@ import '../../ui/ui.dart';
 class ContentFeed extends StatefulWidget {
   ContentFeed({
     Key key,
-    this.scrollDirection = Axis.vertical,
+    @required this.scrollDirection,
     ScrollController scrollController,
     this.scrollPhysics,
     this.shouldLoadMoreOnScroll = true,
     @required this.tabs,
     int initialTabIndex,
-    this.onTapCard,
-    this.onTapMore,
     this.onSetTab,
     this.errorBuilder,
-  })  : assert(shouldLoadMoreOnScroll != null),
+  })  : assert(scrollDirection != null),
+        assert(shouldLoadMoreOnScroll != null),
         assert(tabs != null && tabs.length > 0),
         initialTabIndex = initialTabIndex == null
             ? 0
@@ -35,8 +34,6 @@ class ContentFeed extends StatefulWidget {
   final bool shouldLoadMoreOnScroll;
   final List<ContentFeedTab> tabs;
   final int initialTabIndex;
-  final Function(ContentDTO) onTapCard;
-  final Function(ContentDTO) onTapMore;
   final Function(ContentFeedTab) onSetTab;
   final Widget Function(BuildContext, Object, StackTrace) errorBuilder;
 
@@ -48,6 +45,7 @@ class _ContentFeedState extends State<ContentFeed> {
   ContentFeedTab _currentTab;
   List<ContentDTO> _contentDTOs = [];
   bool _isLoading = false;
+  bool _isEnd = false;
   int _page = 1;
   Future<List<ContentDTO>> _future;
 
@@ -58,10 +56,11 @@ class _ContentFeedState extends State<ContentFeed> {
     if (widget.shouldLoadMoreOnScroll) {
       widget.scrollController.addListener(() {
         if (widget.scrollController.position.normalizedScrollExtent > 0.4 &&
-            !_isLoading) {
+            !_isLoading &&
+            !_isEnd) {
           _isLoading = true;
           setState(() {
-            _future = _currentTab.builder(++_page);
+            _future = _currentTab.dataProvider(++_page);
           });
         }
       });
@@ -90,24 +89,31 @@ class _ContentFeedState extends State<ContentFeed> {
 
         if (snapshot.hasData &&
             snapshot.connectionState == ConnectionState.done) {
-          _contentDTOs.addAll(snapshot.data);
-          _contentDTOs.removeWhere(
-            (ContentDTO contentDTO) => !contentDTO.isAvailable,
-          );
+          int lastLength = _contentDTOs.length;
+
+          if (snapshot.data.length > 0) {
+            _contentDTOs.addAll(snapshot.data);
+            _contentDTOs.removeWhere(
+              (ContentDTO contentDTO) => !contentDTO.isAvailable,
+            );
+          }
+
           _isLoading = false;
+          _isEnd = lastLength == _contentDTOs.length;
         }
 
         return Stack(
           children: [
             _ContentFeedBuilder(
               isLoading: _isLoading,
+              isEnd: _isEnd,
               scrollDirection: widget.scrollDirection,
               scrollController: widget.scrollController,
               scrollPhysics: widget.scrollPhysics,
               shouldLoadMoreOnScroll: widget.shouldLoadMoreOnScroll,
               contentDTOs: _contentDTOs,
-              onTapCard: widget.onTapCard,
-              onTapMore: widget.onTapMore,
+              onTapCard: _currentTab.onTap,
+              onTapMore: _currentTab.onTapMore,
             ),
             if (widget.tabs.length > 1)
               _ContentFeedSelector(
@@ -134,7 +140,8 @@ class _ContentFeedState extends State<ContentFeed> {
     _contentDTOs.clear();
     _page = 1;
     _isLoading = false;
-    _future = _currentTab.builder(_page);
+    _isEnd = false;
+    _future = _currentTab.dataProvider(_page);
   }
 }
 
@@ -142,6 +149,7 @@ class _ContentFeedBuilder extends StatelessWidget {
   _ContentFeedBuilder({
     Key key,
     @required this.isLoading,
+    @required this.isEnd,
     @required this.scrollDirection,
     ScrollController scrollController,
     ScrollPhysics scrollPhysics,
@@ -158,6 +166,7 @@ class _ContentFeedBuilder extends StatelessWidget {
         super(key: key);
 
   final bool isLoading;
+  final bool isEnd;
   final Axis scrollDirection;
   final ScrollController scrollController;
   final ScrollPhysics scrollPhysics;
@@ -199,9 +208,7 @@ class _ContentFeedBuilder extends StatelessWidget {
             height: scrollDirection == Axis.horizontal ? 8.0 : 0,
           );
         },
-        itemCount: shouldLoadMoreOnScroll
-            ? contentDTOs.length + 1
-            : contentDTOs.length,
+        itemCount: _getListCount(),
       );
     } else if (contentDTOs.length <= 0 && !isLoading) {
       return Center(
@@ -215,6 +222,16 @@ class _ContentFeedBuilder extends StatelessWidget {
       );
     } else {
       return HololiveRotatingImage();
+    }
+  }
+
+  int _getListCount() {
+    if (isEnd) {
+      return contentDTOs.length;
+    } else {
+      return shouldLoadMoreOnScroll
+          ? contentDTOs.length + 1
+          : contentDTOs.length;
     }
   }
 }
@@ -266,23 +283,29 @@ class _ContentFeedSelector extends StatelessWidget {
 class ContentFeedTab {
   const ContentFeedTab({
     @required this.name,
-    @required this.builder,
+    @required this.dataProvider,
+    @required this.onTap,
+    this.onTapMore,
   })  : assert(name != null),
-        assert(builder != null);
+        assert(dataProvider != null),
+        assert(onTap != null);
 
-  // TODO: What happens when the user actually scrolls 'til the last page?
-  // That'll probably result to an error knowing that the Feed doesn't know any
-  // max, it just adds everytime the user gets to near end.
   final String name;
-  final Future<List<ContentDTO>> Function(int page) builder;
+  final Future<List<ContentDTO>> Function(int page) dataProvider;
+  final Function(ContentDTO) onTap;
+  final Function(ContentDTO) onTapMore;
 
   ContentFeedTab copyWith({
     String name,
     Future<List<ContentDTO>> Function(int page) builder,
+    Function(ContentDTO) onTap,
+    Function(ContentDTO) onTapMore,
   }) {
     return ContentFeedTab(
       name: name ?? this.name,
-      builder: builder ?? this.builder,
+      dataProvider: builder ?? this.dataProvider,
+      onTap: onTap ?? this.onTap,
+      onTapMore: onTapMore ?? this.onTapMore,
     );
   }
 }

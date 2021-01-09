@@ -15,47 +15,34 @@ class ToFollowPageResponse extends FlowResponse<ToFollowedPage> {
 
     LocalStorageClient localStorage = LocalStorageClient();
 
-    pages.add(FlowPage(
-      key: UniqueKey(),
-      name: '/followed',
-      child: RootScaffold(
-        key: GlobalKey<NavigatorState>(),
-        body: ExplorePage(
-          tabs: CreatorFeedTabBuilder.fromIds(
-            localStorage.userData.followedCreatorIds,
-          ).build(),
-          initialTabIndex: 0,
-          onTapCard: (ContentDTO contentDTO) {
-            FirebaseAnalytics().logViewItem(
-              itemId: contentDTO.content.id,
-              itemName: contentDTO.content.title,
-              itemCategory: contentDTO.content.fullType,
+    pages.add(
+      FlowPage(
+        key: UniqueKey(),
+        name: '/followed',
+        child: Builder(
+          builder: (BuildContext context) {
+            return RootScaffold(
+              key: GlobalKey<NavigatorState>(),
+              body: ExplorePage(
+                tabs: CreatorFeedTabBuilder.fromIds(
+                  localStorage.userData.followedCreatorIds,
+                ).build(context),
+                initialTabIndex: 0,
+                onSetTab: (ContentFeedTab contentFeedTab) {
+                  FirebaseAnalytics().logSelectContent(
+                      contentType: 'followed.content_feed_tab',
+                      itemId: contentFeedTab.name.toLowerCase());
+                },
+              ),
+              bottomNavigationBarItems:
+                  HomeBottomNavigationItemsBuilder().build(),
+              bottomNavigationBarOnItemTap: (int index) =>
+                  navigate(FromHomeRoute(index)),
+              bottomNavigationBarIndex: 1,
             );
-          },
-          onTapMore: (ContentDTO contentDTO) {
-            FirebaseAnalytics().logViewItem(
-              itemId: contentDTO.content.id,
-              itemName: contentDTO.content.title,
-              itemCategory: contentDTO.content.fullType,
-            );
-
-            FirebaseAnalytics().logViewItem(
-              itemId: contentDTO.content.creator.id,
-              itemName: contentDTO.content.creator.name,
-              itemCategory: 'creator',
-            );
-          },
-          onSetTab: (ContentFeedTab contentFeedTab) {
-            FirebaseAnalytics().logSelectContent(
-                contentType: 'followed.content_feed_tab',
-                itemId: contentFeedTab.name.toLowerCase());
           },
         ),
-        bottomNavigationBarItems: HomeBottomNavigationItemsBuilder().build(),
-        bottomNavigationBarOnItemTap: (int index) =>
-            navigate(FromHomeRoute(index)),
-        bottomNavigationBarIndex: 1,
       ),
-    ));
+    );
   }
 }
