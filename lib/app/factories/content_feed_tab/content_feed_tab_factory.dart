@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
 import '../../../virtualhole_client.dart';
@@ -18,6 +19,10 @@ abstract class ContentFeedTabBuilder {
     request ??= ContentRequest();
     return ContentFeedTab(
       name: 'Discover',
+      icon: Icon(
+        Icons.explore,
+        color: Colors.white,
+      ),
       dataProvider: (int page) => ApiResponseProvider(
         ClientFactory.managed()
             .vHoleApi
@@ -59,6 +64,10 @@ abstract class ContentFeedTabBuilder {
     request ??= ContentRequest();
     return ContentFeedTab(
       name: 'Community',
+      icon: Icon(
+        MdiIcons.accountGroup,
+        color: Colors.white,
+      ),
       dataProvider: (int page) => ApiResponseProvider(
         ClientFactory.managed()
             .vHoleApi
@@ -84,6 +93,10 @@ abstract class ContentFeedTabBuilder {
     request ??= ContentRequest();
     return ContentFeedTab(
       name: 'Live',
+      icon: Icon(
+        MdiIcons.accessPoint,
+        color: Colors.white,
+      ),
       dataProvider: (int page) => ApiResponseProvider(
         ClientFactory.managed()
             .vHoleApi
@@ -125,6 +138,10 @@ abstract class ContentFeedTabBuilder {
     request ??= ContentRequest();
     return ContentFeedTab(
       name: 'Scheduled',
+      icon: Icon(
+        Icons.schedule,
+        color: Colors.white,
+      ),
       dataProvider: (int page) => ApiResponseProvider(
         ClientFactory.managed()
             .vHoleApi

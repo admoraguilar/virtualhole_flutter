@@ -267,7 +267,7 @@ class _ContentFeedSelector extends StatelessWidget {
         children: [
           for (ContentFeedTab tab in tabs)
             SpeedDialChild(
-              child: Icon(Icons.tab, color: Colors.white),
+              child: tab.icon,
               backgroundColor: Theme.of(context).accentColor,
               onTap: () => onSetTab(tab),
               label: '${tab.name}',
@@ -283,26 +283,31 @@ class _ContentFeedSelector extends StatelessWidget {
 class ContentFeedTab {
   const ContentFeedTab({
     @required this.name,
+    @required this.icon,
     @required this.dataProvider,
     @required this.onTap,
     this.onTapMore,
   })  : assert(name != null),
+        assert(icon != null),
         assert(dataProvider != null),
         assert(onTap != null);
 
   final String name;
+  final Widget icon;
   final Future<List<ContentDTO>> Function(int page) dataProvider;
   final Function(ContentDTO) onTap;
   final Function(ContentDTO) onTapMore;
 
   ContentFeedTab copyWith({
     String name,
+    Widget icon,
     Future<List<ContentDTO>> Function(int page) builder,
     Function(ContentDTO) onTap,
     Function(ContentDTO) onTapMore,
   }) {
     return ContentFeedTab(
       name: name ?? this.name,
+      icon: icon ?? this.icon,
       dataProvider: builder ?? this.dataProvider,
       onTap: onTap ?? this.onTap,
       onTapMore: onTapMore ?? this.onTapMore,
