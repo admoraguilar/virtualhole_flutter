@@ -20,6 +20,7 @@ class _RootSetupState extends State<RootSetup> {
     _initSystemsFuture = Future.wait([
       Midnight().init(),
       LocalStorageClient().init(),
+      BuildInfoClient().init(),
     ]);
   }
 

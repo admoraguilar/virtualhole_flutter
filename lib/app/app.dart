@@ -1,3 +1,4 @@
+export 'build_info/build_info_client.dart';
 export 'factories/bottom_navigation_items/bottom_navigation_items_factory.dart';
 export 'factories/bottom_navigation_items/home_bottom_navigation_items_factory.dart';
 export 'factories/content_feed_tab/content_feed_tab_factory.dart';

@@ -19,35 +19,60 @@ class AboutPage extends StatelessWidget {
         }
         if (snapshot.hasData) {
           List<SupportInfo> supportList = snapshot.data.body;
-          return ListView.builder(
-            itemBuilder: (BuildContext context, int index) {
-              SupportInfo supportInfo = supportList[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                ),
-                child: Column(
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: ListView(
+              children: [
+                Column(
                   children: [
-                    if (index == 0)
-                      SizedBox(
-                        height: 20,
+                    for (SupportInfo info in supportList)
+                      InfoCard(
+                        header: info.header,
+                        content: info.content,
+                        imageUrl: ClientFactory.managed()
+                            .vHoleApi
+                            .resources
+                            .buildObjectUri(info.imagePath)
+                            .toString(),
+                        onTap: () => launch(info.url),
                       ),
-                    InfoCard(
-                      header: supportInfo.header,
-                      content: supportInfo.content,
-                      imageUrl: ClientFactory.managed()
-                          .vHoleApi
-                          .resources
-                          .buildObjectUri(supportInfo.imagePath)
-                          .toString(),
-                      onTap: () => launch(supportInfo.url),
-                    ),
+                    Text('Version: ${BuildInfoClient().version}'),
+                    Text('Last data update: ...'),
                   ],
-                ),
-              );
-            },
-            itemCount: supportList.length,
+                )
+              ],
+            ),
           );
+
+          // return ListView.builder(
+          //   itemBuilder: (BuildContext context, int index) {
+          //     SupportInfo supportInfo = supportList[index];
+          //     return Padding(
+          //       padding: const EdgeInsets.symmetric(
+          //         horizontal: 8.0,
+          //       ),
+          //       child: Column(
+          //         children: [
+          //           if (index == 0)
+          //             SizedBox(
+          //               height: 20,
+          //             ),
+          //           InfoCard(
+          //             header: supportInfo.header,
+          //             content: supportInfo.content,
+          //             imageUrl: ClientFactory.managed()
+          //                 .vHoleApi
+          //                 .resources
+          //                 .buildObjectUri(supportInfo.imagePath)
+          //                 .toString(),
+          //             onTap: () => launch(supportInfo.url),
+          //           ),
+          //         ],
+          //       ),
+          //     );
+          //   },
+          //   itemCount: supportList.length,
+          // );
         } else {
           return Center(
             child: HololiveRotatingImage(),
