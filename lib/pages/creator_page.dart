@@ -227,7 +227,7 @@ class _CreatorContentFeed extends StatelessWidget {
             child: ContentFeed(
               scrollDirection: Axis.horizontal,
               scrollPhysics: ClampingScrollPhysics(),
-              shouldLoadMoreOnScroll: false,
+              allowRefreshingAndLoading: false,
               tabs: [tab],
             ),
           ),

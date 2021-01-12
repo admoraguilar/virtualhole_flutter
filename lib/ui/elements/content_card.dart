@@ -3,22 +3,18 @@ import 'package:flutter/material.dart';
 class ContentCard extends StatelessWidget {
   const ContentCard({
     Key key,
+    @required this.content,
     @required this.title,
-    @required this.creatorName,
-    @required this.creatorAvatarUrl,
-    @required this.creationDateDisplay,
-    @required this.thumbnailUrl,
-    @required this.url,
+    @required this.creator,
+    @required this.date,
     this.onTapCard,
     this.onTapMore,
   }) : super(key: key);
 
-  final String title;
-  final String creatorName;
-  final String creatorAvatarUrl;
-  final String creationDateDisplay;
-  final String thumbnailUrl;
-  final String url;
+  final Widget content;
+  final Widget title;
+  final Widget creator;
+  final Widget date;
 
   final Function() onTapCard;
   final Function() onTapMore;
@@ -41,21 +37,17 @@ class ContentCard extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               Container(
-                foregroundDecoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.transparent,
-                      Colors.black,
-                    ],
-                    begin: Alignment.center,
-                    end: Alignment.bottomCenter,
+                  foregroundDecoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.transparent,
+                        Colors.black,
+                      ],
+                      begin: Alignment.center,
+                      end: Alignment.bottomCenter,
+                    ),
                   ),
-                ),
-                child: Image.network(
-                  thumbnailUrl,
-                  fit: BoxFit.cover,
-                ),
-              ),
+                  child: content),
               Container(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -69,24 +61,11 @@ class ContentCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              title,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                            title,
                             SizedBox(height: 3.0),
-                            Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: 10,
-                                  backgroundImage:
-                                      NetworkImage(creatorAvatarUrl),
-                                ),
-                                SizedBox(width: 4),
-                                Text(creatorName),
-                              ],
-                            ),
+                            creator,
                             SizedBox(height: 3.0),
-                            Text(creationDateDisplay)
+                            date
                           ],
                         ),
                       ),

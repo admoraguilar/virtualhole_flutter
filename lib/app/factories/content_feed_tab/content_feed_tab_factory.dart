@@ -29,6 +29,34 @@ abstract class ContentFeedTabBuilder {
             .contents
             .getDiscover(request.copyWith(page: page)),
       ).getResult(),
+      cardContentBuilder: (ContentDTO contentDTO) {
+        return Image.network(
+          contentDTO.content.thumbnailUrl,
+          fit: BoxFit.cover,
+        );
+      },
+      cardTitleBuilder: (ContentDTO contentDTO) {
+        return Text(
+          contentDTO.content.title,
+          overflow: TextOverflow.ellipsis,
+        );
+      },
+      cardCreatorBuilder: (ContentDTO contentDTO) {
+        return Row(
+          children: [
+            CircleAvatar(
+              radius: 10,
+              backgroundImage:
+                  NetworkImage(contentDTO.content.creator.avatarUrl),
+            ),
+            SizedBox(width: 4),
+            Text(contentDTO.content.creator.name),
+          ],
+        );
+      },
+      cardDateBuilder: (ContentDTO contentDTO) {
+        return Text(contentDTO.creationDateDisplay);
+      },
       onTap: (ContentDTO contentDTO) {
         FirebaseAnalytics().logViewItem(
           itemId: contentDTO.content.id,
@@ -74,6 +102,34 @@ abstract class ContentFeedTabBuilder {
             .contents
             .getCommunity(request.copyWith(page: page)),
       ).getResult(),
+      cardContentBuilder: (ContentDTO contentDTO) {
+        return Image.network(
+          contentDTO.content.thumbnailUrl,
+          fit: BoxFit.cover,
+        );
+      },
+      cardTitleBuilder: (ContentDTO contentDTO) {
+        return Text(
+          contentDTO.content.title,
+          overflow: TextOverflow.ellipsis,
+        );
+      },
+      cardCreatorBuilder: (ContentDTO contentDTO) {
+        return Row(
+          children: [
+            CircleAvatar(
+              radius: 10,
+              backgroundImage:
+                  NetworkImage(contentDTO.content.creator.avatarUrl),
+            ),
+            SizedBox(width: 4),
+            Text(contentDTO.content.creator.name),
+          ],
+        );
+      },
+      cardDateBuilder: (ContentDTO contentDTO) {
+        return Text(contentDTO.creationDateDisplay);
+      },
       onTap: (ContentDTO contentDTO) {
         FirebaseAnalytics().logViewItem(
           itemId: contentDTO.content.id,
@@ -103,6 +159,34 @@ abstract class ContentFeedTabBuilder {
             .contents
             .getLive(request.copyWith(page: page)),
       ).getResult(),
+      cardContentBuilder: (ContentDTO contentDTO) {
+        return Image.network(
+          contentDTO.content.thumbnailUrl,
+          fit: BoxFit.cover,
+        );
+      },
+      cardTitleBuilder: (ContentDTO contentDTO) {
+        return Text(
+          contentDTO.content.title,
+          overflow: TextOverflow.ellipsis,
+        );
+      },
+      cardCreatorBuilder: (ContentDTO contentDTO) {
+        return Row(
+          children: [
+            CircleAvatar(
+              radius: 10,
+              backgroundImage:
+                  NetworkImage(contentDTO.content.creator.avatarUrl),
+            ),
+            SizedBox(width: 4),
+            Text(contentDTO.content.creator.name),
+          ],
+        );
+      },
+      cardDateBuilder: (ContentDTO contentDTO) {
+        return Text("LIVE NOW");
+      },
       onTap: (ContentDTO contentDTO) {
         FirebaseAnalytics().logViewItem(
           itemId: contentDTO.content.id,
@@ -148,6 +232,34 @@ abstract class ContentFeedTabBuilder {
             .contents
             .getSchedule(request.copyWith(page: page)),
       ).getResult(),
+      cardContentBuilder: (ContentDTO contentDTO) {
+        return Image.network(
+          contentDTO.content.thumbnailUrl,
+          fit: BoxFit.cover,
+        );
+      },
+      cardTitleBuilder: (ContentDTO contentDTO) {
+        return Text(
+          contentDTO.content.title,
+          overflow: TextOverflow.ellipsis,
+        );
+      },
+      cardCreatorBuilder: (ContentDTO contentDTO) {
+        return Row(
+          children: [
+            CircleAvatar(
+              radius: 10,
+              backgroundImage:
+                  NetworkImage(contentDTO.content.creator.avatarUrl),
+            ),
+            SizedBox(width: 4),
+            Text(contentDTO.content.creator.name),
+          ],
+        );
+      },
+      cardDateBuilder: (ContentDTO contentDTO) {
+        return Text(contentDTO.scheduleDateDisplay);
+      },
       onTap: (ContentDTO contentDTO) {
         FirebaseAnalytics().logViewItem(
           itemId: contentDTO.content.id,
