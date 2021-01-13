@@ -347,17 +347,20 @@ class _ContentFeedHorizontal extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
                   ContentDTO contentDTO = feedBuilder.contentDTOs[index];
-                  return ContentCard(
-                    content: feedBuilder.tab.cardContentBuilder(contentDTO),
-                    title: feedBuilder.tab.cardTitleBuilder(contentDTO),
-                    creator: feedBuilder.tab.cardCreatorBuilder(contentDTO),
-                    date: feedBuilder.tab.cardDateBuilder(contentDTO),
-                    onTapCard: feedBuilder.tab.onTap != null
-                        ? () => feedBuilder.tab.onTap(contentDTO)
-                        : null,
-                    onTapMore: feedBuilder.tab.onTapMore != null
-                        ? () => feedBuilder.tab.onTapMore(contentDTO)
-                        : null,
+                  return Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: ContentCard(
+                      content: feedBuilder.tab.cardContentBuilder(contentDTO),
+                      title: feedBuilder.tab.cardTitleBuilder(contentDTO),
+                      creator: feedBuilder.tab.cardCreatorBuilder(contentDTO),
+                      date: feedBuilder.tab.cardDateBuilder(contentDTO),
+                      onTapCard: feedBuilder.tab.onTap != null
+                          ? () => feedBuilder.tab.onTap(contentDTO)
+                          : null,
+                      onTapMore: feedBuilder.tab.onTapMore != null
+                          ? () => feedBuilder.tab.onTapMore(contentDTO)
+                          : null,
+                    ),
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
