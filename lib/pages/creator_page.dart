@@ -113,7 +113,8 @@ class _CreatorAvatarHighlight extends StatelessWidget {
             '${creator.name}',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 24,
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
