@@ -154,6 +154,8 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void _updateSearchFuture() {
+    // TODO: HACK, should properly paginate this instead of returning
+    // a big page of results
     _searchFuture = ApiResponseProvider(
       ClientFactory.managed().vHoleApi.creators.get(
             CreatorRequest(
@@ -161,6 +163,7 @@ class _SearchPageState extends State<SearchPage> {
               isCheckForAffiliations: true,
               isAffiliationsInclude: false,
               affiliations: [AffiliationKeys.community],
+              pageSize: 200,
             ),
           ),
     ).getResult();
