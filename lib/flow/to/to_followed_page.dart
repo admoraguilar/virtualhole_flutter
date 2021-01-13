@@ -20,9 +20,9 @@ class ToFollowPageResponse extends FlowResponse<ToFollowedPage> {
         key: UniqueKey(),
         name: '/followed',
         child: Builder(
+          key: GlobalKey<NavigatorState>(),
           builder: (BuildContext context) {
             return RootScaffold(
-              key: GlobalKey<NavigatorState>(),
               body: ExplorePage(
                 tabs: CreatorFeedTabBuilder.fromIds(
                   localStorage.userData.followedCreatorIds,

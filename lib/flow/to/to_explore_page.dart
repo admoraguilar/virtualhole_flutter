@@ -17,9 +17,9 @@ class ToExplorePageResponse extends FlowResponse<ToExplorePage> {
         key: UniqueKey(),
         name: '/explore',
         child: Builder(
+          key: GlobalKey<NavigatorState>(),
           builder: (BuildContext context) {
             return RootScaffold(
-              key: GlobalKey<NavigatorState>(),
               body: ExplorePage(
                 tabs: CreatorFeedTabBuilder().build(context),
                 initialTabIndex: 0,
