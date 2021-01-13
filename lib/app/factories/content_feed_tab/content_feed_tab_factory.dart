@@ -55,7 +55,7 @@ abstract class ContentFeedTabBuilder {
         );
       },
       cardDateBuilder: (ContentDTO contentDTO) {
-        return Text(contentDTO.creationDateDisplay);
+        return Text('Created ${contentDTO.creationDateDisplay}');
       },
       onTap: (ContentDTO contentDTO) {
         FirebaseAnalytics().logViewItem(
@@ -128,7 +128,7 @@ abstract class ContentFeedTabBuilder {
         );
       },
       cardDateBuilder: (ContentDTO contentDTO) {
-        return Text(contentDTO.creationDateDisplay);
+        return Text('Created ${contentDTO.creationDateDisplay}');
       },
       onTap: (ContentDTO contentDTO) {
         FirebaseAnalytics().logViewItem(
@@ -258,7 +258,7 @@ abstract class ContentFeedTabBuilder {
         );
       },
       cardDateBuilder: (ContentDTO contentDTO) {
-        return Text(contentDTO.scheduleDateDisplay);
+        return Text('Live in ${contentDTO.scheduleDateDisplay}');
       },
       onTap: (ContentDTO contentDTO) {
         FirebaseAnalytics().logViewItem(

@@ -3,7 +3,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:midnight_flutter/midnight_flutter.dart';
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
 import '../../ui/ui.dart';
 
@@ -244,7 +243,8 @@ class _ContentFeedVertical extends StatelessWidget {
               ),
             ),
           if (feedBuilder.isEmpty())
-            SliverToBoxAdapter(
+            SliverFillRemaining(
+              hasScrollBody: false,
               child: Center(
                 child: Container(
                   child: Text(
