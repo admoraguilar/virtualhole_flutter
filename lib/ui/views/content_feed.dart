@@ -218,6 +218,9 @@ class _ContentFeedBuilderState extends State<_ContentFeedBuilder> {
       onLoad: widget.onLoad,
       scrollController: widget.scrollController,
       child: ListView.separated(
+        padding: widget.scrollDirection == Axis.vertical
+            ? EdgeInsets.only(top: MediaQuery.of(context).padding.top)
+            : null,
         scrollDirection: widget.scrollDirection,
         itemBuilder: (BuildContext context, int index) {
           ContentDTO contentDTO = widget.contentDTOs[index];
