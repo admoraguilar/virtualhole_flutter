@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:midnight_flutter/midnight_flutter.dart';
 import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
 import '../../ui/ui.dart';
 
@@ -85,35 +86,38 @@ class _ContentFeedState extends State<ContentFeed> {
 
         return Stack(
           children: [
-            _ContentFeedBuilder(
-              tab: _currentTab,
-              header:
-                  widget.allowRefreshingAndLoading ? MaterialHeader() : null,
-              footer: widget.allowRefreshingAndLoading
-                  ? !_isEnd
-                      ? MaterialFooter(enableInfiniteLoad: true)
-                      : MaterialFooter(enableInfiniteLoad: false)
-                  : null,
-              topBouncing: widget.allowRefreshingAndLoading,
-              bottomBouncing: widget.allowRefreshingAndLoading,
-              scrollDirection: widget.scrollDirection,
-              scrollController: widget.scrollController,
-              contentDTOs: _contentDTOs,
-              isFirstLoad: _isFirstLoad,
-              onRefresh: widget.allowRefreshingAndLoading
-                  ? () async {
-                      setState(() {
-                        _setCurrentTab(_currentTab);
-                      });
-                    }
-                  : null,
-              onLoad: widget.allowRefreshingAndLoading
-                  ? () async {
-                      setState(() {
-                        _future = _currentTab.dataProvider(++_page);
-                      });
-                    }
-                  : null,
+            IgnorePointer(
+              ignoring: _isFirstLoad,
+              child: _ContentFeedBuilder(
+                tab: _currentTab,
+                header:
+                    widget.allowRefreshingAndLoading ? MaterialHeader() : null,
+                footer: widget.allowRefreshingAndLoading
+                    ? !_isEnd
+                        ? MaterialFooter(enableInfiniteLoad: true)
+                        : MaterialFooter(enableInfiniteLoad: false)
+                    : null,
+                topBouncing: widget.allowRefreshingAndLoading,
+                bottomBouncing: widget.allowRefreshingAndLoading,
+                scrollDirection: widget.scrollDirection,
+                scrollController: widget.scrollController,
+                contentDTOs: _contentDTOs,
+                isFirstLoad: _isFirstLoad,
+                onRefresh: widget.allowRefreshingAndLoading
+                    ? () async {
+                        setState(() {
+                          _setCurrentTab(_currentTab);
+                        });
+                      }
+                    : null,
+                onLoad: widget.allowRefreshingAndLoading
+                    ? () async {
+                        setState(() {
+                          _future = _currentTab.dataProvider(++_page);
+                        });
+                      }
+                    : null,
+              ),
             ),
             if (widget.tabs.length > 1)
               _ContentFeedSelector(
@@ -191,61 +195,172 @@ class _ContentFeedBuilder extends StatefulWidget {
 class _ContentFeedBuilderState extends State<_ContentFeedBuilder> {
   @override
   Widget build(BuildContext context) {
-    if (widget.isEmpty()) {
-      return Center(
-        child: Container(
-          child: Text(
-            'None to show at the moment \n' + 'TMT',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
-      );
-    }
+    return widget.scrollDirection == Axis.vertical
+        ? _ContentFeedVertical(feedBuilder: widget)
+        : _ContentFeedHorizontal(feedBuilder: widget);
+  }
+}
 
-    if (widget.isFirstLoad) {
-      return Center(
-        child: HololiveRotatingImage(),
-      );
-    }
+class _ContentFeedVertical extends StatelessWidget {
+  _ContentFeedVertical({
+    Key key,
+    @required this.feedBuilder,
+  })  : assert(feedBuilder != null),
+        super(key: key);
 
+  final _ContentFeedBuilder feedBuilder;
+
+  @override
+  Widget build(BuildContext context) {
     return EasyRefresh(
-      header: widget.header,
-      footer: widget.footer,
-      topBouncing: widget.topBouncing,
-      bottomBouncing: widget.bottomBouncing,
-      onRefresh: widget.onRefresh,
-      onLoad: widget.onLoad,
-      scrollController: widget.scrollController,
-      child: ListView.separated(
-        padding: widget.scrollDirection == Axis.vertical
-            ? EdgeInsets.only(top: MediaQuery.of(context).padding.top)
-            : null,
-        scrollDirection: widget.scrollDirection,
-        itemBuilder: (BuildContext context, int index) {
-          ContentDTO contentDTO = widget.contentDTOs[index];
-          return ContentCard(
-            content: widget.tab.cardContentBuilder(contentDTO),
-            title: widget.tab.cardTitleBuilder(contentDTO),
-            creator: widget.tab.cardCreatorBuilder(contentDTO),
-            date: widget.tab.cardDateBuilder(contentDTO),
-            onTapCard: widget.tab.onTap != null
-                ? () => widget.tab.onTap(contentDTO)
-                : null,
-            onTapMore: widget.tab.onTapMore != null
-                ? () => widget.tab.onTapMore(contentDTO)
-                : null,
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return SizedBox(
-            width: widget.scrollDirection == Axis.vertical ? 8.0 : 0,
-            height: widget.scrollDirection == Axis.horizontal ? 8.0 : 0,
-          );
-        },
-        itemCount: widget.contentDTOs.length,
+      header: feedBuilder.header,
+      footer: feedBuilder.footer,
+      topBouncing: feedBuilder.topBouncing,
+      bottomBouncing: feedBuilder.bottomBouncing,
+      onRefresh: feedBuilder.onRefresh,
+      onLoad: feedBuilder.onLoad,
+      scrollController: feedBuilder.scrollController,
+      behavior: _CustomScrollBehaviour(),
+      child: CustomScrollView(
+        scrollDirection: Axis.vertical,
+        physics: ClampingScrollPhysics(),
+        slivers: [
+          SliverPadding(
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+            sliver: SliverToBoxAdapter(
+              child: Text(
+                '${feedBuilder.tab.name}',
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          if (feedBuilder.isEmpty())
+            SliverToBoxAdapter(
+              child: Center(
+                child: Container(
+                  child: Text(
+                    'None to show at the moment \n' + 'TMT',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ),
+            ),
+          if (feedBuilder.isFirstLoad)
+            SliverToBoxAdapter(
+              child: Center(
+                child: HololiveRotatingImage(),
+              ),
+            ),
+          if (!feedBuilder.isFirstLoad && !feedBuilder.isEmpty())
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  if (index.isEven) {
+                    int localIndex = index ~/ 2;
+                    ContentDTO contentDTO = feedBuilder.contentDTOs[localIndex];
+                    return ContentCard(
+                      content: feedBuilder.tab.cardContentBuilder(contentDTO),
+                      title: feedBuilder.tab.cardTitleBuilder(contentDTO),
+                      creator: feedBuilder.tab.cardCreatorBuilder(contentDTO),
+                      date: feedBuilder.tab.cardDateBuilder(contentDTO),
+                      onTapCard: feedBuilder.tab.onTap != null
+                          ? () => feedBuilder.tab.onTap(contentDTO)
+                          : null,
+                      onTapMore: feedBuilder.tab.onTapMore != null
+                          ? () => feedBuilder.tab.onTapMore(contentDTO)
+                          : null,
+                    );
+                  }
+
+                  return SizedBox(
+                    width:
+                        feedBuilder.scrollDirection == Axis.vertical ? 8.0 : 0,
+                    height: feedBuilder.scrollDirection == Axis.horizontal
+                        ? 8.0
+                        : 0,
+                  );
+                },
+                childCount: (feedBuilder.contentDTOs.length * 2) - 1,
+              ),
+            )
+        ],
       ),
     );
+  }
+}
+
+class _ContentFeedHorizontal extends StatelessWidget {
+  _ContentFeedHorizontal({
+    Key key,
+    @required this.feedBuilder,
+  })  : assert(feedBuilder != null),
+        super(key: key);
+
+  final _ContentFeedBuilder feedBuilder;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '${feedBuilder.tab.name}',
+          style: TextStyle(
+            fontSize: 40,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 8.0),
+        Expanded(
+          child: EasyRefresh(
+            header: feedBuilder.header,
+            footer: feedBuilder.footer,
+            topBouncing: feedBuilder.topBouncing,
+            bottomBouncing: feedBuilder.bottomBouncing,
+            onRefresh: feedBuilder.onRefresh,
+            onLoad: feedBuilder.onLoad,
+            scrollController: feedBuilder.scrollController,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int index) {
+                ContentDTO contentDTO = feedBuilder.contentDTOs[index];
+                return ContentCard(
+                  content: feedBuilder.tab.cardContentBuilder(contentDTO),
+                  title: feedBuilder.tab.cardTitleBuilder(contentDTO),
+                  creator: feedBuilder.tab.cardCreatorBuilder(contentDTO),
+                  date: feedBuilder.tab.cardDateBuilder(contentDTO),
+                  onTapCard: feedBuilder.tab.onTap != null
+                      ? () => feedBuilder.tab.onTap(contentDTO)
+                      : null,
+                  onTapMore: feedBuilder.tab.onTapMore != null
+                      ? () => feedBuilder.tab.onTapMore(contentDTO)
+                      : null,
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return SizedBox(
+                  width: feedBuilder.scrollDirection == Axis.vertical ? 8.0 : 0,
+                  height:
+                      feedBuilder.scrollDirection == Axis.horizontal ? 8.0 : 0,
+                );
+              },
+              itemCount: feedBuilder.contentDTOs.length,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _CustomScrollBehaviour extends ScrollBehavior {
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) {
+    return ClampingScrollPhysics();
   }
 }
 

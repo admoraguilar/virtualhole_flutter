@@ -214,23 +214,13 @@ class _CreatorContentFeed extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '${tab.name}',
-            textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 24),
-          ),
-          SizedBox(
-            height: 250,
-            child: ContentFeed(
-              scrollDirection: Axis.horizontal,
-              allowRefreshingAndLoading: false,
-              tabs: [tab],
-            ),
-          ),
-        ],
+      child: SizedBox(
+        height: 250,
+        child: ContentFeed(
+          scrollDirection: Axis.horizontal,
+          allowRefreshingAndLoading: false,
+          tabs: [tab],
+        ),
       ),
     );
   }
