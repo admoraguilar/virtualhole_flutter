@@ -148,7 +148,9 @@ class _CreatorSocialLinksState extends State<_CreatorSocialLinks> {
         children: [
           OutlinedButton(
             child: Text(
-              'FOLLOW',
+              userData.followedCreatorIds.contains(widget.creator.id)
+                  ? 'FOLLOWED'
+                  : 'FOLLOW',
               style: TextStyle(
                 color: Colors.white,
               ),
