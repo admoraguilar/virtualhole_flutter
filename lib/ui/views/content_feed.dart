@@ -11,7 +11,6 @@ class ContentFeed extends StatefulWidget {
     Key key,
     @required this.scrollDirection,
     ScrollController scrollController,
-    this.scrollPhysics,
     this.allowRefreshingAndLoading = true,
     @required this.tabs,
     int initialTabIndex,
@@ -20,17 +19,16 @@ class ContentFeed extends StatefulWidget {
   })  : assert(scrollDirection != null),
         assert(allowRefreshingAndLoading != null),
         assert(tabs != null && tabs.length > 0),
+        scrollController = scrollController ?? ScrollController(),
         initialTabIndex = initialTabIndex == null
             ? 0
             : initialTabIndex > tabs.length
                 ? tabs.length - 1
                 : initialTabIndex,
-        scrollController = scrollController ?? ScrollController(),
         super(key: key);
 
   final Axis scrollDirection;
   final ScrollController scrollController;
-  final ScrollPhysics scrollPhysics;
   final bool allowRefreshingAndLoading;
   final List<ContentFeedTab> tabs;
   final int initialTabIndex;
@@ -96,9 +94,10 @@ class _ContentFeedState extends State<ContentFeed> {
                       ? MaterialFooter(enableInfiniteLoad: true)
                       : MaterialFooter(enableInfiniteLoad: false)
                   : null,
+              topBouncing: widget.allowRefreshingAndLoading,
+              bottomBouncing: widget.allowRefreshingAndLoading,
               scrollDirection: widget.scrollDirection,
               scrollController: widget.scrollController,
-              scrollPhysics: widget.scrollPhysics,
               contentDTOs: _contentDTOs,
               isFirstLoad: _isFirstLoad,
               onRefresh: widget.allowRefreshingAndLoading
@@ -120,8 +119,10 @@ class _ContentFeedState extends State<ContentFeed> {
               _ContentFeedSelector(
                 tabs: widget.tabs,
                 onSelect: (ContentFeedTab tab) {
-                  setState(() => _setCurrentTab(tab));
-                  widget.onSetTab?.call(tab);
+                  setState(() {
+                    _setCurrentTab(tab);
+                    widget.onSetTab?.call(tab);
+                  });
                 },
               ),
           ],
@@ -151,30 +152,33 @@ class _ContentFeedBuilder extends StatefulWidget {
     @required this.tab,
     @required this.scrollDirection,
     ScrollController scrollController,
-    ScrollPhysics scrollPhysics,
     @required this.contentDTOs,
     this.isFirstLoad = false,
     @required this.header,
     @required this.footer,
+    this.topBouncing = false,
+    this.bottomBouncing = false,
     this.onRefresh,
     this.onLoad,
   })  : assert(tab != null),
         assert(scrollDirection != null),
         assert(contentDTOs != null),
         scrollController = scrollController ?? ScrollController(),
-        scrollPhysics = scrollPhysics ?? BouncingScrollPhysics(),
         assert(isFirstLoad != null),
+        assert(topBouncing != null),
+        assert(bottomBouncing != null),
         super(key: key);
 
   final ContentFeedTab tab;
   final Axis scrollDirection;
   final ScrollController scrollController;
-  final ScrollPhysics scrollPhysics;
   final List<ContentDTO> contentDTOs;
 
+  final bool isFirstLoad;
   final Header header;
   final Footer footer;
-  final bool isFirstLoad;
+  final bool topBouncing;
+  final bool bottomBouncing;
   final Future<void> Function() onRefresh;
   final Future<void> Function() onLoad;
 
@@ -206,38 +210,39 @@ class _ContentFeedBuilderState extends State<_ContentFeedBuilder> {
     }
 
     return EasyRefresh(
-        header: widget.header,
-        footer: widget.footer,
-        onRefresh: widget.onRefresh,
-        onLoad: widget.onLoad,
-        behavior: ScrollBehavior(),
-        child: ListView.separated(
-          scrollDirection: widget.scrollDirection,
-          controller: widget.scrollController,
-          physics: widget.scrollPhysics,
-          itemBuilder: (BuildContext context, int index) {
-            ContentDTO contentDTO = widget.contentDTOs[index];
-            return ContentCard(
-              content: widget.tab.cardContentBuilder(contentDTO),
-              title: widget.tab.cardTitleBuilder(contentDTO),
-              creator: widget.tab.cardCreatorBuilder(contentDTO),
-              date: widget.tab.cardDateBuilder(contentDTO),
-              onTapCard: widget.tab.onTap != null
-                  ? () => widget.tab.onTap(contentDTO)
-                  : null,
-              onTapMore: widget.tab.onTapMore != null
-                  ? () => widget.tab.onTapMore(contentDTO)
-                  : null,
-            );
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return SizedBox(
-              width: widget.scrollDirection == Axis.vertical ? 8.0 : 0,
-              height: widget.scrollDirection == Axis.horizontal ? 8.0 : 0,
-            );
-          },
-          itemCount: widget.contentDTOs.length,
-        ));
+      header: widget.header,
+      footer: widget.footer,
+      topBouncing: widget.topBouncing,
+      bottomBouncing: widget.bottomBouncing,
+      onRefresh: widget.onRefresh,
+      onLoad: widget.onLoad,
+      scrollController: widget.scrollController,
+      child: ListView.separated(
+        scrollDirection: widget.scrollDirection,
+        itemBuilder: (BuildContext context, int index) {
+          ContentDTO contentDTO = widget.contentDTOs[index];
+          return ContentCard(
+            content: widget.tab.cardContentBuilder(contentDTO),
+            title: widget.tab.cardTitleBuilder(contentDTO),
+            creator: widget.tab.cardCreatorBuilder(contentDTO),
+            date: widget.tab.cardDateBuilder(contentDTO),
+            onTapCard: widget.tab.onTap != null
+                ? () => widget.tab.onTap(contentDTO)
+                : null,
+            onTapMore: widget.tab.onTapMore != null
+                ? () => widget.tab.onTapMore(contentDTO)
+                : null,
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return SizedBox(
+            width: widget.scrollDirection == Axis.vertical ? 8.0 : 0,
+            height: widget.scrollDirection == Axis.horizontal ? 8.0 : 0,
+          );
+        },
+        itemCount: widget.contentDTOs.length,
+      ),
+    );
   }
 }
 
