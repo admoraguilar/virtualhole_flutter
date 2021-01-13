@@ -220,7 +220,6 @@ class _ContentFeedVertical extends StatelessWidget {
       onRefresh: feedBuilder.onRefresh,
       onLoad: feedBuilder.onLoad,
       scrollController: feedBuilder.scrollController,
-      behavior: _CustomScrollBehaviour(),
       child: CustomScrollView(
         scrollDirection: Axis.vertical,
         physics: ClampingScrollPhysics(),
@@ -231,12 +230,19 @@ class _ContentFeedVertical extends StatelessWidget {
               child: Text(
                 '${feedBuilder.tab.name}',
                 style: TextStyle(
-                  fontSize: 40,
+                  fontSize: 35,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
           ),
+          if (feedBuilder.isFirstLoad)
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Center(
+                child: HololiveRotatingImage(),
+              ),
+            ),
           if (feedBuilder.isEmpty())
             SliverToBoxAdapter(
               child: Center(
@@ -247,12 +253,6 @@ class _ContentFeedVertical extends StatelessWidget {
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
-              ),
-            ),
-          if (feedBuilder.isFirstLoad)
-            SliverToBoxAdapter(
-              child: Center(
-                child: HololiveRotatingImage(),
               ),
             ),
           if (!feedBuilder.isFirstLoad && !feedBuilder.isEmpty())
@@ -310,57 +310,71 @@ class _ContentFeedHorizontal extends StatelessWidget {
         Text(
           '${feedBuilder.tab.name}',
           style: TextStyle(
-            fontSize: 40,
+            fontSize: 35,
             fontWeight: FontWeight.bold,
           ),
         ),
         SizedBox(height: 8.0),
-        Expanded(
-          child: EasyRefresh(
-            header: feedBuilder.header,
-            footer: feedBuilder.footer,
-            topBouncing: feedBuilder.topBouncing,
-            bottomBouncing: feedBuilder.bottomBouncing,
-            onRefresh: feedBuilder.onRefresh,
-            onLoad: feedBuilder.onLoad,
-            scrollController: feedBuilder.scrollController,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (BuildContext context, int index) {
-                ContentDTO contentDTO = feedBuilder.contentDTOs[index];
-                return ContentCard(
-                  content: feedBuilder.tab.cardContentBuilder(contentDTO),
-                  title: feedBuilder.tab.cardTitleBuilder(contentDTO),
-                  creator: feedBuilder.tab.cardCreatorBuilder(contentDTO),
-                  date: feedBuilder.tab.cardDateBuilder(contentDTO),
-                  onTapCard: feedBuilder.tab.onTap != null
-                      ? () => feedBuilder.tab.onTap(contentDTO)
-                      : null,
-                  onTapMore: feedBuilder.tab.onTapMore != null
-                      ? () => feedBuilder.tab.onTapMore(contentDTO)
-                      : null,
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  width: feedBuilder.scrollDirection == Axis.vertical ? 8.0 : 0,
-                  height:
-                      feedBuilder.scrollDirection == Axis.horizontal ? 8.0 : 0,
-                );
-              },
-              itemCount: feedBuilder.contentDTOs.length,
+        if (feedBuilder.isFirstLoad)
+          Expanded(
+            child: Center(
+              child: HololiveRotatingImage(),
             ),
           ),
-        ),
+        if (feedBuilder.isEmpty())
+          Expanded(
+            child: Center(
+              child: Container(
+                child: Text(
+                  'None to show at the moment \n' + 'TMT',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            ),
+          ),
+        if (!feedBuilder.isFirstLoad && !feedBuilder.isEmpty())
+          Expanded(
+            child: EasyRefresh(
+              header: feedBuilder.header,
+              footer: feedBuilder.footer,
+              topBouncing: feedBuilder.topBouncing,
+              bottomBouncing: feedBuilder.bottomBouncing,
+              onRefresh: feedBuilder.onRefresh,
+              onLoad: feedBuilder.onLoad,
+              scrollController: feedBuilder.scrollController,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (BuildContext context, int index) {
+                  ContentDTO contentDTO = feedBuilder.contentDTOs[index];
+                  return ContentCard(
+                    content: feedBuilder.tab.cardContentBuilder(contentDTO),
+                    title: feedBuilder.tab.cardTitleBuilder(contentDTO),
+                    creator: feedBuilder.tab.cardCreatorBuilder(contentDTO),
+                    date: feedBuilder.tab.cardDateBuilder(contentDTO),
+                    onTapCard: feedBuilder.tab.onTap != null
+                        ? () => feedBuilder.tab.onTap(contentDTO)
+                        : null,
+                    onTapMore: feedBuilder.tab.onTapMore != null
+                        ? () => feedBuilder.tab.onTapMore(contentDTO)
+                        : null,
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(
+                    width:
+                        feedBuilder.scrollDirection == Axis.vertical ? 8.0 : 0,
+                    height: feedBuilder.scrollDirection == Axis.horizontal
+                        ? 8.0
+                        : 0,
+                  );
+                },
+                itemCount: feedBuilder.contentDTOs.length,
+              ),
+            ),
+          ),
       ],
     );
-  }
-}
-
-class _CustomScrollBehaviour extends ScrollBehavior {
-  @override
-  ScrollPhysics getScrollPhysics(BuildContext context) {
-    return ClampingScrollPhysics();
   }
 }
 
