@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
-import 'package:virtualhole_api_client_dart/virtualhole_api_client_dart.dart';
 import '../../virtualhole_client.dart';
 
 class ToExplorePage extends FlowContext {}

@@ -114,19 +114,22 @@ class _SearchPageState extends State<SearchPage> {
                   itemBuilder: (BuildContext context, int index) {
                     Creator creator = snapshot.data[index];
                     return Container(
-                      height: 40,
+                      height: 45,
                       child: GestureDetector(
                         child: Card(
-                          child: Row(
-                            children: [
-                              if (creator.avatarUrl.isNotEmpty)
-                                CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(creator.avatarUrl),
-                                ),
-                              SizedBox(width: 8),
-                              Text(creator.name)
-                            ],
+                          child: Container(
+                            padding: EdgeInsets.all(4.0),
+                            child: Row(
+                              children: [
+                                if (creator.avatarUrl.isNotEmpty)
+                                  CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(creator.avatarUrl),
+                                  ),
+                                SizedBox(width: 4),
+                                Text(creator.name)
+                              ],
+                            ),
                           ),
                         ),
                         onTap: () {
