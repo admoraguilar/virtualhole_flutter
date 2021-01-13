@@ -46,6 +46,7 @@ class _ContentFeedState extends State<ContentFeed> {
   Future<List<ContentDTO>> _future;
   int _page = 1;
   bool _isFirstLoad = true;
+  bool _isDataProcessed = false;
   bool _isEnd = false;
 
   @override
@@ -70,8 +71,14 @@ class _ContentFeedState extends State<ContentFeed> {
           throw snapshot.error;
         }
 
+        if (snapshot.connectionState == ConnectionState.active ||
+            snapshot.connectionState == ConnectionState.waiting) {
+          _isDataProcessed = false;
+        }
+
         if (snapshot.hasData &&
-            snapshot.connectionState == ConnectionState.done) {
+            snapshot.connectionState == ConnectionState.done &&
+            !_isDataProcessed) {
           if (snapshot.data.length > 0) {
             _contentDTOs.addAll(snapshot.data);
             _contentDTOs.removeWhere(
@@ -80,6 +87,7 @@ class _ContentFeedState extends State<ContentFeed> {
           }
 
           _isFirstLoad = false;
+          _isDataProcessed = true;
           _isEnd = _page > 0 && snapshot.data.length == 0;
         }
 
