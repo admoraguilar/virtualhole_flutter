@@ -267,6 +267,9 @@ class _ContentFeedVertical extends StatelessWidget {
                       title: feedBuilder.tab.cardTitleBuilder(contentDTO),
                       creator: feedBuilder.tab.cardCreatorBuilder(contentDTO),
                       date: feedBuilder.tab.cardDateBuilder(contentDTO),
+                      indicator: feedBuilder.tab.cardIndicatorBuilder != null
+                          ? feedBuilder.tab.cardIndicatorBuilder(contentDTO)
+                          : null,
                       onTapCard: feedBuilder.tab.onTap != null
                           ? () => feedBuilder.tab.onTap(contentDTO)
                           : null,
@@ -354,6 +357,9 @@ class _ContentFeedHorizontal extends StatelessWidget {
                       title: feedBuilder.tab.cardTitleBuilder(contentDTO),
                       creator: feedBuilder.tab.cardCreatorBuilder(contentDTO),
                       date: feedBuilder.tab.cardDateBuilder(contentDTO),
+                      indicator: feedBuilder.tab.cardIndicatorBuilder != null
+                          ? feedBuilder.tab.cardIndicatorBuilder(contentDTO)
+                          : null,
                       onTapCard: feedBuilder.tab.onTap != null
                           ? () => feedBuilder.tab.onTap(contentDTO)
                           : null,
@@ -434,6 +440,7 @@ class ContentFeedTab {
     @required this.cardTitleBuilder,
     @required this.cardCreatorBuilder,
     @required this.cardDateBuilder,
+    this.cardIndicatorBuilder,
     @required this.onTap,
     this.onTapMore,
   })  : assert(name != null),
@@ -452,6 +459,7 @@ class ContentFeedTab {
   final Widget Function(ContentDTO) cardTitleBuilder;
   final Widget Function(ContentDTO) cardCreatorBuilder;
   final Widget Function(ContentDTO) cardDateBuilder;
+  final Widget Function(ContentDTO) cardIndicatorBuilder;
   final Function(ContentDTO) onTap;
   final Function(ContentDTO) onTapMore;
 
@@ -463,6 +471,7 @@ class ContentFeedTab {
     Widget Function(ContentDTO) cardTitleBuilder,
     Widget Function(ContentDTO) cardCreatorBuilder,
     Widget Function(ContentDTO) cardDateBuilder,
+    Widget Function(ContentDTO) cardIndicatorBuilder,
     Function(ContentDTO) onTap,
     Function(ContentDTO) onTapMore,
   }) {
@@ -474,6 +483,7 @@ class ContentFeedTab {
       cardTitleBuilder: cardTitleBuilder ?? this.cardTitleBuilder,
       cardCreatorBuilder: cardCreatorBuilder ?? this.cardCreatorBuilder,
       cardDateBuilder: cardDateBuilder ?? this.cardDateBuilder,
+      cardIndicatorBuilder: cardIndicatorBuilder ?? this.cardIndicatorBuilder,
       onTap: onTap ?? this.onTap,
       onTapMore: onTapMore ?? this.onTapMore,
     );

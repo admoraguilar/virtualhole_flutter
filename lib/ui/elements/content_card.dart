@@ -7,14 +7,21 @@ class ContentCard extends StatelessWidget {
     @required this.title,
     @required this.creator,
     @required this.date,
-    this.onTapCard,
+    this.indicator,
+    @required this.onTapCard,
     this.onTapMore,
-  }) : super(key: key);
+  })  : assert(content != null),
+        assert(title != null),
+        assert(creator != null),
+        assert(date != null),
+        assert(onTapCard != null),
+        super(key: key);
 
   final Widget content;
   final Widget title;
   final Widget creator;
   final Widget date;
+  final Widget indicator;
 
   final Function() onTapCard;
   final Function() onTapMore;
@@ -50,34 +57,43 @@ class ContentCard extends StatelessWidget {
                   child: content),
               Container(
                 padding: const EdgeInsets.all(8.0),
-                child: Row(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Expanded(
-                      flex: 7,
-                      child: Container(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            title,
-                            SizedBox(height: 3.0),
-                            creator,
-                            SizedBox(height: 3.0),
-                            date
-                          ],
-                        ),
-                      ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: indicator,
                     ),
-                    if (onTapMore != null)
-                      Expanded(
-                        flex: 1,
-                        child: IconButton(
-                          icon: Icon(Icons.more_vert),
-                          onPressed: onTapMore,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          flex: 7,
+                          child: Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                title,
+                                SizedBox(height: 3.0),
+                                creator,
+                                SizedBox(height: 3.0),
+                                date
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
+                        if (onTapMore != null)
+                          Expanded(
+                            flex: 1,
+                            child: IconButton(
+                              icon: Icon(Icons.more_vert),
+                              onPressed: onTapMore,
+                            ),
+                          ),
+                      ],
+                    ),
                   ],
                 ),
               ),

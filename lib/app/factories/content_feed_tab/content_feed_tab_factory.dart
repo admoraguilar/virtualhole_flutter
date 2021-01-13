@@ -187,6 +187,17 @@ abstract class ContentFeedTabBuilder {
       cardDateBuilder: (ContentDTO contentDTO) {
         return Text("LIVE NOW");
       },
+      cardIndicatorBuilder: (ContentDTO contentDTO) {
+        MLog.log('build');
+        return CircleAvatar(
+          backgroundColor: Colors.black54,
+          child: Icon(
+            MdiIcons.accessPoint,
+            size: 30,
+            color: Colors.red,
+          ),
+        );
+      },
       onTap: (ContentDTO contentDTO) {
         FirebaseAnalytics().logViewItem(
           itemId: contentDTO.content.id,
@@ -259,6 +270,16 @@ abstract class ContentFeedTabBuilder {
       },
       cardDateBuilder: (ContentDTO contentDTO) {
         return Text('Live in ${contentDTO.scheduleDateDisplay}');
+      },
+      cardIndicatorBuilder: (ContentDTO contentDTO) {
+        return CircleAvatar(
+          backgroundColor: Colors.black54,
+          child: Icon(
+            Icons.schedule,
+            size: 30,
+            color: Colors.white,
+          ),
+        );
       },
       onTap: (ContentDTO contentDTO) {
         FirebaseAnalytics().logViewItem(
