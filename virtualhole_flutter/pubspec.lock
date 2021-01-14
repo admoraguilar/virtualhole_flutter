@@ -495,7 +495,7 @@ packages:
   virtualhole_api_client_dart:
     dependency: "direct main"
     description:
-      path: "packages/virtualhole_api_client_dart"
+      path: "../virtualhole_api_client_dart"
       relative: true
     source: path
     version: "0.0.1"
