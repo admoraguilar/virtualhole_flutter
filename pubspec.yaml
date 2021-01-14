@@ -24,7 +24,10 @@ dependencies:
   flutter:
     sdk: flutter
   midnight_flutter:
-    path: packages/midnight_flutter
+    git:
+      url: git@github.com-midnight-cigarettes:midnight-cigarettes/midnight_flutter.git
+      ref: develop
+      path: midnight
   virtualhole_api_client_dart:
     path: packages/virtualhole_api_client_dart
   cupertino_icons: ^1.0.0

@@ -292,9 +292,11 @@ packages:
   midnight_flutter:
     dependency: "direct main"
     description:
-      path: "packages/midnight_flutter"
-      relative: true
-    source: path
+      path: midnight
+      ref: develop
+      resolved-ref: e2145ae32d19be9f7c2f3d5d1bfbe64bb14e0ff6
+      url: "git@github.com-midnight-cigarettes:midnight-cigarettes/midnight_flutter.git"
+    source: git
     version: "0.0.1"
   package_info:
     dependency: "direct main"
