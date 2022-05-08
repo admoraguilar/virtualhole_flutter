@@ -1,4 +1,4 @@
-import 'package:VirtualHole/flow/to/to_followed_page.dart';
+import 'package:virtual_hole/flow/to/to_followed_page.dart';
 import 'package:midnight_flutter/midnight_flutter.dart';
 import '../../virtualhole_client.dart';
 

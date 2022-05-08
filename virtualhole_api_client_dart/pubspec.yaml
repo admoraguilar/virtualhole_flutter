@@ -15,7 +15,7 @@ dependencies:
   equatable: ^1.2.5
   midnight_flutter:
     git:
-      url: git@github.com-midnight-cigarettes:midnight-cigarettes/midnight_flutter.git
+      url: git@github.com-midnightcigarettes:midnightcigarettes/midnight_flutter.git
       ref: develop
       path: midnight
 

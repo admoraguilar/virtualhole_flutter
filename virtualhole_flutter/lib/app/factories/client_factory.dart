@@ -6,7 +6,7 @@ class ClientFactory {
   ClientFactory({
     VirtualHoleApiClient vHoleApi,
   }) : vHoleApi =
-            vHoleApi ?? VirtualHoleApiClient.managed('www.virtualhole.app');
+            vHoleApi ?? VirtualHoleApiClient.managed('www.admoraguilar.com');
 
   final VirtualHoleApiClient vHoleApi;
 

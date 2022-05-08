@@ -59,7 +59,7 @@ abstract class ApiClient {
       path += '/$slug';
     }
 
-    return Uri.https(domain, path, queryParameters);
+    return Uri.http(domain, path, queryParameters);
   }
 
   ApiError _createError(http.Response res) {
